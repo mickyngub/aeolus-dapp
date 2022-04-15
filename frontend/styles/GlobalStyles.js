@@ -2,6 +2,7 @@ import React from "react";
 import { createGlobalStyle } from "styled-components";
 import tw, { theme, GlobalStyles as BaseStyles } from "twin.macro";
 import "animate.css/animate.min.css";
+import "react-toastify/dist/ReactToastify.css";
 import { colors } from "~/styles/colors";
 
 const CustomStyles = createGlobalStyle`

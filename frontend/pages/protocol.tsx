@@ -1,5 +1,6 @@
 import { ethers } from "ethers";
 import type { ReactElement } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import { useState } from "react";
 import "twin.macro";
 import Dashboard from "~/src/protocol/Dashboard";
@@ -20,8 +21,11 @@ const Protocol = () => {
     const signerAddress = await signer.getAddress();
     setAddress(signerAddress);
     setSigner(signer);
+    notifyWalletConnected();
   };
-
+  const notifyWalletConnected = () => {
+    toast("Wallet Connected");
+  };
   return (
     <div tw="bg-primary">
       <div tw="p-6 text-right">
@@ -42,6 +46,7 @@ const Protocol = () => {
       <div tw="p-6">
         <PoolCard />
       </div>
+      <ToastContainer />
     </div>
   );
 };

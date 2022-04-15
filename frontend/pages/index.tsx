@@ -6,6 +6,7 @@ import styled from "styled-components";
 import CanvasWind from "~/src/ui/canvasWind/CanvasWind";
 import Button from "~/src/ui/button/Button";
 import Link from "next/link";
+
 const Home: NextPage = () => {
   return (
     <div tw="h-full bg-primary py-6">
