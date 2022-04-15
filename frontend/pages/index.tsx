@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import tw from "twin.macro";
 
 const Home: NextPage = () => {
   return (
@@ -12,7 +13,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
-        <h1>Aeolus Protocol</h1>
+        <h1 tw="bg-blue-500">Aeolus Protocol</h1>
       </main>
     </div>
   );
