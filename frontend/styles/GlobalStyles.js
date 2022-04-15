@@ -1,7 +1,9 @@
 import React from "react";
 import { createGlobalStyle } from "styled-components";
 import tw, { theme, GlobalStyles as BaseStyles } from "twin.macro";
+import "animate.css/animate.min.css";
 import { colors } from "~/styles/colors";
+
 const CustomStyles = createGlobalStyle`
     /*
     1. Use a more-intuitive box-sizing model.
