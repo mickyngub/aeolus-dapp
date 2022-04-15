@@ -5,7 +5,7 @@ import tw from "twin.macro";
 import styled from "styled-components";
 import CanvasWind from "~/ui/canvasWind/CanvasWind";
 import Button from "~/ui/button/Button";
-
+import Link from "next/link";
 const Home: NextPage = () => {
   return (
     <div tw="h-full bg-primary py-6">
@@ -33,7 +33,11 @@ const Home: NextPage = () => {
         </div>
 
         <div tw="flex justify-center my-8">
-          <Button size="medium">Get Started</Button>
+          <Link href="/main">
+            <a>
+              <Button size="medium">Get Started</Button>
+            </a>
+          </Link>
         </div>
 
         <WrapperCanvas>
