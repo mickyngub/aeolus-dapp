@@ -3,8 +3,8 @@ import Head from "next/head";
 import Image from "next/image";
 import tw from "twin.macro";
 import styled from "styled-components";
-import CanvasWind from "~/ui/canvasWind/CanvasWind";
-import Button from "~/ui/button/Button";
+import CanvasWind from "~/src/ui/canvasWind/CanvasWind";
+import Button from "~/src/ui/button/Button";
 import Link from "next/link";
 const Home: NextPage = () => {
   return (

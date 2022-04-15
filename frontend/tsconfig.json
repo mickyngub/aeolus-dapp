@@ -24,7 +24,7 @@
     "**/*.ts",
     "**/*.tsx",
     "pages/_document.js",
-    "ui/GlobalStyles.js",
+    "src/ui/GlobalStyles.js",
     "styles/constants.js",
     "styles/colors.js"
   ],

@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import Layout from "~/ui/layout/Layout";
+import Layout from "~/src/ui/layout/Layout";
 
 const Protocol = () => {
   return <div>Protocol</div>;

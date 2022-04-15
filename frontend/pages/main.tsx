@@ -1,7 +1,7 @@
 import "twin.macro";
 import type { ReactElement } from "react";
-import Button from "~/ui/button/Button";
-import Layout from "~/ui/layout/Layout";
+import Button from "~/src/ui/button/Button";
+import Layout from "~/src/ui/layout/Layout";
 import Link from "next/link";
 
 const Main = () => {
