@@ -24,7 +24,9 @@
     "**/*.ts",
     "**/*.tsx",
     "pages/_document.js",
-    "ui/GlobalStyles.js"
+    "ui/GlobalStyles.js",
+    "styles/constants.js",
+    "styles/colors.js"
   ],
   "exclude": ["node_modules"]
 }

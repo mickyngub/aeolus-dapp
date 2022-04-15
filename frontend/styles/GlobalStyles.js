@@ -1,7 +1,7 @@
 import React from "react";
 import { createGlobalStyle } from "styled-components";
 import tw, { theme, GlobalStyles as BaseStyles } from "twin.macro";
-
+import { colors } from "~/styles/colors";
 const CustomStyles = createGlobalStyle`
     /*
     1. Use a more-intuitive box-sizing model.
@@ -21,6 +21,12 @@ const CustomStyles = createGlobalStyle`
   html, body, #__next{
     height: 100%;
     font-family: "Playfair Display", serif;
+    --color-primary: ${colors.primary};
+    --color-primary-dark: ${colors["primary-dark"]};
+    --color-secondary: ${colors.secondary};
+    --color-accent: ${colors.accent};
+    --color-black: ${colors.black};
+    --color-white: ${colors.white};
   }
   /*
     Typographic tweaks!
