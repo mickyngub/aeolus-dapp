@@ -18,7 +18,7 @@ const CustomStyles = createGlobalStyle`
   /*
     3. Allow percentage-based heights in the application
   */
-  html, body {
+  html, body, #__next{
     height: 100%;
     font-family: "Playfair Display", serif;
   }
