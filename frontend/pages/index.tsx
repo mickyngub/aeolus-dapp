@@ -13,7 +13,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
-        <h1 tw="bg-blue-500">Aeolus Protocol</h1>
+        <h1 tw="bg-blue-500 font-bold">AEOLUS PROTOCOL</h1>
       </main>
     </div>
   );
