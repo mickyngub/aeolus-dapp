@@ -7,12 +7,41 @@ interface Props
     HTMLButtonElement
   > {
   children?: string;
+  size?: string;
 }
 
-const Button = ({ children }: Props) => {
+const buttonSize = {
+  small: {
+    width: 180,
+    height: 60,
+  },
+  medium: {
+    width: 240,
+    height: 80,
+  },
+  large: {
+    width: 300,
+    height: 100,
+  },
+};
+
+const Button = ({ children, size }: Props) => {
+  let sizeButton;
+  if (size) {
+    sizeButton = buttonSize[size as keyof typeof buttonSize];
+  }
   return (
-    <StyledButton>
-      <StyledSVG width="180px" height="60px" viewBox="0 0 180 60">
+    <StyledButton
+      style={{
+        "--button-width": sizeButton?.width + "px",
+        "--button-height": sizeButton?.height + "px",
+      }}
+    >
+      <StyledSVG
+        width={`${sizeButton?.width}`}
+        height={`${sizeButton?.height}`}
+        viewBox="0 0 180 60"
+      >
         <polyline points="179,1 179,59 1,59 1,1 179,1" />
         <polyline points="179,1 179,59 1,59 1,1 179,1" />
       </StyledSVG>
@@ -32,10 +61,12 @@ const StyledSVG = styled.svg`
   transition: 1s ease-in-out;
 `;
 
-const StyledButton = styled.button`
+const StyledButton = styled.button<{
+  style: { "--button-width": string; "--button-height": string };
+}>`
   position: relative;
-  width: 180px;
-  height: 60px;
+  width: var(--button-width);
+  height: var(--button-height);
   cursor: pointer;
   background: var(--color-secondary);
   border: 1px solid var(--color-black);
@@ -54,8 +85,8 @@ const StyledButton = styled.button`
 
 const StyledSpan = styled.span`
   color: black;
-  font-size: 18px;
-  font-weight: 100;
+  font-size: 1.25rem;
+  font-weight: 400;
 `;
 
 export default Button;

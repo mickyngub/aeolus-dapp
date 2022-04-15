@@ -30,7 +30,7 @@ const Home: NextPage = () => {
           <CanvasWind />
         </WrapperCanvas>
         <div>
-          <Button>Get Started</Button>
+          <Button size="medium">Get Started</Button>
         </div>
       </main>
     </div>
