@@ -8,6 +8,7 @@ interface Props
   > {
   children?: string;
   size?: string;
+  onClick?: () => void;
 }
 
 const buttonSize = {
@@ -25,7 +26,7 @@ const buttonSize = {
   },
 };
 
-const Button = ({ children, size }: Props) => {
+const Button = ({ children, size, onClick }: Props) => {
   let sizeButton;
   if (size) {
     sizeButton = buttonSize[size as keyof typeof buttonSize];
@@ -36,6 +37,7 @@ const Button = ({ children, size }: Props) => {
         "--button-width": sizeButton?.width + "px",
         "--button-height": sizeButton?.height + "px",
       }}
+      onClick={onClick}
     >
       <StyledSVG
         width={`${sizeButton?.width}`}
