@@ -15,23 +15,33 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main tw="py-8">
+      <main tw="">
         <p tw="text-xl font-bold px-8">
           The best yield optimizer on AVAX chain
         </p>
         <WrapperCanvas>
           <CanvasWind />
         </WrapperCanvas>
-        <p tw="text-xl font-bold text-right px-8">Find the best yield here</p>
-        <h1 tw="font-bold text-7xl text-center mb-8">AEOLUS PROTOCOL</h1>
+        <div tw="text-center my-8">
+          <h1 tw="font-bold text-8xl ">AEOLUS PROTOCOL</h1>
+          <p tw="px-4 mt-4">
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Doloribus,
+            asperiores possimus in, ratione accusantium quisquam exercitationem
+            laborum libero qui molestias ut fugiat reiciendis cumque dolore sunt
+            rerum. Perferendis, quisquam voluptate?
+          </p>
+        </div>
 
-        <p tw="text-xl font-bold px-8">Optimize your investment in one-click</p>
+        <div tw="flex justify-center my-8">
+          <Button size="medium">Get Started</Button>
+        </div>
+
         <WrapperCanvas>
           <CanvasWind />
         </WrapperCanvas>
-        <div>
-          <Button size="medium">Get Started</Button>
-        </div>
+        <p tw="text-xl font-bold px-8 text-right">
+          Optimize your investment in one-click
+        </p>
       </main>
     </div>
   );

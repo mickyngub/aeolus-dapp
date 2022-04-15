@@ -6,10 +6,10 @@ const CanvasWind = () => {
     <Canvas>
       <Cloud
         opacity={0.5}
-        speed={0.4} // Rotation speed
-        width={10} // Width of the full cloud
-        depth={1.5} // Z-dir depth
-        segments={20} // Number of particles
+        speed={1.5} // Rotation speed
+        width={20} // Width of the full cloud
+        depth={0.5} // Z-dir depth
+        segments={100} // Number of particles
       />
     </Canvas>
   );
