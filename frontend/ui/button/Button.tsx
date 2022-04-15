@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 interface Props
   extends React.DetailedHTMLProps<
@@ -50,6 +50,21 @@ const Button = ({ children, size }: Props) => {
   );
 };
 
+const shiny = keyframes`
+    
+    0%{
+        stroke-dashoffset: -480;
+    }
+
+    75% {
+        stroke-dashoffset: 680;
+
+    }
+    100% {
+        opacity: 0;
+    }
+`;
+
 const StyledSVG = styled.svg`
   position: absolute;
   left: 0;
@@ -59,6 +74,7 @@ const StyledSVG = styled.svg`
   stroke-dasharray: 150 480;
   stroke-dashoffset: 150;
   transition: 1s ease-in-out;
+  animation: ${shiny} 3s infinite;
 `;
 
 const StyledButton = styled.button<{
@@ -79,7 +95,6 @@ const StyledButton = styled.button<{
   }
 
   &:hover ${StyledSVG} {
-    stroke-dashoffset: -480;
   }
 `;
 
