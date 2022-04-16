@@ -1,10 +1,14 @@
 import { Cloud, OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 
-const CanvasWind = () => {
+interface Props {
+  lightIntensity?: number;
+}
+
+const CanvasWind = ({ lightIntensity }: Props) => {
   return (
     <Canvas>
-      {/* <ambientLight intensity={0.1} /> */}
+      <ambientLight intensity={lightIntensity} />
       <Cloud
         opacity={0.5}
         speed={1.5} // Rotation speed

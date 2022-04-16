@@ -21,7 +21,7 @@ const Home: NextPage = () => {
           The best yield optimizer on AVAX chain
         </p>
         <WrapperCanvas>
-          <CanvasWind />
+          <CanvasWind lightIntensity={0} />
         </WrapperCanvas>
         <div tw="text-center my-8">
           <h1 tw="font-bold text-8xl ">AEOLUS PROTOCOL</h1>
@@ -42,7 +42,7 @@ const Home: NextPage = () => {
         </div>
 
         <WrapperCanvas>
-          <CanvasWind />
+          <CanvasWind lightIntensity={0} />
         </WrapperCanvas>
         <p tw="text-xl font-bold px-8 text-right">
           Optimize your investment in one-click

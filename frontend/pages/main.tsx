@@ -3,11 +3,17 @@ import type { ReactElement } from "react";
 import Button from "~/src/ui/button/Button";
 import Layout from "~/src/ui/layout/Layout";
 import Link from "next/link";
+import CanvasWind from "~/src/ui/canvasWind/CanvasWind";
 
 const Main = () => {
   return (
     <main tw="bg-primary bg-noise">
-      <p tw="text-7xl text-center py-12 text-accent">AEOLUS PROTOCOL</p>
+      <div tw="relative">
+        <CanvasWind lightIntensity={0.3} />
+        <div tw="absolute bottom-0 px-8 pb-2">
+          <p tw="text-7xl text-center text-white">AEOLUS PROTOCOL</p>
+        </div>
+      </div>
       <div tw="grid grid-cols-2 gap-8 p-8">
         <div tw="">
           <p tw="text-2xl">{"What's Aeolus Protocol?"}</p>
