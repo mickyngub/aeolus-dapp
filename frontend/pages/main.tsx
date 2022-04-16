@@ -10,7 +10,7 @@ const Main = () => {
       <p tw="text-7xl text-center py-12 text-accent">AEOLUS PROTOCOL</p>
       <div tw="grid grid-cols-2 gap-8 p-8">
         <div tw="">
-          <p tw="text-2xl">What's Aeolus Protocol?</p>
+          <p tw="text-2xl">{"What's Aeolus Protocol?"}</p>
         </div>
         <div tw="">
           <p tw="text-2xl">
@@ -38,7 +38,7 @@ const Main = () => {
           </p>
         </div>
         <div tw="">
-          <p tw="text-2xl">How's Aeolus Protocol work?</p>
+          <p tw="text-2xl">How does Aeolus Protocol work?</p>
         </div>
         <div tw="">
           <p tw="text-2xl">How to use Aeolus Protocol?</p>
