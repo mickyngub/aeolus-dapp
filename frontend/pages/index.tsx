@@ -9,7 +9,7 @@ import Link from "next/link";
 
 const Home: NextPage = () => {
   return (
-    <div tw="h-full bg-primary py-6">
+    <div tw="h-full bg-primary bg-noise py-6">
       <Head>
         <title>Aeolus</title>
         <meta name="description" content="Aeolus dapp" />

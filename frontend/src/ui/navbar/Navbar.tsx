@@ -19,7 +19,7 @@ const navLists = [
 
 const Navbar = () => {
   return (
-    <nav tw="bg-primary-dark h-14">
+    <nav tw="bg-primary-dark bg-noise h-14">
       <div tw="h-full flex justify-around items-center">
         <Link href="/">
           <a>

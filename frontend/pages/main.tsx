@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const Main = () => {
   return (
-    <main tw="bg-primary">
+    <main tw="bg-primary bg-noise">
       <p tw="text-7xl text-center py-12 text-accent">AEOLUS PROTOCOL</p>
       <div tw="grid grid-cols-2 gap-8 p-8">
         <div tw="">
