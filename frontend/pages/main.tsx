@@ -15,7 +15,7 @@ const Main = () => {
         </div>
       </div>
       <div tw="grid grid-cols-2 gap-8 p-8">
-        <div tw="">
+        <div id="#about" tw="">
           <p tw="text-2xl">{"What's Aeolus Protocol?"}</p>
         </div>
         <div tw="">
@@ -43,11 +43,11 @@ const Main = () => {
             possimus!
           </p>
         </div>
-        <div tw="">
+        <div id="#mechanics" tw="">
           <p tw="text-2xl">How does Aeolus Protocol work?</p>
         </div>
-        <div tw="">
-          <p tw="text-2xl">How to use Aeolus Protocol?</p>
+        <div id="#team" tw="">
+          <p tw="text-2xl">{"Who's the team behind Aeolus Protocol?"}</p>
         </div>
         <div tw="">
           <p tw="text-2xl">

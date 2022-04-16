@@ -24,7 +24,7 @@ const Footer = () => {
           </a>
         </Link>
         {footerLists.map((footerList) => {
-          return <div>{footerList.name}</div>;
+          return <div key={footerList.name}>{footerList.name}</div>;
         })}
       </div>
     </footer>

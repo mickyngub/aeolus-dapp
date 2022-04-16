@@ -5,9 +5,9 @@ import { useState } from "react";
 import "twin.macro";
 import Dashboard from "~/src/protocol/Dashboard";
 import PoolCard from "~/src/protocol/PoolCard";
-import PriceChart from "~/src/protocol/CryptoCard";
 import Button from "~/src/ui/button/Button";
 import Layout from "~/src/ui/layout/Layout";
+import CryptoCard from "~/src/protocol/CryptoCard";
 
 const Protocol = () => {
   const [address, setAddress] = useState<string>("");
@@ -37,13 +37,13 @@ const Protocol = () => {
           address
         )}
       </div>
-      <div tw="p-6">
+      <div id="#dashboard" tw="p-6">
         <Dashboard />
       </div>
-      <div tw="p-6">
-        <PriceChart />
+      <div id="#cryptoMarket" tw="p-6">
+        <CryptoCard />
       </div>
-      <div tw="p-6">
+      <div id="#pool" tw="p-6">
         <PoolCard />
       </div>
       <ToastContainer />

@@ -22,7 +22,7 @@ const navListsProtocol = [
     name: "Dashboard",
     url: "#dashboard",
   },
-  { name: "Crypto Price", url: "#cryptoPrice" },
+  { name: "Crypto Market", url: "#cryptoMarket" },
   { name: "Pool", url: "#pool" },
 ];
 
@@ -48,7 +48,11 @@ const Navbar = ({ type }: Props) => {
 
         {navLists !== ""
           ? navLists.map((navList) => {
-              return <div>{navList.name}</div>;
+              return (
+                <a href={navList.url} key={navList.name}>
+                  <div>{navList.name}</div>
+                </a>
+              );
             })
           : null}
       </div>
