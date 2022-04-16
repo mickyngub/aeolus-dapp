@@ -13,15 +13,15 @@ import Link from "next/link";
 const cryptoCards = [
   {
     name: "Bitcoin",
-    url: "/bitcoin",
+    url: "bitcoin",
   },
-  { name: "Ethereum", url: "/ethereum" },
-  { name: "Solana", url: "/solana" },
+  { name: "Ethereum", url: "ethereum" },
+  { name: "Solana", url: "solana" },
 ];
 
 const poolCards = [
-  { name: "Bitcoin-USDT", url: "/BTC-USDT" },
-  { name: "Ethereum-BNB-USDT", url: "/ETH-BNB-USDT" },
+  { name: "Bitcoin-USDT", url: "BTC-USDT" },
+  { name: "Ethereum-BNB-USDT", url: "ETH-BNB-USDT" },
 ];
 const Protocol = () => {
   const [address, setAddress] = useState<string>("");
@@ -60,7 +60,10 @@ const Protocol = () => {
           {cryptoCards
             ? cryptoCards.map((cryptoCard) => {
                 return (
-                  <Link href={`/crypto/${cryptoCard.url}`}>
+                  <Link
+                    href={`/crypto/${cryptoCard.url}`}
+                    key={cryptoCard.name}
+                  >
                     <a>
                       <CryptoCard />
                     </a>
@@ -76,7 +79,7 @@ const Protocol = () => {
           {poolCards
             ? poolCards.map((poolCard) => {
                 return (
-                  <Link href={`/pool/${poolCard.url}`}>
+                  <Link href={`/pool/${poolCard.url}`} key={poolCard.name}>
                     <a>
                       <PoolCard />
                     </a>
