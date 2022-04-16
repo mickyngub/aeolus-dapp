@@ -52,7 +52,7 @@ const Protocol = () => {
 };
 
 Protocol.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
+  return <Layout type="protocol">{page}</Layout>;
 };
 
 export default Protocol;

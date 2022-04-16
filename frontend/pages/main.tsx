@@ -74,7 +74,7 @@ const Main = () => {
 };
 
 Main.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
+  return <Layout type="main">{page}</Layout>;
 };
 
 export default Main;

@@ -4,12 +4,13 @@ import Navbar from "../navbar/Navbar";
 
 interface Props {
   children?: any;
+  type: "main" | "protocol";
 }
 
-const Layout = ({ children }: Props) => {
+const Layout = ({ children, type }: Props) => {
   return (
     <>
-      <Navbar />
+      <Navbar type={type} />
       {children}
       <Footer />
     </>
