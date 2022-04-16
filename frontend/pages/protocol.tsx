@@ -5,7 +5,7 @@ import { useState } from "react";
 import "twin.macro";
 import Dashboard from "~/src/protocol/Dashboard";
 import PoolCard from "~/src/protocol/PoolCard";
-import PriceChart from "~/src/protocol/PriceChart";
+import PriceChart from "~/src/protocol/CryptoCard";
 import Button from "~/src/ui/button/Button";
 import Layout from "~/src/ui/layout/Layout";
 
