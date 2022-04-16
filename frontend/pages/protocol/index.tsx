@@ -4,20 +4,11 @@ import { ToastContainer, toast } from "react-toastify";
 import { useState } from "react";
 import "twin.macro";
 import Dashboard from "~/src/protocol/Dashboard";
-import PoolCard from "~/src/protocol/PoolCard";
+import CryptoCards from "~/src/protocol/CryptoCards/CryptoCards";
 import Button from "~/src/ui/button/Button";
 import Layout from "~/src/ui/layout/Layout";
-import CryptoCard from "~/src/protocol/CryptoCard";
 import Link from "next/link";
-
-const cryptoCards = [
-  {
-    name: "Bitcoin",
-    url: "bitcoin",
-  },
-  { name: "Ethereum", url: "ethereum" },
-  { name: "Solana", url: "solana" },
-];
+import PoolCards from "~/src/protocol/PoolCards/PoolCards";
 
 const poolCards = [
   { name: "Bitcoin-USDT", url: "BTC-USDT" },
@@ -56,38 +47,11 @@ const Protocol = () => {
       </div>
       <div tw="p-6">
         <p tw="text-2xl">Cryptocurrency Market</p>
-        <div id="#cryptoMarket" tw="flex gap-4">
-          {cryptoCards
-            ? cryptoCards.map((cryptoCard) => {
-                return (
-                  <Link
-                    href={`/crypto/${cryptoCard.url}`}
-                    key={cryptoCard.name}
-                  >
-                    <a>
-                      <CryptoCard />
-                    </a>
-                  </Link>
-                );
-              })
-            : null}
-        </div>
+        <CryptoCards />
       </div>
       <div tw="p-6">
         <p tw="text-2xl ">Pools</p>
-        <div id="#pool" tw="flex gap-4 ">
-          {poolCards
-            ? poolCards.map((poolCard) => {
-                return (
-                  <Link href={`/pool/${poolCard.url}`} key={poolCard.name}>
-                    <a>
-                      <PoolCard />
-                    </a>
-                  </Link>
-                );
-              })
-            : null}
-        </div>
+        <PoolCards />
       </div>
       <ToastContainer />
     </div>
