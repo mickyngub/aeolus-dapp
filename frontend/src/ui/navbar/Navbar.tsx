@@ -27,7 +27,7 @@ const navListsProtocol = [
 ];
 
 interface Props {
-  type: "main" | "protocol";
+  type?: "main" | "protocol";
 }
 
 const Navbar = ({ type }: Props) => {

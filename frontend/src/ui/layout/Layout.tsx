@@ -4,7 +4,7 @@ import Navbar from "../navbar/Navbar";
 
 interface Props {
   children?: any;
-  type: "main" | "protocol";
+  type?: "main" | "protocol";
 }
 
 const Layout = ({ children, type }: Props) => {
