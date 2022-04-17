@@ -25,7 +25,8 @@ interface Props {
   cryptoData: CryptoData;
 }
 
-const labels = ["", "", "", "", "", "", ""];
+// Create labels for line graph
+const labels = new Array(7).fill("");
 
 const CryptoCard = ({ cryptoData }: Props) => {
   const options = {
