@@ -60,14 +60,14 @@ const Protocol = ({ fallback }: { [key: string]: any }) => {
             address
           )}
         </div>
-        <div id="#dashboard" tw="p-6">
+        <div id="dashboard" tw="p-6">
           <Dashboard />
         </div>
-        <div tw="p-6">
+        <div id="cryptoMarket" tw="p-6">
           <p tw="text-2xl">Cryptocurrency Market</p>
           <CryptoCards />
         </div>
-        <div tw="p-6">
+        <div id="pool" tw="p-6">
           <p tw="text-2xl ">Pools</p>
           <PoolCards />
         </div>

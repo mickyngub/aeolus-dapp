@@ -24,6 +24,7 @@ const CustomStyles = createGlobalStyle`
   html, body, #__next{
     height: 100%;
     font-family: "Playfair Display", serif;
+    scroll-behavior: smooth;
     --color-primary: ${colors.primary};
     --color-primary-dark: ${colors["primary-dark"]};
     --color-secondary: ${colors.secondary};
