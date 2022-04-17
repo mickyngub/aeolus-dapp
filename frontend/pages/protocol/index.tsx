@@ -16,8 +16,8 @@ const poolCards = [
   { name: "Ethereum-BNB-USDT", url: "ETH-BNB-USDT" },
 ];
 
-const coinGeckoAPI = process.env.NEXT_PUBLIC_API_COINGECKO
-  ? process.env.NEXT_PUBLIC_API_COINGECKO
+const coinGeckoAPI = process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO_TOP_TEN
+  ? process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO_TOP_TEN
   : "/";
 
 export async function getStaticProps() {
