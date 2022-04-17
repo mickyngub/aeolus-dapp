@@ -1,7 +1,11 @@
 import React from "react";
 import "twin.macro";
-const CryptoCard = () => {
-  return <div tw="border-2 border-white w-56 h-56">CryptoCard</div>;
+
+interface Props {
+  cryptoName: string;
+}
+const CryptoCard = ({ cryptoName }: Props) => {
+  return <div tw="border-2 border-white w-56 h-56">{cryptoName}</div>;
 };
 
 export default CryptoCard;
