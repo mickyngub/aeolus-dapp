@@ -19,7 +19,7 @@ const poolCards = [
 const coinGeckoAPI = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d`;
 
 export async function getStaticProps() {
-  const cryptoDatas = await fetcher(coinGeckoAPI);
+  const cryptoDatas: CryptoData = await fetcher(coinGeckoAPI);
   return {
     props: {
       fallback: {
