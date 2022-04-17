@@ -22,9 +22,9 @@ const Footer = () => {
             <p tw="text-xl font-bold">AEOLUS</p>
           </a>
         </Link>
-        {footerLists.map((footerList) => {
+        {/* {footerLists.map((footerList) => {
           return <div key={footerList.name}>{footerList.name}</div>;
-        })}
+        })} */}
       </div>
     </footer>
   );
