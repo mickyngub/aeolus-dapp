@@ -3,15 +3,14 @@ import "twin.macro";
 import Link from "next/link";
 
 const footerLists = [
-  {
-    name: "About",
-    url: "#about",
-  },
-
-  {
-    name: "Team",
-    url: "#team",
-  },
+  // {
+  //   name: "About",
+  //   url: "#about",
+  // },
+  // {
+  //   name: "Team",
+  //   url: "#team",
+  // },
 ];
 
 const Footer = () => {

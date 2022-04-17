@@ -10,6 +10,7 @@ import Layout from "~/src/ui/layout/Layout";
 import PoolCards from "~/src/protocol/PoolCards/PoolCards";
 import { fetcher } from "../api/hello";
 import { SWRConfig } from "swr";
+import Link from "next/link";
 
 const poolCards = [
   { name: "Bitcoin-USDT", url: "BTC-USDT" },
@@ -51,7 +52,15 @@ const Protocol = ({ fallback }: { [key: string]: any }) => {
   return (
     <SWRConfig value={{ fallback }}>
       <div tw="bg-primary bg-noise">
-        <div tw="p-6 text-right">
+        <div tw="p-6 flex items-center">
+          <div tw="flex-1">
+            <Link href="/main">
+              <a>
+                <Button size="small">Back</Button>
+              </a>
+            </Link>
+          </div>
+
           {!address ? (
             <Button size="small" onClick={handleConnectWallet}>
               Connect Wallet
