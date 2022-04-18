@@ -87,6 +87,20 @@ const CryptoDetail = ({ cryptoAPI }: { cryptoAPI: string }) => {
         text: "7D Price Change",
       },
     },
+    pointRadius: 5,
+    tension: 0.3,
+    scales: {
+      x: {
+        grid: {
+          display: false,
+        },
+      },
+      y: {
+        grid: {
+          display: false,
+        },
+      },
+    },
   };
   const graphData = {
     labels,
@@ -102,13 +116,19 @@ const CryptoDetail = ({ cryptoAPI }: { cryptoAPI: string }) => {
     ],
   };
   return (
-    <div>
-      <p>{crypto?.name}</p>
-      <img src={crypto?.image} alt={crypto?.name + " image"} tw="w-12" />
-      <p>Current Price - {crypto?.current_price}</p>
-      <p>24h Change - {crypto?.price_change_percentage_24h.toFixed(2)}%</p>
-      <p>Last Update - {crypto?.last_updated}</p>
-      <Line data={graphData} options={options} />
+    <div tw="flex items-center">
+      <div tw="flex-1 flex flex-col items-center">
+        <p>
+          {crypto?.name} - {crypto?.symbol.toUpperCase()}
+        </p>
+        <img src={crypto?.image} alt={crypto?.name + " image"} tw="w-12" />
+        <p>Current Price {crypto?.current_price}</p>
+        <p>24h Change {crypto?.price_change_percentage_24h.toFixed(2)}%</p>
+        <p>Last Update {crypto?.last_updated}</p>
+      </div>
+      <div tw="flex-1">
+        <Line data={graphData} options={options} />
+      </div>
     </div>
   );
 };
@@ -123,7 +143,7 @@ const CryptoPage = ({
   return (
     <SWRConfig value={{ fallback }}>
       <div tw="min-h-full bg-primary bg-noise">
-        <div tw="w-9/12 mx-auto">
+        <div tw="">
           <Link href="/protocol">
             <a>
               <Button size="small">Back</Button>

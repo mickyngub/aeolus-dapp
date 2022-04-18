@@ -40,6 +40,19 @@ const CryptoCard = ({ cryptoData }: Props) => {
         text: "7D Price Change",
       },
     },
+    tension: 0.3,
+    scales: {
+      x: {
+        grid: {
+          display: false,
+        },
+      },
+      y: {
+        grid: {
+          display: false,
+        },
+      },
+    },
   };
   const graphData = {
     labels,
@@ -56,7 +69,7 @@ const CryptoCard = ({ cryptoData }: Props) => {
   };
 
   return (
-    <div tw="border-2 border-white w-96 h-80 overflow-auto">
+    <div tw="border-2 border-white w-96 h-80">
       <p>
         {cryptoData.market_cap_rank} - {cryptoData.name}
       </p>
