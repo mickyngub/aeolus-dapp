@@ -69,6 +69,8 @@ const CryptoCard = ({ cryptoData }: Props) => {
           <p>{priceData.toFixed(2)}</p>
         ))}
       </p> */}
+
+      <p>{cryptoData.last_updated}</p>
       <div tw="w-11/12 mx-auto">
         <Line data={graphData} options={options} />
       </div>

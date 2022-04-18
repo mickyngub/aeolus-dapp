@@ -28,7 +28,7 @@ interface CryptoData {
     currency: string;
     percentage: number;
   };
-  last_updated: Date;
+  last_updated: string;
   sparkline_in_7d: {
     price: number[];
   };

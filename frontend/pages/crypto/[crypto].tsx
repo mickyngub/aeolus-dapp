@@ -16,6 +16,7 @@ import "twin.macro";
 import Layout from "~/src/ui/layout/Layout";
 import Button from "~/src/ui/button/Button";
 import { fetcher } from "../api/hello";
+import useSWR, { SWRConfig } from "swr";
 
 ChartJS.register(
   CategoryScale,
@@ -53,20 +54,34 @@ export async function getStaticProps({
     crypto: string;
   };
 }) {
+  const cryptoAPI =
+    process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO + params.crypto;
   const cryptoData: CryptoData = await fetcher(
-    process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO
-      ? process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO + params.crypto
-      : "/"
+    process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO ? cryptoAPI : "/"
   );
+
   return {
     props: {
-      cryptoData: cryptoData,
+      fallback: {
+        [cryptoAPI]: cryptoData,
+      },
+      cryptoAPI,
     },
   };
 }
 
-const Crypto = ({ cryptoData }: { cryptoData: CryptoData[] }) => {
-  const crypto = cryptoData[0];
+const Crypto = ({
+  fallback,
+  cryptoAPI,
+}: {
+  [key: string]: any;
+  cryptoAPI: string;
+}) => {
+  const { data: cryptoData }: { data?: CryptoData[] } = useSWR(
+    cryptoAPI,
+    fetcher
+  );
+  const crypto = cryptoData ? cryptoData[0] : null;
   const options = {
     responsive: true,
     plugins: {
@@ -84,7 +99,7 @@ const Crypto = ({ cryptoData }: { cryptoData: CryptoData[] }) => {
     datasets: [
       {
         label: "Price",
-        data: crypto.sparkline_in_7d.price.filter(
+        data: crypto?.sparkline_in_7d.price.filter(
           (crypto, index) => index % 24 === 24 - 1
         ),
         borderColor: "hsl(18deg 75% 55%)",
@@ -93,20 +108,23 @@ const Crypto = ({ cryptoData }: { cryptoData: CryptoData[] }) => {
     ],
   };
   return (
-    <div tw="min-h-full bg-primary bg-noise">
-      <div tw="w-9/12 mx-auto">
-        <Link href="/protocol">
-          <a>
-            <Button size="small">Back</Button>
-          </a>
-        </Link>
-        <p>{crypto.name}</p>
-        <img src={crypto.image} alt={crypto.name + " image"} tw="w-12" />
-        <p>Current Price - {crypto.current_price}</p>
-        <p>24h Change - {crypto.price_change_percentage_24h.toFixed(2)}%</p>
-        <Line data={graphData} options={options} />
+    <SWRConfig value={{ fallback }}>
+      <div tw="min-h-full bg-primary bg-noise">
+        <div tw="w-9/12 mx-auto">
+          <Link href="/protocol">
+            <a>
+              <Button size="small">Back</Button>
+            </a>
+          </Link>
+          <p>{crypto?.name}</p>
+          <img src={crypto?.image} alt={crypto?.name + " image"} tw="w-12" />
+          <p>Current Price - {crypto?.current_price}</p>
+          <p>24h Change - {crypto?.price_change_percentage_24h.toFixed(2)}%</p>
+          <p>Last Update - {crypto?.last_updated}</p>
+          <Line data={graphData} options={options} />
+        </div>
       </div>
-    </div>
+    </SWRConfig>
   );
 };
 
