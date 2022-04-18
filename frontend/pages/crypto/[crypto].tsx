@@ -70,18 +70,12 @@ export async function getStaticProps({
   };
 }
 
-const Crypto = ({
-  fallback,
-  cryptoAPI,
-}: {
-  [key: string]: any;
-  cryptoAPI: string;
-}) => {
+const CryptoDetail = ({ cryptoAPI }: { cryptoAPI: string }) => {
   const { data: cryptoData }: { data?: CryptoData[] } = useSWR(
     cryptoAPI,
     fetcher
   );
-  const crypto = cryptoData ? cryptoData[0] : null;
+  const crypto = cryptoData && cryptoData[0];
   const options = {
     responsive: true,
     plugins: {
@@ -108,6 +102,25 @@ const Crypto = ({
     ],
   };
   return (
+    <div>
+      <p>{crypto?.name}</p>
+      <img src={crypto?.image} alt={crypto?.name + " image"} tw="w-12" />
+      <p>Current Price - {crypto?.current_price}</p>
+      <p>24h Change - {crypto?.price_change_percentage_24h.toFixed(2)}%</p>
+      <p>Last Update - {crypto?.last_updated}</p>
+      <Line data={graphData} options={options} />
+    </div>
+  );
+};
+
+const CryptoPage = ({
+  fallback,
+  cryptoAPI,
+}: {
+  [key: string]: any;
+  cryptoAPI: string;
+}) => {
+  return (
     <SWRConfig value={{ fallback }}>
       <div tw="min-h-full bg-primary bg-noise">
         <div tw="w-9/12 mx-auto">
@@ -116,20 +129,15 @@ const Crypto = ({
               <Button size="small">Back</Button>
             </a>
           </Link>
-          <p>{crypto?.name}</p>
-          <img src={crypto?.image} alt={crypto?.name + " image"} tw="w-12" />
-          <p>Current Price - {crypto?.current_price}</p>
-          <p>24h Change - {crypto?.price_change_percentage_24h.toFixed(2)}%</p>
-          <p>Last Update - {crypto?.last_updated}</p>
-          <Line data={graphData} options={options} />
+          <CryptoDetail cryptoAPI={cryptoAPI} />
         </div>
       </div>
     </SWRConfig>
   );
 };
 
-Crypto.getLayout = function getLayout(page: ReactElement) {
+CryptoPage.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
 
-export default Crypto;
+export default CryptoPage;
