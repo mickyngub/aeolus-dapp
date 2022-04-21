@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: MIT LICENSE
 pragma solidity ^0.8.9;
 
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./interfaces/IAeolusPair.sol";
 import "./AeolusERC20.sol";
 import "./interfaces/IERC20.sol";
 import "./interfaces/IAeolusFactory.sol";
 import "./interfaces/IAeolusCallee.sol";
 
-contract AeolusPair is AeolusERC20 {
+contract AeolusPair is AeolusERC20, ReentrancyGuard {
     bytes4 private constant SELECTOR = bytes4(keccak256(bytes("transfer(address,uint256)")));
 
     address public factory;
@@ -18,15 +19,6 @@ contract AeolusPair is AeolusERC20 {
     address public stable0;
     address public stable1;
     address public usdt;
-
-    uint256 private unlocked = 1;
-
-    modifier lock() {
-        require(unlocked == 1, "Aeolus: LOCKED");
-        unlocked = 0;
-        _;
-        unlocked = 1;
-    }
 
     function _safeTransfer(
         address token,
@@ -59,14 +51,14 @@ contract AeolusPair is AeolusERC20 {
     }
 
     // this low-level function should be called from a contract which performs important safety checks
-    function mint(address to) external lock returns (uint256 amountLiquidity) {
+    function mint(address to) external nonReentrant returns (uint256 amountLiquidity) {
         _mint(to, amountLiquidity);
 
         emit Mint(msg.sender, amountLiquidity);
     }
 
     // this low-level function should be called from a contract which performs important safety checks
-    function burn(address to) external lock returns (uint256 amountUSDT) {
+    function burn(address to) external nonReentrant returns (uint256 amountUSDT) {
         uint256 liquidity = balanceOf[address(this)];
 
         uint256 _totalSupply = totalSupply; // gas savings, must be defined here since totalSupply can update in _mintFee
