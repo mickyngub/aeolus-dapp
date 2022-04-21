@@ -27,20 +27,21 @@ interface IAeolusPair {
         uint256 value
     ) external returns (bool);
 
-    event Mint(address indexed sender, uint256 amount0, uint256 amount1);
-    event Burn(address indexed sender, uint256 amount0, uint256 amount1, address indexed to);
-
     function factory() external view returns (address);
 
-    function token0() external view returns (address);
+    function crypto0() external view returns (address);
 
-    function token1() external view returns (address);
+    function crypto1() external view returns (address);
 
-    function getReserves() external view returns (uint112 reserve0, uint112 reserve1);
+    function stable0() external view returns (address);
+
+    function stable1() external view returns (address);
+
+    function usdt() external view returns (address);
 
     function mint(address to) external returns (uint256 liquidity);
 
-    function burn(address to) external returns (uint256 money);
+    function burn(address to) external returns (uint256 amountUSDT);
 
     function initialize(address, address) external;
 }
