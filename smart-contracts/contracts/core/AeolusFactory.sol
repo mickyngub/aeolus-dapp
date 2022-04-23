@@ -32,6 +32,7 @@ contract AeolusFactory is IAeolusFactory, Ownable {
         string name;
         address token0;
         address token1;
+        address aeolusPairAddress;
     }
     Pair[] public pairs;
     mapping(string => uint256) public nameToPairID;
@@ -40,7 +41,7 @@ contract AeolusFactory is IAeolusFactory, Ownable {
         // Make the array starts from index 1 since mapping will always return 0 if DNE
         approvedTokens.push(ApprovedToken("BaseApprovedToken", address(0)));
         stablePairs.push(StablePair("BaseStablePair", address(0)));
-        pairs.push(Pair("BasePair", address(0), address(0)));
+        pairs.push(Pair("BasePair", address(0), address(0), address(0)));
     }
 
     function getPair(uint256 poolID)
@@ -49,10 +50,11 @@ contract AeolusFactory is IAeolusFactory, Ownable {
         returns (
             string memory name,
             address tokenA,
-            address tokenB
+            address tokenB,
+            address aeolusPairAddress
         )
     {
-        return (pairs[poolID].name, pairs[poolID].token0, pairs[poolID].token1);
+        return (pairs[poolID].name, pairs[poolID].token0, pairs[poolID].token1, pairs[poolID].aeolusPairAddress);
     }
 
     function getNumberOfPools() external view returns (uint256 numberOfPools) {
@@ -128,7 +130,12 @@ contract AeolusFactory is IAeolusFactory, Ownable {
 
         string memory pairName = string(abi.encodePacked(_symbolTokenA, "-", _symbolTokenB));
 
-        Pair memory newPair = Pair(pairName, approvedTokens[approvedTokenAID].tokenAddress, approvedTokens[approvedTokenBID].tokenAddress);
+        Pair memory newPair = Pair(
+            pairName,
+            approvedTokens[approvedTokenAID].tokenAddress,
+            approvedTokens[approvedTokenBID].tokenAddress,
+            address(newAeolusPair)
+        );
         nameToPairID[pairName] = pairs.length;
         pairs.push(newPair);
 
