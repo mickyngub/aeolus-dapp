@@ -41,6 +41,24 @@ contract AeolusRouter is IAeolusRouter, Ownable {
         (, address tokenA, address tokenB) = FACTORY.getPair(pairID);
         address tokenAStable = FACTORY.getStableAddressOfApprovedToken(tokenA);
         address tokenBStable = FACTORY.getStableAddressOfApprovedToken(tokenB);
+
+        uint256 quarterAmount = amount / 4;
+        uint256 amountTokenA = _swap(USDTdotE, quarterAmount, tokenA, address(this));
+        uint256 amountTokenB = _swap(USDTdotE, quarterAmount, tokenB, address(this));
+
+        uint256 amountTokenAStable = quarterAmount;
+        uint256 amountTokenBStable = quarterAmount;
+        if (tokenAStable != USDTdotE) {
+            amountTokenAStable = _swap(USDTdotE, quarterAmount, tokenAStable, address(this));
+        }
+
+        if (tokenBStable != USDTdotE) {
+            amountTokenBStable = _swap(USDTdotE, quarterAmount, tokenBStable, address(this));
+        }
+
+        // NEED TO CHANGE msg.sender
+        ROUTER.addLiquidity(tokenA, tokenAStable, amountTokenA, amountTokenAStable, 0, 0, msg.sender, block.timestamp);
+        ROUTER.addLiquidity(tokenB, tokenBStable, amountTokenB, amountTokenBStable, 0, 0, msg.sender, block.timestamp);
     }
 
     // **** REMOVE LIQUIDITY ****
