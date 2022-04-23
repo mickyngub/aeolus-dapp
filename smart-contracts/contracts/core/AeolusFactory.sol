@@ -71,7 +71,7 @@ contract AeolusFactory is IAeolusFactory, Ownable {
         stablePairs.push(newStablePair);
     }
 
-    function linkApprovedTokenToStablePair(string memory _symbolApprovedToken, string memory _symbolStablePair) external onlyOwner {
+    function linkOrUpdateApprovedTokenToStablePair(string memory _symbolApprovedToken, string memory _symbolStablePair) external onlyOwner {
         require(symbolToApprovedTokenID[_symbolApprovedToken] != 0, "Approved Token DNE");
         require(symbolToStablePairID[_symbolStablePair] != 0, "Stable Pair DNE");
         uint256 approvedTokenID = symbolToApprovedTokenID[_symbolApprovedToken];
