@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: MIT LICENSE
 pragma solidity ^0.8.9;
 
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "./interfaces/IAeolusFactory.sol";
 import "./AeolusPair.sol";
 
-contract AeolusFactory is IAeolusFactory {
+contract AeolusFactory is IAeolusFactory, Ownable {
     event PairCreated(string indexed token0, string indexed token1, uint256 id);
 
     struct ApprovedToken {
@@ -41,7 +42,7 @@ contract AeolusFactory is IAeolusFactory {
         pairs.push(Pair("BasePair", address(0), address(0)));
     }
 
-    function addApprovedToken(string memory _approvedTokenSymbol, address _address) external {
+    function addApprovedToken(string memory _approvedTokenSymbol, address _address) external onlyOwner {
         require(symbolToApprovedTokenID[_approvedTokenSymbol] == 0, "Approved Token Already Exists");
         require(_address != address(0), "Aeolus: ZERO_ADDRESS");
         ApprovedToken memory newApprovedToken = ApprovedToken(_approvedTokenSymbol, _address);
@@ -49,7 +50,7 @@ contract AeolusFactory is IAeolusFactory {
         approvedTokens.push(newApprovedToken);
     }
 
-    function addStablePair(string memory _stablePairSymbol, address _address) external {
+    function addStablePair(string memory _stablePairSymbol, address _address) external onlyOwner {
         require(symbolToStablePairID[_stablePairSymbol] == 0, "Stable Pair Already Exists");
         require(_address != address(0), "Aeolus: ZERO_ADDRESS");
         StablePair memory newStablePair = StablePair(_stablePairSymbol, _address);
@@ -57,7 +58,7 @@ contract AeolusFactory is IAeolusFactory {
         stablePairs.push(newStablePair);
     }
 
-    function linkApprovedTokenToStablePair(string memory _symbolApprovedToken, string memory _symbolStablePair) external {
+    function linkApprovedTokenToStablePair(string memory _symbolApprovedToken, string memory _symbolStablePair) external onlyOwner {
         require(symbolToApprovedTokenID[_symbolApprovedToken] != 0, "Approved Token DNE");
         require(symbolToStablePairID[_symbolStablePair] != 0, "Stable Pair DNE");
         uint256 approvedTokenID = symbolToApprovedTokenID[_symbolApprovedToken];
@@ -66,7 +67,7 @@ contract AeolusFactory is IAeolusFactory {
         approvedTokenIDToStablePairID[approvedTokenID] = stablePairID;
     }
 
-    function createPair(string memory _tokenSymbolA, string memory _tokenSymbolB) external {
+    function createPair(string memory _tokenSymbolA, string memory _tokenSymbolB) external onlyOwner {
         require(keccak256(abi.encodePacked(_tokenSymbolA)) != keccak256(abi.encodePacked(_tokenSymbolB)), "Aeolus: IDENTICAL_TOKEN_SYMBOL");
         // Check whether the token has been approved yet
         uint256 approvedTokenAID = symbolToApprovedTokenID[_tokenSymbolA];
