@@ -10,7 +10,7 @@ import "./interfaces/IExchangeRouter.sol";
 
 import "../core/interfaces/IERC20.sol";
 import "../core/AeolusFactory.sol";
-import "../core/interfaces/IAeolusPair.sol";
+import "../core/AeolusPair.sol";
 
 contract AeolusRouter is IAeolusRouter, Ownable {
     AeolusFactory public FACTORY;
@@ -27,18 +27,11 @@ contract AeolusRouter is IAeolusRouter, Ownable {
 
     receive() external payable {}
 
-    function investPair(uint256 pairID, uint256 amount)
-        external
-        returns (
-            uint256 amountA,
-            uint256 amountB,
-            uint256 liquidity
-        )
-    {
+    function investPair(uint256 pairID, uint256 amount) external returns (uint256 tokenALP, uint256 tokenBLP) {
         IERC20(USDTdotE).transferFrom(msg.sender, address(this), amount);
         _approveTokenIfNeeded(USDTdotE);
 
-        (, address tokenA, address tokenB) = FACTORY.getPair(pairID);
+        (, address tokenA, address tokenB, address aeolusPairAddress) = FACTORY.getPair(pairID);
         address tokenAStable = FACTORY.getStableAddressOfApprovedToken(tokenA);
         address tokenBStable = FACTORY.getStableAddressOfApprovedToken(tokenB);
 
@@ -57,12 +50,13 @@ contract AeolusRouter is IAeolusRouter, Ownable {
         }
 
         // NEED TO CHANGE msg.sender
-        ROUTER.addLiquidity(tokenA, tokenAStable, amountTokenA, amountTokenAStable, 0, 0, msg.sender, block.timestamp);
-        ROUTER.addLiquidity(tokenB, tokenBStable, amountTokenB, amountTokenBStable, 0, 0, msg.sender, block.timestamp);
+        (, , tokenALP) = ROUTER.addLiquidity(tokenA, tokenAStable, amountTokenA, amountTokenAStable, 0, 0, aeolusPairAddress, block.timestamp);
+        (, , tokenBLP) = ROUTER.addLiquidity(tokenB, tokenBStable, amountTokenB, amountTokenBStable, 0, 0, aeolusPairAddress, block.timestamp);
+        AeolusPair(aeolusPairAddress).addAmountLPInvest(tokenALP, tokenBLP, msg.sender);
     }
 
     // **** REMOVE LIQUIDITY ****
-    function redeem(
+    function redeemPair(
         address tokenA,
         address tokenB,
         uint256 liquidity,
