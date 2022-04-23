@@ -42,6 +42,18 @@ contract AeolusFactory is IAeolusFactory, Ownable {
         pairs.push(Pair("BasePair", address(0), address(0)));
     }
 
+    function getPair(uint256 poolID)
+        public
+        view
+        returns (
+            string memory name,
+            address tokenA,
+            address tokenB
+        )
+    {
+        return (pairs[poolID].name, pairs[poolID].token0, pairs[poolID].token1);
+    }
+
     function getNumberOfPools() external view returns (uint256 numberOfPools) {
         return pairs.length - 1;
     }
