@@ -12,10 +12,9 @@ contract AeolusPair is AeolusERC20, ReentrancyGuard {
     bytes4 private constant SELECTOR = bytes4(keccak256(bytes("transfer(address,uint256)")));
 
     address public factory;
-    address public currentFarm;
 
-    address public crypto0;
-    address public crypto1;
+    address public token0;
+    address public token1;
     address public stable0;
     address public stable1;
     address public usdt;
@@ -38,23 +37,23 @@ contract AeolusPair is AeolusERC20, ReentrancyGuard {
 
     // called once by the factory at time of deployment
     function initialize(
-        address _crypto0,
-        address _crypto1,
+        address _token0,
+        address _token1,
         address _stable0,
         address _stable1
     ) external {
         require(msg.sender == factory, "Aeolus: FORBIDDEN"); // sufficient check
-        crypto0 = _crypto0;
-        crypto1 = _crypto1;
+        token0 = _token0;
+        token1 = _token1;
         stable0 = _stable0;
         stable1 = _stable1;
     }
 
     // this low-level function should be called from a contract which performs important safety checks
-    function mint(address to) external nonReentrant returns (uint256 amountLiquidity) {
-        _mint(to, amountLiquidity);
-
-        emit Mint(msg.sender, amountLiquidity);
+    function mint(address to, uint256 amountInvest) external nonReentrant returns (uint256) {
+        _mint(to, amountInvest);
+        emit Mint(msg.sender, amountInvest);
+        return amountInvest;
     }
 
     // this low-level function should be called from a contract which performs important safety checks
