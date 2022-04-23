@@ -5,7 +5,7 @@ import "./interfaces/IAeolusFactory.sol";
 import "./AeolusPair.sol";
 
 contract AeolusFactory is IAeolusFactory {
-    event PairCreated(address indexed token0, address indexed token1, uint256 id);
+    event PairCreated(string indexed token0, string indexed token1, uint256 id);
 
     struct ApprovedToken {
         string tokenSymbol;
@@ -43,6 +43,7 @@ contract AeolusFactory is IAeolusFactory {
 
     function addApprovedToken(string memory _approvedTokenSymbol, address _address) external {
         require(symbolToApprovedTokenID[_approvedTokenSymbol] == 0, "Approved Token Already Exists");
+        require(_address != address(0), "Aeolus: ZERO_ADDRESS");
         ApprovedToken memory newApprovedToken = ApprovedToken(_approvedTokenSymbol, _address);
         symbolToApprovedTokenID[_approvedTokenSymbol] = approvedTokens.length;
         approvedTokens.push(newApprovedToken);
@@ -50,6 +51,7 @@ contract AeolusFactory is IAeolusFactory {
 
     function addStablePair(string memory _stablePairSymbol, address _address) external {
         require(symbolToStablePairID[_stablePairSymbol] == 0, "Stable Pair Already Exists");
+        require(_address != address(0), "Aeolus: ZERO_ADDRESS");
         StablePair memory newStablePair = StablePair(_stablePairSymbol, _address);
         symbolToStablePairID[_stablePairSymbol] = stablePairs.length;
         stablePairs.push(newStablePair);
@@ -64,16 +66,24 @@ contract AeolusFactory is IAeolusFactory {
         approvedTokenIDToStablePairID[approvedTokenID] = stablePairID;
     }
 
-    function createPair(address tokenA, address tokenB) external {
-        require(tokenA != tokenB, "Aeolus: IDENTICAL_ADDRESSES");
-        (address token0, address token1) = tokenA < tokenB ? (tokenA, tokenB) : (tokenB, tokenA);
-        require(token0 != address(0), "Aeolus: ZERO_ADDRESS");
+    function createPair(string memory _tokenSymbolA, string memory _tokenSymbolB) external {
+        require(keccak256(abi.encodePacked(_tokenSymbolA)) != keccak256(abi.encodePacked(_tokenSymbolB)), "Aeolus: IDENTICAL_TOKEN_SYMBOL");
+        // Check whether the token has been approved yet
+        uint256 approvedTokenAID = symbolToApprovedTokenID[_tokenSymbolA];
+        uint256 approvedTokenBID = symbolToApprovedTokenID[_tokenSymbolB];
 
-        // AeolusPair(pair).initialize(token0, token1);
+        require(approvedTokenAID != 0, "Aeolus: TokenA is not approved");
+        require(approvedTokenBID != 0, "Aeolus: TokenB is not approved");
 
-        Pair memory newPair = Pair(pairs.length, _name, tokenA, tokenB);
+        require(approvedTokenIDToStablePairID[approvedTokenAID] != 0, "Aeolus: TokenA has no stable pair");
+        require(approvedTokenIDToStablePairID[approvedTokenBID] != 0, "Aeolus: TokenB has no stable pair");
+
+        string memory pairName = string(abi.encodePacked(_tokenSymbolA, "-", _tokenSymbolB));
+
+        Pair memory newPair = Pair(pairName, approvedTokens[approvedTokenAID].tokenAddress, approvedTokens[approvedTokenBID].tokenAddress);
+        nameToPairID[pairName] = pairs.length;
         pairs.push(newPair);
-        nameToIDPair[_name] = pairs.length;
-        emit PairCreated(token0, token1, pairs.length);
+
+        emit PairCreated(_tokenSymbolA, _tokenSymbolB, pairs.length - 1);
     }
 }
