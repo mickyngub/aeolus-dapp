@@ -80,7 +80,7 @@ contract AeolusFactory is IAeolusFactory, Ownable {
         approvedTokenIDToStablePairID[approvedTokenID] = stablePairID;
     }
 
-    function createPair(string memory _symbolTokenA, string memory _symbolTokenB) external onlyOwner returns (string memory pairName) {
+    function createPair(string memory _symbolTokenA, string memory _symbolTokenB) external onlyOwner returns (AeolusPair newAeolusPair) {
         require(keccak256(abi.encodePacked(_symbolTokenA)) != keccak256(abi.encodePacked(_symbolTokenB)), "Aeolus: IDENTICAL_TOKEN_SYMBOL");
         // Check whether the token has been approved yet
         uint256 approvedTokenAID = symbolToApprovedTokenID[_symbolTokenA];
@@ -89,10 +89,22 @@ contract AeolusFactory is IAeolusFactory, Ownable {
         require(approvedTokenAID != 0, "Aeolus: TokenA is not approved");
         require(approvedTokenBID != 0, "Aeolus: TokenB is not approved");
 
+        address approvedTokenAAddress = approvedTokens[approvedTokenAID].tokenAddress;
+        address approvedTokenBAddress = approvedTokens[approvedTokenBID].tokenAddress;
+
+        StablePair memory stablePairOfA = stablePairs[(approvedTokenIDToStablePairID[approvedTokenAID])];
+        StablePair memory stablePairOfB = stablePairs[(approvedTokenIDToStablePairID[approvedTokenBID])];
+
         require(approvedTokenIDToStablePairID[approvedTokenAID] != 0, "Aeolus: TokenA has no stable pair");
         require(approvedTokenIDToStablePairID[approvedTokenBID] != 0, "Aeolus: TokenB has no stable pair");
 
-        pairName = string(abi.encodePacked(_symbolTokenA, "-", _symbolTokenB));
+        address addressOftablePairOfA = stablePairOfA.stableAddress;
+        address addresOfStablePairOfB = stablePairOfB.stableAddress;
+
+        newAeolusPair = new AeolusPair();
+        newAeolusPair.initialize(approvedTokenAAddress, approvedTokenBAddress, addressOftablePairOfA, addresOfStablePairOfB);
+
+        string memory pairName = string(abi.encodePacked(_symbolTokenA, "-", _symbolTokenB));
 
         Pair memory newPair = Pair(pairName, approvedTokens[approvedTokenAID].tokenAddress, approvedTokens[approvedTokenBID].tokenAddress);
         nameToPairID[pairName] = pairs.length;
