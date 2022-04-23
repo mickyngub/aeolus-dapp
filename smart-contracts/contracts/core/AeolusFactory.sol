@@ -13,6 +13,7 @@ contract AeolusFactory is IAeolusFactory {
     }
 
     ApprovedToken[] public approvedTokens;
+
     mapping(string => uint256) public nameToApprovedTokenID;
 
     struct StablePair {
@@ -26,13 +27,19 @@ contract AeolusFactory is IAeolusFactory {
     mapping(uint256 => uint256) public approvedTokenIDToStablePairID;
 
     struct Pair {
-        uint256 id;
         string name;
         address token0;
         address token1;
     }
     Pair[] public pairs;
     mapping(string => uint256) public nameToPairID;
+
+    constructor() {
+        // Make the array starts from index 1 since mapping will always return 0 if DNE
+        approvedTokens.push(ApprovedToken("BaseApprovedToken", address(0)));
+        stablePairs.push(StablePair("BaseStablePair", address(0)));
+        pairs.push(Pair("BasePair", address(0), address(0)));
+    }
 
     function addApprovedToken(string memory _name, address _address) external {
         require(nameToApprovedTokenID[_name] == 0, "Approved Token Already Exists");
@@ -46,6 +53,15 @@ contract AeolusFactory is IAeolusFactory {
         StablePair memory newStablePair = StablePair(_name, _address);
         nameToStablePairID[_name] = stablePairs.length;
         stablePairs.push(newStablePair);
+    }
+
+    function linkApprovedTokenToStablePair(string memory _nameApprovedToken, string memory _nameStablePair) external {
+        require(nameToApprovedTokenID[_nameApprovedToken] != 0, "Approved Token DNE");
+        require(nameToStablePairID[_nameStablePair] != 0, "Stable Pair DNE");
+        uint256 approvedTokenID = nameToApprovedTokenID[_nameApprovedToken];
+        uint256 stablePairID = nameToStablePairID[_nameStablePair];
+
+        approvedTokenIDToStablePairID[approvedTokenID] = stablePairID;
     }
 
     function createPair(
