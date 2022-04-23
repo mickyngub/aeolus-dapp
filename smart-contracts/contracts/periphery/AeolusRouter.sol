@@ -3,8 +3,6 @@ pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-import "./libraries/AeolusLibrary.sol";
-
 import "./interfaces/IAeolusRouter.sol";
 import "./interfaces/IExchangeRouter.sol";
 

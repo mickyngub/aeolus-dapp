@@ -6,7 +6,6 @@ import "./interfaces/IAeolusPair.sol";
 import "./AeolusERC20.sol";
 import "./interfaces/IERC20.sol";
 import "./interfaces/IAeolusFactory.sol";
-import "./interfaces/IAeolusCallee.sol";
 
 contract AeolusPair is AeolusERC20, ReentrancyGuard {
     bytes4 private constant SELECTOR = bytes4(keccak256(bytes("transfer(address,uint256)")));
