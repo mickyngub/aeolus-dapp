@@ -34,6 +34,20 @@ contract AeolusFactory is IAeolusFactory {
     Pair[] public pairs;
     mapping(string => uint256) public nameToPairID;
 
+    function addApprovedToken(string memory _name, address _address) external {
+        require(nameToApprovedTokenID[_name] == 0, "Approved Token Already Exists");
+        ApprovedToken memory newApprovedToken = ApprovedToken(_name, _address);
+        nameToApprovedTokenID[_name] = approvedTokens.length;
+        approvedTokens.push(newApprovedToken);
+    }
+
+    function addStablePair(string memory _name, address _address) external {
+        require(nameToStablePairID[_name] == 0, "Stable Pair Already Exists");
+        StablePair memory newStablePair = StablePair(_name, _address);
+        nameToStablePairID[_name] = stablePairs.length;
+        stablePairs.push(newStablePair);
+    }
+
     function createPair(
         string memory _name,
         address tokenA,
