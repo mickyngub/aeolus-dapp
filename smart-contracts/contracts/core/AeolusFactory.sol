@@ -26,6 +26,7 @@ contract AeolusFactory is IAeolusFactory, Ownable {
     mapping(string => uint256) public symbolToStablePairID;
 
     mapping(uint256 => uint256) public approvedTokenIDToStablePairID;
+    mapping(address => address) public addressApprovedTokenToAddressStablePair;
 
     struct Pair {
         string name;
@@ -65,6 +66,10 @@ contract AeolusFactory is IAeolusFactory, Ownable {
         return (stablePair.stableSymbol, stablePair.stableAddress);
     }
 
+    function getStableAddressOfApprovedToken(address approvedToken) public view returns (address stableAddress) {
+        return addressApprovedTokenToAddressStablePair[approvedToken];
+    }
+
     /**
     ADMIN FUNCTION */
 
@@ -90,6 +95,10 @@ contract AeolusFactory is IAeolusFactory, Ownable {
         uint256 approvedTokenID = symbolToApprovedTokenID[_symbolApprovedToken];
         uint256 stablePairID = symbolToStablePairID[_symbolStablePair];
 
+        ApprovedToken memory approvedToken = approvedTokens[approvedTokenID];
+        StablePair memory stablePair = stablePairs[stablePairID];
+
+        addressApprovedTokenToAddressStablePair[approvedToken.tokenAddress] = stablePair.stableAddress;
         approvedTokenIDToStablePairID[approvedTokenID] = stablePairID;
     }
 
