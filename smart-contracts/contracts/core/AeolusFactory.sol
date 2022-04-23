@@ -58,10 +58,11 @@ contract AeolusFactory is IAeolusFactory, Ownable {
         return pairs.length - 1;
     }
 
-    function getStablePairOfApprovedToken(string memory _symbolApprovedToken) public view returns (StablePair memory stablePair) {
+    function getStablePairOfApprovedToken(string memory _symbolApprovedToken) public view returns (string memory stableSymbol, address stableAddress) {
         uint256 approvedTokenID = symbolToApprovedTokenID[_symbolApprovedToken];
         uint256 stablePairID = approvedTokenIDToStablePairID[approvedTokenID];
-        stablePair = stablePairs[stablePairID];
+        StablePair memory stablePair = stablePairs[stablePairID];
+        return (stablePair.stableSymbol, stablePair.stableAddress);
     }
 
     /**
