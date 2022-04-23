@@ -8,21 +8,21 @@ contract AeolusFactory is IAeolusFactory {
     event PairCreated(address indexed token0, address indexed token1, uint256 id);
 
     struct ApprovedToken {
-        string tokenName;
+        string tokenSymbol;
         address tokenAddress;
     }
 
     ApprovedToken[] public approvedTokens;
 
-    mapping(string => uint256) public nameToApprovedTokenID;
+    mapping(string => uint256) public symbolToApprovedTokenID;
 
     struct StablePair {
-        string stableName;
+        string stableSymbol;
         address stableAddress;
     }
 
     StablePair[] public stablePairs;
-    mapping(string => uint256) public nameToStablePairID;
+    mapping(string => uint256) public symbolToStablePairID;
 
     mapping(uint256 => uint256) public approvedTokenIDToStablePairID;
 
@@ -41,34 +41,30 @@ contract AeolusFactory is IAeolusFactory {
         pairs.push(Pair("BasePair", address(0), address(0)));
     }
 
-    function addApprovedToken(string memory _name, address _address) external {
-        require(nameToApprovedTokenID[_name] == 0, "Approved Token Already Exists");
-        ApprovedToken memory newApprovedToken = ApprovedToken(_name, _address);
-        nameToApprovedTokenID[_name] = approvedTokens.length;
+    function addApprovedToken(string memory _approvedTokenSymbol, address _address) external {
+        require(symbolToApprovedTokenID[_approvedTokenSymbol] == 0, "Approved Token Already Exists");
+        ApprovedToken memory newApprovedToken = ApprovedToken(_approvedTokenSymbol, _address);
+        symbolToApprovedTokenID[_approvedTokenSymbol] = approvedTokens.length;
         approvedTokens.push(newApprovedToken);
     }
 
-    function addStablePair(string memory _name, address _address) external {
-        require(nameToStablePairID[_name] == 0, "Stable Pair Already Exists");
-        StablePair memory newStablePair = StablePair(_name, _address);
-        nameToStablePairID[_name] = stablePairs.length;
+    function addStablePair(string memory _stablePairSymbol, address _address) external {
+        require(symbolToStablePairID[_stablePairSymbol] == 0, "Stable Pair Already Exists");
+        StablePair memory newStablePair = StablePair(_stablePairSymbol, _address);
+        symbolToStablePairID[_stablePairSymbol] = stablePairs.length;
         stablePairs.push(newStablePair);
     }
 
-    function linkApprovedTokenToStablePair(string memory _nameApprovedToken, string memory _nameStablePair) external {
-        require(nameToApprovedTokenID[_nameApprovedToken] != 0, "Approved Token DNE");
-        require(nameToStablePairID[_nameStablePair] != 0, "Stable Pair DNE");
-        uint256 approvedTokenID = nameToApprovedTokenID[_nameApprovedToken];
-        uint256 stablePairID = nameToStablePairID[_nameStablePair];
+    function linkApprovedTokenToStablePair(string memory _symbolApprovedToken, string memory _symbolStablePair) external {
+        require(symbolToApprovedTokenID[_symbolApprovedToken] != 0, "Approved Token DNE");
+        require(symbolToStablePairID[_symbolStablePair] != 0, "Stable Pair DNE");
+        uint256 approvedTokenID = symbolToApprovedTokenID[_symbolApprovedToken];
+        uint256 stablePairID = symbolToStablePairID[_symbolStablePair];
 
         approvedTokenIDToStablePairID[approvedTokenID] = stablePairID;
     }
 
-    function createPair(
-        string memory _name,
-        address tokenA,
-        address tokenB
-    ) external {
+    function createPair(address tokenA, address tokenB) external {
         require(tokenA != tokenB, "Aeolus: IDENTICAL_ADDRESSES");
         (address token0, address token1) = tokenA < tokenB ? (tokenA, tokenB) : (tokenB, tokenA);
         require(token0 != address(0), "Aeolus: ZERO_ADDRESS");
