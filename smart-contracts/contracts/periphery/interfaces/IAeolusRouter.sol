@@ -20,15 +20,15 @@ interface IAeolusRouter {
     //         uint256 liquidity
     //     );
 
-    function redeemPair(
-        address tokenA,
-        address tokenB,
-        uint256 liquidity,
-        uint256 amountAMin,
-        uint256 amountBMin,
-        address to,
-        uint256 deadline
-    ) external returns (uint256 amountA, uint256 amountB);
+    // function redeemPair(
+    //     address tokenA,
+    //     address tokenB,
+    //     uint256 liquidity,
+    //     uint256 amountAMin,
+    //     uint256 amountBMin,
+    //     address to,
+    //     uint256 deadline
+    // ) external returns (uint256 amountA, uint256 amountB);
 
     // function redeemTriple(
     //     address tokenA,

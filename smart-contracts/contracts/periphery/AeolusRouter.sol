@@ -15,12 +15,21 @@ contract AeolusRouter is IAeolusRouter, Ownable {
     // Exchange Router for swapping, addding lp, removing lp
     IExchangeRouter public ROUTER;
 
-    address public constant USDTdotE = 0xc7198437980c041c805a1edcba50c1ce5db95118;
-    address public constant WAVAX = 0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7;
+    // address public USDTdotE = 0xc7198437980c041c805a1edcba50c1ce5db95118;
+    // address public WAVAX = 0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7;
+    address public USDTdotE;
+    address public WAVAX;
 
-    constructor(address _factory, address _router) {
+    constructor(
+        address _factory,
+        address _router,
+        address _USDTdotE,
+        address _WAVAX
+    ) {
         FACTORY = AeolusFactory(_factory);
         ROUTER = IExchangeRouter(_router);
+        USDTdotE = _USDTdotE;
+        WAVAX = _WAVAX;
     }
 
     receive() external payable {}
@@ -54,14 +63,14 @@ contract AeolusRouter is IAeolusRouter, Ownable {
     }
 
     // **** REMOVE LIQUIDITY ****
-    function redeemPair(
-        address tokenA,
-        address tokenB,
-        uint256 liquidity,
-        uint256 amountAMin,
-        uint256 amountBMin,
-        address to
-    ) public returns (uint256 amountA, uint256 amountB) {}
+    // function redeemPair(
+    //     address tokenA,
+    //     address tokenB,
+    //     uint256 liquidity,
+    //     uint256 amountAMin,
+    //     uint256 amountBMin,
+    //     address to
+    // ) public returns (uint256 amountA, uint256 amountB) {}
 
     /* ========== Private Functions ========== */
 
