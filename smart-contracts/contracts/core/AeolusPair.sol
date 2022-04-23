@@ -19,6 +19,9 @@ contract AeolusPair is AeolusERC20, ReentrancyGuard {
     address public stable1;
     address public usdt;
 
+    mapping(address => uint256) public addressToToken0LP;
+    mapping(address => uint256) public addressToToken1LP;
+
     function _safeTransfer(
         address token,
         address to,
@@ -47,6 +50,15 @@ contract AeolusPair is AeolusERC20, ReentrancyGuard {
         token1 = _token1;
         stable0 = _stable0;
         stable1 = _stable1;
+    }
+
+    function addAmountLPInvest(
+        uint256 token0LP,
+        uint256 token1LP,
+        address investor
+    ) public {
+        addressToToken0LP[investor] = token0LP;
+        addressToToken1LP[investor] = token1LP;
     }
 
     // this low-level function should be called from a contract which performs important safety checks
