@@ -46,22 +46,28 @@ contract AeolusFactory is IAeolusFactory, Ownable {
         return pairs.length - 1;
     }
 
+    function getStablePairOfApprovedToken(string memory _symbolApprovedToken) public view returns (StablePair memory stablePair) {
+        uint256 approvedTokenID = symbolToApprovedTokenID[_symbolApprovedToken];
+        uint256 stablePairID = approvedTokenIDToStablePairID[approvedTokenID];
+        stablePair = stablePairs[stablePairID];
+    }
+
     /**
     ADMIN FUNCTION */
 
-    function addApprovedToken(string memory _approvedTokenSymbol, address _address) external onlyOwner {
-        require(symbolToApprovedTokenID[_approvedTokenSymbol] == 0, "Approved Token Already Exists");
+    function addApprovedToken(string memory _symbolApprovedToken, address _address) external onlyOwner {
+        require(symbolToApprovedTokenID[_symbolApprovedToken] == 0, "Approved Token Already Exists");
         require(_address != address(0), "Aeolus: ZERO_ADDRESS");
-        ApprovedToken memory newApprovedToken = ApprovedToken(_approvedTokenSymbol, _address);
-        symbolToApprovedTokenID[_approvedTokenSymbol] = approvedTokens.length;
+        ApprovedToken memory newApprovedToken = ApprovedToken(_symbolApprovedToken, _address);
+        symbolToApprovedTokenID[_symbolApprovedToken] = approvedTokens.length;
         approvedTokens.push(newApprovedToken);
     }
 
-    function addStablePair(string memory _stablePairSymbol, address _address) external onlyOwner {
-        require(symbolToStablePairID[_stablePairSymbol] == 0, "Stable Pair Already Exists");
+    function addStablePair(string memory _symbolStablePair, address _address) external onlyOwner {
+        require(symbolToStablePairID[_symbolStablePair] == 0, "Stable Pair Already Exists");
         require(_address != address(0), "Aeolus: ZERO_ADDRESS");
-        StablePair memory newStablePair = StablePair(_stablePairSymbol, _address);
-        symbolToStablePairID[_stablePairSymbol] = stablePairs.length;
+        StablePair memory newStablePair = StablePair(_symbolStablePair, _address);
+        symbolToStablePairID[_symbolStablePair] = stablePairs.length;
         stablePairs.push(newStablePair);
     }
 
@@ -74,11 +80,11 @@ contract AeolusFactory is IAeolusFactory, Ownable {
         approvedTokenIDToStablePairID[approvedTokenID] = stablePairID;
     }
 
-    function createPair(string memory _tokenSymbolA, string memory _tokenSymbolB) external onlyOwner {
-        require(keccak256(abi.encodePacked(_tokenSymbolA)) != keccak256(abi.encodePacked(_tokenSymbolB)), "Aeolus: IDENTICAL_TOKEN_SYMBOL");
+    function createPair(string memory _symbolTokenA, string memory _symbolTokenB) external onlyOwner returns (string memory pairName) {
+        require(keccak256(abi.encodePacked(_symbolTokenA)) != keccak256(abi.encodePacked(_symbolTokenB)), "Aeolus: IDENTICAL_TOKEN_SYMBOL");
         // Check whether the token has been approved yet
-        uint256 approvedTokenAID = symbolToApprovedTokenID[_tokenSymbolA];
-        uint256 approvedTokenBID = symbolToApprovedTokenID[_tokenSymbolB];
+        uint256 approvedTokenAID = symbolToApprovedTokenID[_symbolTokenA];
+        uint256 approvedTokenBID = symbolToApprovedTokenID[_symbolTokenB];
 
         require(approvedTokenAID != 0, "Aeolus: TokenA is not approved");
         require(approvedTokenBID != 0, "Aeolus: TokenB is not approved");
@@ -86,12 +92,12 @@ contract AeolusFactory is IAeolusFactory, Ownable {
         require(approvedTokenIDToStablePairID[approvedTokenAID] != 0, "Aeolus: TokenA has no stable pair");
         require(approvedTokenIDToStablePairID[approvedTokenBID] != 0, "Aeolus: TokenB has no stable pair");
 
-        string memory pairName = string(abi.encodePacked(_tokenSymbolA, "-", _tokenSymbolB));
+        pairName = string(abi.encodePacked(_symbolTokenA, "-", _symbolTokenB));
 
         Pair memory newPair = Pair(pairName, approvedTokens[approvedTokenAID].tokenAddress, approvedTokens[approvedTokenBID].tokenAddress);
         nameToPairID[pairName] = pairs.length;
         pairs.push(newPair);
 
-        emit PairCreated(_tokenSymbolA, _tokenSymbolB, pairs.length - 1);
+        emit PairCreated(_symbolTokenA, _symbolTokenB, pairs.length - 1);
     }
 }
