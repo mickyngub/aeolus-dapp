@@ -42,6 +42,13 @@ contract AeolusFactory is IAeolusFactory, Ownable {
         pairs.push(Pair("BasePair", address(0), address(0)));
     }
 
+    function getNumberOfPools() external view returns (uint256 numberOfPools) {
+        return pairs.length - 1;
+    }
+
+    /**
+    ADMIN FUNCTION */
+
     function addApprovedToken(string memory _approvedTokenSymbol, address _address) external onlyOwner {
         require(symbolToApprovedTokenID[_approvedTokenSymbol] == 0, "Approved Token Already Exists");
         require(_address != address(0), "Aeolus: ZERO_ADDRESS");
