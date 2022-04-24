@@ -25,15 +25,15 @@ context("unit/AeolusRouter", () => {
   let AeolusRouter: AeolusRouter;
   let ExchangeRouter: AVAXJoeRouter02Type;
 
+  let AeolusFactoryAsMicky: AeolusFactory;
+  let AeolusRouterAsMicky: AeolusRouter;
+  let ExchangeRouterAsMicky: AVAXJoeRouter02Type;
+
   let WAVAX: IWAVAX;
   let USDTdote: IERC20;
 
   let WAVAXAsMicky: IWAVAX;
   let USDTdoteAsMicky: IERC20;
-
-  let AeolusFactoryAsMicky: AeolusFactory;
-  let AeolusRouterAsMicky: AeolusRouter;
-  let ExchangeRouterAsMicky: AVAXJoeRouter02Type;
 
   before(async () => {
     [deployer, micky, ...signers] = await ethers.getSigners();
@@ -66,7 +66,7 @@ context("unit/AeolusRouter", () => {
     USDTdoteAsMicky = USDTdote.connect(micky);
   });
 
-  describe("config AeolusRouter", () => {
+  describe("swapping", () => {
     it("can swap AVAX to WAVAX", async () => {
       // await ExchangeRouter.swapAVAXForExactTokens;
       expect(await ethers.provider.getBalance(micky.address)).to.equal(
