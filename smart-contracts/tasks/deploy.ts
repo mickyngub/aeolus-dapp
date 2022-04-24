@@ -1,6 +1,8 @@
 import { task } from "hardhat/config";
-import { AeolusFactory__factory } from "../typechain";
+import { AeolusFactory__factory, AeolusRouter__factory } from "../typechain";
 import AVAXJoeRouter02 from "../deployments/AVAXJoeRouter02.json";
+import AVAXApprovedTokens from "../deployments/AVAXApprovedTokens.json";
+import AVAXStableTokens from "../deployments/AVAXStableTokens.json";
 
 task("deploy", "deploy contracts")
   .addFlag("verify")
@@ -10,6 +12,14 @@ task("deploy", "deploy contracts")
 
     const aeolusFactory = await new AeolusFactory__factory(signer).deploy();
     console.log(`AeolusFactory deployed at ${aeolusFactory.address}`);
+
+    const aeolusRouter = await new AeolusRouter__factory(signer).deploy(
+      aeolusFactory.address,
+      AVAXJoeRouter02.address,
+      AVAXApprovedTokens.WAVAX.address,
+      AVAXStableTokens["USDT.e"].address
+    );
+    console.log(`AeolusRouter deployed at ${aeolusRouter.address}`);
 
     if (taskArgs.verify) {
       await hre.run("verify:verify", {
