@@ -20,29 +20,29 @@ context("unit/AeolusRouter", () => {
   let micky: SignerWithAddress;
   let signers: SignerWithAddress[];
 
-  let aeolusFactory: AeolusFactory;
-  let aeolusRouter: AeolusRouter;
-  let exchangeRouter: AVAXJoeRouter02Type;
+  let AeolusFactory: AeolusFactory;
+  let AeolusRouter: AeolusRouter;
+  let ExchangeRouter: AVAXJoeRouter02Type;
 
   let WAVAX: IWAVAX;
 
   let WAVAXAsMicky: IWAVAX;
-  let aeolusFactoryAsMicky: AeolusFactory;
-  let aeolusRouterAsMicky: AeolusRouter;
+  let AeolusFactoryAsMicky: AeolusFactory;
+  let AeolusRouterAsMicky: AeolusRouter;
 
   before(async () => {
     [deployer, micky, ...signers] = await ethers.getSigners();
-    aeolusFactory = await new AeolusFactory__factory(deployer).deploy();
-    aeolusFactoryAsMicky = aeolusFactory.connect(micky);
+    AeolusFactory = await new AeolusFactory__factory(deployer).deploy();
+    AeolusFactoryAsMicky = AeolusFactory.connect(micky);
 
-    aeolusRouter = await new AeolusRouter__factory(deployer).deploy(
-      aeolusFactory.address,
+    AeolusRouter = await new AeolusRouter__factory(deployer).deploy(
+      AeolusFactory.address,
       AVAXJoeRouter02.address,
       AVAXApprovedTokens.WAVAX.address,
       AVAXStableTokens["USDT.e"].address
     );
 
-    exchangeRouter = await ethers.getContractAt(
+    ExchangeRouter = await ethers.getContractAt(
       "IExchangeRouter",
       AVAXJoeRouter02.address
     );
@@ -57,7 +57,7 @@ context("unit/AeolusRouter", () => {
 
   describe("config AeolusRouter", () => {
     it("can swap AVAX to WAVAX", async () => {
-      // await exchangeRouter.swapAVAXForExactTokens;
+      // await ExchangeRouter.swapAVAXForExactTokens;
       expect(await ethers.provider.getBalance(micky.address)).to.equal(
         ethers.utils.parseEther("10000")
       );
