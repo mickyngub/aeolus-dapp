@@ -4,7 +4,9 @@ import {
   AeolusFactory__factory,
   AeolusRouter,
   AeolusRouter__factory,
-  IExchangeRouter,
+  AVAXJoeRouter02 as AVAXJoeRouter02Type,
+  IERC20,
+  IWAVAX,
 } from "../../typechain";
 
 import AVAXJoeRouter02 from "../../deployments/AVAXJoeRouter02.json";
@@ -12,36 +14,127 @@ import AVAXApprovedTokens from "../../deployments/AVAXApprovedTokens.json";
 import AVAXStableTokens from "../../deployments/AVAXStableTokens.json";
 
 import { expect } from "chai";
-import { network, ethers } from "hardhat";
+import { ethers } from "hardhat";
 
 context("integration/AeolusDapp", () => {
   let deployer: SignerWithAddress;
   let micky: SignerWithAddress;
   let signers: SignerWithAddress[];
+  let AeolusFactory: AeolusFactory;
+  let AeolusRouter: AeolusRouter;
+  let ExchangeRouter: AVAXJoeRouter02Type;
 
-  let aeolusFactory: AeolusFactory;
-  let aeolusRouter: AeolusRouter;
-  let exchangeRouter;
+  let AeolusFactoryAsMicky: AeolusFactory;
+  let AeolusRouterAsMicky: AeolusRouter;
+  let ExchangeRouterAsMicky: AVAXJoeRouter02Type;
 
-  let aeolusFactoryAsMicky: AeolusFactory;
-  let aeolusRouterAsMicky: AeolusRouter;
+  let WAVAX: IWAVAX;
+  let USDTdote: IERC20;
+  let WBTCdote: IERC20;
+  let WETHdote: IERC20;
+
+  let WAVAXAsMicky: IWAVAX;
+  let USDTdoteAsMicky: IERC20;
+  let WBTCdoteAsMicky: IERC20;
+  let WETHdoteAsMicky: IERC20;
 
   before(async () => {
     [deployer, micky, ...signers] = await ethers.getSigners();
-    aeolusFactory = await new AeolusFactory__factory(deployer).deploy();
-    aeolusFactoryAsMicky = aeolusFactory.connect(micky);
+    AeolusFactory = await new AeolusFactory__factory(deployer).deploy();
+    AeolusFactoryAsMicky = AeolusFactory.connect(micky);
 
-    aeolusRouter = await new AeolusRouter__factory(deployer).deploy(
-      aeolusFactory.address,
+    AeolusRouter = await new AeolusRouter__factory(deployer).deploy(
+      AeolusFactory.address,
       AVAXJoeRouter02.address,
       AVAXApprovedTokens.WAVAX.address,
       AVAXStableTokens["USDT.e"].address
     );
 
-    exchangeRouter = new ethers.Contract(
-      AVAXJoeRouter02.address,
-      AVAXJoeRouter02.abi,
-      deployer
+    ExchangeRouter = await ethers.getContractAt(
+      "IExchangeRouter",
+      AVAXJoeRouter02.address
     );
+    ExchangeRouterAsMicky = ExchangeRouter.connect(micky);
+
+    WAVAX = await ethers.getContractAt(
+      "IWAVAX",
+      AVAXApprovedTokens.WAVAX.address
+    );
+    WAVAXAsMicky = WAVAX.connect(micky);
+
+    USDTdote = await ethers.getContractAt(
+      "IERC20",
+      AVAXStableTokens["USDT.e"].address
+    );
+    USDTdoteAsMicky = USDTdote.connect(micky);
+  });
+
+  before(async () => {
+    await WAVAXAsMicky.deposit({
+      value: ethers.utils.parseEther("1000"),
+    });
+
+    await WAVAXAsMicky.approve(
+      ExchangeRouter.address,
+      ethers.constants.MaxUint256
+    );
+
+    await ExchangeRouterAsMicky.swapExactTokensForTokens(
+      ethers.utils.parseEther("100"),
+      0,
+      [AVAXApprovedTokens.WAVAX.address, AVAXStableTokens["USDT.e"].address],
+      micky.address,
+      ethers.constants.MaxUint256
+    );
+
+    const USDTdoteAmount = ethers.utils.formatUnits(
+      await USDTdote.balanceOf(micky.address),
+      6
+    );
+    console.log("USDT.e amount", USDTdoteAmount);
+  });
+
+  before(async () => {
+    // Add approved tokens
+    await AeolusFactory.addApprovedToken(
+      "WBTC.e",
+      AVAXApprovedTokens["WBTC.e"].address
+    );
+    await AeolusFactory.addApprovedToken(
+      "WETH.e",
+      AVAXApprovedTokens["WETH.e"].address
+    );
+    await AeolusFactory.addApprovedToken(
+      "WAVAX",
+      AVAXApprovedTokens.WAVAX.address
+    );
+
+    // Add stable tokens
+    await AeolusFactory.addStableToken(
+      "USDT.e",
+      AVAXStableTokens["USDT.e"].address
+    );
+    await AeolusFactory.addStableToken(
+      "USDC.e",
+      AVAXStableTokens["USDC.e"].address
+    );
+
+    // Link approved token to stable token
+    await AeolusFactory.linkOrUpdateApprovedTokenToStableToken(
+      "WBTC.e",
+      "USDC.e"
+    );
+
+    await AeolusFactory.linkOrUpdateApprovedTokenToStableToken(
+      "WETH.e",
+      "USDC.e"
+    );
+
+    // Create pair
+    await AeolusFactory.createPair("WBTC.e", "WETH.e");
+  });
+
+  describe("pair investing", () => {
+    it("can investPair", async () => {});
   });
 });
