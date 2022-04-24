@@ -63,6 +63,7 @@ context("unit/AeolusFactory", () => {
         "WBTC.e"
       );
     });
+
     it("can add stable tokens", async () => {
       await aeolusFactory.addStableToken(
         "USDT.e",
@@ -76,6 +77,53 @@ context("unit/AeolusFactory", () => {
       expect((await aeolusFactory.stableTokens(1)).stableSymbol).to.equal(
         "USDT.e"
       );
+    });
+
+    it("can link approved token to stable token", async () => {
+      // Needs to revert bc BNB is not approved yet
+      await expect(
+        aeolusFactory.linkOrUpdateApprovedTokenToStableToken("BNB", "USDT.e")
+      ).to.be.revertedWith("Approved Token DNE");
+      // Needs to revert bc MIM is not added yet
+      await expect(
+        aeolusFactory.linkOrUpdateApprovedTokenToStableToken("WBTC.e", "MIM")
+      ).to.be.revertedWith("Stable Pair DNE");
+
+      // Link approved token to stable token
+      await expect(
+        aeolusFactory.linkOrUpdateApprovedTokenToStableToken("WBTC.e", "USDT.e")
+      ).to.not.be.reverted;
+
+      expect(
+        await aeolusFactory.addressApprovedTokenToAddressStableToken(
+          AVAXApprovedTokens["WBTC.e"].address
+        )
+      ).to.hexEqual(AVAXStableTokens["USDT.e"].address);
+
+      expect(
+        await aeolusFactory.approvedTokenIDToStableTokenID(
+          await aeolusFactory.symbolToApprovedTokenID("WBTC.e")
+        )
+      ).to.equal(await aeolusFactory.symbolToStableTokenID("USDT.e"));
+    });
+
+    it("can update approved token to stable token", async () => {
+      // Update stable token of approved token
+      await expect(
+        aeolusFactory.linkOrUpdateApprovedTokenToStableToken("WBTC.e", "USDt")
+      ).to.not.be.reverted;
+
+      expect(
+        await aeolusFactory.addressApprovedTokenToAddressStableToken(
+          AVAXApprovedTokens["WBTC.e"].address
+        )
+      ).to.hexEqual(AVAXStableTokens["USDt"].address);
+
+      expect(
+        await aeolusFactory.approvedTokenIDToStableTokenID(
+          await aeolusFactory.symbolToApprovedTokenID("WBTC.e")
+        )
+      ).to.equal(await aeolusFactory.symbolToStableTokenID("USDt"));
     });
   });
 });
