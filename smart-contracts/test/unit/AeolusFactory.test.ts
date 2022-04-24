@@ -14,7 +14,7 @@ import AVAXStableTokens from "../../deployments/AVAXStableTokens.json";
 import { expect } from "chai";
 import { network, ethers } from "hardhat";
 
-context("integration/AeolusDapp", () => {
+context("unit/AeolusFactory", () => {
   let deployer: SignerWithAddress;
   let micky: SignerWithAddress;
   let signers: SignerWithAddress[];
