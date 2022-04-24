@@ -55,7 +55,11 @@ context("unit/AeolusFactory", () => {
         "WETH.e",
         AVAXApprovedTokens["WETH.e"].address
       );
-      expect(await aeolusFactory.getNumberOfApprovedTokens()).to.equal(2);
+      await aeolusFactory.addApprovedToken(
+        "WAVAX",
+        AVAXApprovedTokens.WAVAX.address
+      );
+      expect(await aeolusFactory.getNumberOfApprovedTokens()).to.equal(3);
       expect((await aeolusFactory.approvedTokens(1)).tokenAddress).to.hexEqual(
         AVAXApprovedTokens["WBTC.e"].address
       );
@@ -90,9 +94,15 @@ context("unit/AeolusFactory", () => {
       ).to.be.revertedWith("Stable Pair DNE");
 
       // Link approved token to stable token
-      await expect(
-        aeolusFactory.linkOrUpdateApprovedTokenToStableToken("WBTC.e", "USDT.e")
-      ).to.not.be.reverted;
+      await aeolusFactory.linkOrUpdateApprovedTokenToStableToken(
+        "WBTC.e",
+        "USDT.e"
+      );
+
+      await aeolusFactory.linkOrUpdateApprovedTokenToStableToken(
+        "WAVAX",
+        "USDT.e"
+      );
 
       expect(
         await aeolusFactory.addressApprovedTokenToAddressStableToken(
@@ -124,6 +134,39 @@ context("unit/AeolusFactory", () => {
           await aeolusFactory.symbolToApprovedTokenID("WBTC.e")
         )
       ).to.equal(await aeolusFactory.symbolToStableTokenID("USDt"));
+    });
+
+    it("can create pair", async () => {
+      // Needs to revert bc BNB is not approved yet
+      await expect(
+        aeolusFactory.createPair("BNB", "WBTC.e")
+      ).to.be.revertedWith("Aeolus: TokenA is not approved");
+      // Needs to revert bc LUNA is not approved yet
+      await expect(
+        aeolusFactory.createPair("WBTC.e", "LUNA")
+      ).to.be.revertedWith("Aeolus: TokenB is not approved");
+      // Needs to revert since they are same token
+      await expect(
+        aeolusFactory.createPair("WBTC.e", "WBTC.e")
+      ).to.be.revertedWith("Aeolus: IDENTICAL_TOKEN_SYMBOL");
+      // Needs to revert since it has no stable token pair
+      await expect(
+        aeolusFactory.createPair("WBTC.e", "WETH.e")
+      ).to.be.revertedWith("Aeolus: TokenB has no stable pair");
+
+      await aeolusFactory.createPair("WBTC.e", "WAVAX");
+
+      expect(await aeolusFactory.getNumberOfPools()).to.equal(1);
+
+      const pairDetail = await aeolusFactory.getPair(1);
+
+      expect(pairDetail.name).to.equal("WBTC.e-WAVAX");
+      expect(pairDetail.tokenA).to.hexEqual(
+        AVAXApprovedTokens["WBTC.e"].address
+      );
+      expect(pairDetail.tokenB).to.hexEqual(AVAXApprovedTokens.WAVAX.address);
+
+      expect(await aeolusFactory.nameToPairID("WBTC.e-WAVAX")).to.equal(1);
     });
   });
 });
