@@ -49,6 +49,7 @@ context("integration/AeolusDapp", () => {
       AVAXApprovedTokens.WAVAX.address,
       AVAXStableTokens["USDT.e"].address
     );
+    AeolusRouterAsMicky = AeolusRouter.connect(micky);
 
     ExchangeRouter = await ethers.getContractAt(
       "IExchangeRouter",
@@ -67,31 +68,6 @@ context("integration/AeolusDapp", () => {
       AVAXStableTokens["USDT.e"].address
     );
     USDTdoteAsMicky = USDTdote.connect(micky);
-  });
-
-  before(async () => {
-    await WAVAXAsMicky.deposit({
-      value: ethers.utils.parseEther("1000"),
-    });
-
-    await WAVAXAsMicky.approve(
-      ExchangeRouter.address,
-      ethers.constants.MaxUint256
-    );
-
-    await ExchangeRouterAsMicky.swapExactTokensForTokens(
-      ethers.utils.parseEther("100"),
-      0,
-      [AVAXApprovedTokens.WAVAX.address, AVAXStableTokens["USDT.e"].address],
-      micky.address,
-      ethers.constants.MaxUint256
-    );
-
-    const USDTdoteAmount = ethers.utils.formatUnits(
-      await USDTdote.balanceOf(micky.address),
-      6
-    );
-    console.log("USDT.e amount", USDTdoteAmount);
   });
 
   before(async () => {
@@ -134,7 +110,39 @@ context("integration/AeolusDapp", () => {
     await AeolusFactory.createPair("WBTC.e", "WETH.e");
   });
 
+  before(async () => {
+    await WAVAXAsMicky.deposit({
+      value: ethers.utils.parseEther("1000"),
+    });
+
+    await WAVAXAsMicky.approve(
+      ExchangeRouter.address,
+      ethers.constants.MaxUint256
+    );
+
+    await ExchangeRouterAsMicky.swapExactTokensForTokens(
+      ethers.utils.parseEther("100"),
+      0,
+      [AVAXApprovedTokens.WAVAX.address, AVAXStableTokens["USDT.e"].address],
+      micky.address,
+      ethers.constants.MaxUint256
+    );
+
+    const USDTdoteAmount = ethers.utils.formatUnits(
+      await USDTdote.balanceOf(micky.address),
+      6
+    );
+    console.log("USDT.e amount", USDTdoteAmount);
+
+    await USDTdoteAsMicky.approve(
+      AeolusRouter.address,
+      ethers.constants.MaxUint256
+    );
+  });
+
   describe("pair investing", () => {
-    it("can investPair", async () => {});
+    it("can investPair", async () => {
+      // await AeolusRouterAsMicky.investPair(1, ethers.utils.parseEther("1000"));
+    });
   });
 });
