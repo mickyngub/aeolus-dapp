@@ -17,16 +17,16 @@ contract AeolusFactory is IAeolusFactory, Ownable {
 
     mapping(string => uint256) public symbolToApprovedTokenID;
 
-    struct StablePair {
+    struct StableToken {
         string stableSymbol;
         address stableAddress;
     }
 
-    StablePair[] public stablePairs;
-    mapping(string => uint256) public symbolToStablePairID;
+    StableToken[] public stableTokens;
+    mapping(string => uint256) public symbolToStableTokenID;
 
-    mapping(uint256 => uint256) public approvedTokenIDToStablePairID;
-    mapping(address => address) public addressApprovedTokenToAddressStablePair;
+    mapping(uint256 => uint256) public approvedTokenIDToStableTokenID;
+    mapping(address => address) public addressApprovedTokenToAddressStableToken;
 
     struct Pair {
         string name;
@@ -40,7 +40,7 @@ contract AeolusFactory is IAeolusFactory, Ownable {
     constructor() {
         // Make the array starts from index 1 since mapping will always return 0 if DNE
         approvedTokens.push(ApprovedToken("BaseApprovedToken", address(0)));
-        stablePairs.push(StablePair("BaseStablePair", address(0)));
+        stableTokens.push(StableToken("BaseStableToken", address(0)));
         pairs.push(Pair("BasePair", address(0), address(0), address(0)));
     }
 
@@ -65,19 +65,19 @@ contract AeolusFactory is IAeolusFactory, Ownable {
         return approvedTokens.length - 1;
     }
 
-    function getNumberOfStablePairs() external view returns (uint256 numberOfStablePairs) {
-        return stablePairs.length - 1;
+    function getNumberOfStableTokens() external view returns (uint256 numberOfStableTokens) {
+        return stableTokens.length - 1;
     }
 
-    function getStablePairOfApprovedToken(string memory _symbolApprovedToken) public view returns (string memory stableSymbol, address stableAddress) {
+    function getStableTokenOfApprovedToken(string memory _symbolApprovedToken) public view returns (string memory stableSymbol, address stableAddress) {
         uint256 approvedTokenID = symbolToApprovedTokenID[_symbolApprovedToken];
-        uint256 stablePairID = approvedTokenIDToStablePairID[approvedTokenID];
-        StablePair memory stablePair = stablePairs[stablePairID];
-        return (stablePair.stableSymbol, stablePair.stableAddress);
+        uint256 stableTokenID = approvedTokenIDToStableTokenID[approvedTokenID];
+        StableToken memory stableToken = stableTokens[stableTokenID];
+        return (stableToken.stableSymbol, stableToken.stableAddress);
     }
 
     function getStableAddressOfApprovedToken(address approvedToken) public view returns (address stableAddress) {
-        return addressApprovedTokenToAddressStablePair[approvedToken];
+        return addressApprovedTokenToAddressStableToken[approvedToken];
     }
 
     /**
@@ -91,25 +91,25 @@ contract AeolusFactory is IAeolusFactory, Ownable {
         approvedTokens.push(newApprovedToken);
     }
 
-    function addStablePair(string memory _symbolStablePair, address _address) external onlyOwner {
-        require(symbolToStablePairID[_symbolStablePair] == 0, "Stable Pair Already Exists");
+    function addStableToken(string memory _symbolStableToken, address _address) external onlyOwner {
+        require(symbolToStableTokenID[_symbolStableToken] == 0, "Stable Pair Already Exists");
         require(_address != address(0), "Aeolus: ZERO_ADDRESS");
-        StablePair memory newStablePair = StablePair(_symbolStablePair, _address);
-        symbolToStablePairID[_symbolStablePair] = stablePairs.length;
-        stablePairs.push(newStablePair);
+        StableToken memory newStableToken = StableToken(_symbolStableToken, _address);
+        symbolToStableTokenID[_symbolStableToken] = stableTokens.length;
+        stableTokens.push(newStableToken);
     }
 
-    function linkOrUpdateApprovedTokenToStablePair(string memory _symbolApprovedToken, string memory _symbolStablePair) external onlyOwner {
+    function linkOrUpdateApprovedTokenToStableToken(string memory _symbolApprovedToken, string memory _symbolStableToken) external onlyOwner {
         require(symbolToApprovedTokenID[_symbolApprovedToken] != 0, "Approved Token DNE");
-        require(symbolToStablePairID[_symbolStablePair] != 0, "Stable Pair DNE");
+        require(symbolToStableTokenID[_symbolStableToken] != 0, "Stable Pair DNE");
         uint256 approvedTokenID = symbolToApprovedTokenID[_symbolApprovedToken];
-        uint256 stablePairID = symbolToStablePairID[_symbolStablePair];
+        uint256 stableTokenID = symbolToStableTokenID[_symbolStableToken];
 
         ApprovedToken memory approvedToken = approvedTokens[approvedTokenID];
-        StablePair memory stablePair = stablePairs[stablePairID];
+        StableToken memory stableToken = stableTokens[stableTokenID];
 
-        addressApprovedTokenToAddressStablePair[approvedToken.tokenAddress] = stablePair.stableAddress;
-        approvedTokenIDToStablePairID[approvedTokenID] = stablePairID;
+        addressApprovedTokenToAddressStableToken[approvedToken.tokenAddress] = stableToken.stableAddress;
+        approvedTokenIDToStableTokenID[approvedTokenID] = stableTokenID;
     }
 
     function createPair(string memory _symbolTokenA, string memory _symbolTokenB) external onlyOwner returns (AeolusPair newAeolusPair) {
@@ -124,17 +124,17 @@ contract AeolusFactory is IAeolusFactory, Ownable {
         address approvedTokenAAddress = approvedTokens[approvedTokenAID].tokenAddress;
         address approvedTokenBAddress = approvedTokens[approvedTokenBID].tokenAddress;
 
-        StablePair memory stablePairOfA = stablePairs[(approvedTokenIDToStablePairID[approvedTokenAID])];
-        StablePair memory stablePairOfB = stablePairs[(approvedTokenIDToStablePairID[approvedTokenBID])];
+        StableToken memory stableTokenOfA = stableTokens[(approvedTokenIDToStableTokenID[approvedTokenAID])];
+        StableToken memory stableTokenOfB = stableTokens[(approvedTokenIDToStableTokenID[approvedTokenBID])];
 
-        require(approvedTokenIDToStablePairID[approvedTokenAID] != 0, "Aeolus: TokenA has no stable pair");
-        require(approvedTokenIDToStablePairID[approvedTokenBID] != 0, "Aeolus: TokenB has no stable pair");
+        require(approvedTokenIDToStableTokenID[approvedTokenAID] != 0, "Aeolus: TokenA has no stable pair");
+        require(approvedTokenIDToStableTokenID[approvedTokenBID] != 0, "Aeolus: TokenB has no stable pair");
 
-        address addressOftablePairOfA = stablePairOfA.stableAddress;
-        address addresOfStablePairOfB = stablePairOfB.stableAddress;
+        address addressOftablePairOfA = stableTokenOfA.stableAddress;
+        address addresOfStableTokenOfB = stableTokenOfB.stableAddress;
 
         newAeolusPair = new AeolusPair();
-        newAeolusPair.initialize(approvedTokenAAddress, approvedTokenBAddress, addressOftablePairOfA, addresOfStablePairOfB);
+        newAeolusPair.initialize(approvedTokenAAddress, approvedTokenBAddress, addressOftablePairOfA, addresOfStableTokenOfB);
 
         string memory pairName = string(abi.encodePacked(_symbolTokenA, "-", _symbolTokenB));
 
