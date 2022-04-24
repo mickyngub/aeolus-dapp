@@ -56,7 +56,26 @@ context("integration/AeolusDapp", () => {
         AVAXApprovedTokens["WETH.e"].address
       );
       expect(await aeolusFactory.getNumberOfApprovedTokens()).to.equal(2);
-      //   expect(await aeolusFactory.approvedTokens.length);
+      expect((await aeolusFactory.approvedTokens(1)).tokenAddress).to.hexEqual(
+        AVAXApprovedTokens["WBTC.e"].address
+      );
+      expect((await aeolusFactory.approvedTokens(1)).tokenSymbol).to.equal(
+        "WBTC.e"
+      );
+    });
+    it("can add stable tokens", async () => {
+      await aeolusFactory.addStableToken(
+        "USDT.e",
+        AVAXStableTokens["USDT.e"].address
+      );
+      await aeolusFactory.addStableToken("USDt", AVAXStableTokens.USDt.address);
+      expect(await aeolusFactory.getNumberOfStableTokens()).to.equal(2);
+      expect((await aeolusFactory.stableTokens(1)).stableAddress).to.hexEqual(
+        AVAXStableTokens["USDT.e"].address
+      );
+      expect((await aeolusFactory.stableTokens(1)).stableSymbol).to.equal(
+        "USDT.e"
+      );
     });
   });
 });
