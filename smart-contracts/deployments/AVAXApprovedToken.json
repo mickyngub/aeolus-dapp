@@ -1,0 +1,23 @@
+{
+  "WAVAX": {
+    "address": "0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7"
+  },
+  "WBTC.e": {
+    "address": "0x50b7545627a5162f82a992c33b87adc75187b218"
+  },
+  "WETH.e": {
+    "address": "0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab"
+  },
+  "BNB": {
+    "address": "0x264c1383ea520f73dd837f915ef3a732e204a493"
+  },
+  "LUNA": {
+    "address": "0x70928e5b188def72817b7775f0bf6325968e563b"
+  },
+  "WMATIC": {
+    "address": "0xf2f13f0b7008ab2fa4a2418f4ccc3684e49d20eb"
+  },
+  "SOL": {
+    "address": "0xfe6b19286885a4f7f55adad09c3cd1f906d2478f"
+  }
+}
