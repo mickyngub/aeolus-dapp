@@ -5,6 +5,7 @@ import {
   AeolusRouter,
   AeolusRouter__factory,
   AVAXJoeRouter02 as AVAXJoeRouter02Type,
+  IERC20,
   IWAVAX,
 } from "../../typechain";
 
@@ -25,10 +26,14 @@ context("unit/AeolusRouter", () => {
   let ExchangeRouter: AVAXJoeRouter02Type;
 
   let WAVAX: IWAVAX;
+  let USDTdote: IERC20;
 
   let WAVAXAsMicky: IWAVAX;
+  let USDTdoteAsMicky: IERC20;
+
   let AeolusFactoryAsMicky: AeolusFactory;
   let AeolusRouterAsMicky: AeolusRouter;
+  let ExchangeRouterAsMicky: AVAXJoeRouter02Type;
 
   before(async () => {
     [deployer, micky, ...signers] = await ethers.getSigners();
@@ -46,13 +51,19 @@ context("unit/AeolusRouter", () => {
       "IExchangeRouter",
       AVAXJoeRouter02.address
     );
+    ExchangeRouterAsMicky = ExchangeRouter.connect(micky);
 
     WAVAX = await ethers.getContractAt(
       "IWAVAX",
       AVAXApprovedTokens.WAVAX.address
     );
-
     WAVAXAsMicky = WAVAX.connect(micky);
+
+    USDTdote = await ethers.getContractAt(
+      "IERC20",
+      AVAXStableTokens["USDT.e"].address
+    );
+    USDTdoteAsMicky = USDTdote.connect(micky);
   });
 
   describe("config AeolusRouter", () => {
@@ -62,13 +73,32 @@ context("unit/AeolusRouter", () => {
         ethers.utils.parseEther("10000")
       );
       await WAVAXAsMicky.deposit({
-        value: ethers.utils.parseEther("1"),
+        value: ethers.utils.parseEther("1000"),
       });
       expect(await ethers.provider.getBalance(micky.address))
         .to.be.below(ethers.utils.parseEther("10000"))
-        .and.above(ethers.utils.parseEther("9998"));
+        .and.above(ethers.utils.parseEther("8999"));
       expect(await WAVAX.balanceOf(micky.address)).to.equal(
-        ethers.utils.parseEther("1")
+        ethers.utils.parseEther("1000")
+      );
+    });
+    it("can swap WAVAX to USDT.e", async () => {
+      await WAVAXAsMicky.approve(
+        ExchangeRouter.address,
+        ethers.constants.MaxUint256
+      );
+
+      await ExchangeRouterAsMicky.swapExactTokensForTokens(
+        ethers.utils.parseEther("100"),
+        0,
+        [AVAXApprovedTokens.WAVAX.address, AVAXStableTokens["USDT.e"].address],
+        micky.address,
+        ethers.constants.MaxUint256
+      );
+
+      console.log(
+        "USDT.e balance",
+        ethers.utils.formatUnits(await USDTdote.balanceOf(micky.address), 6)
       );
     });
   });
