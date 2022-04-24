@@ -4,7 +4,7 @@ import {
   AeolusFactory__factory,
   AeolusRouter,
   AeolusRouter__factory,
-  IExchangeRouter,
+  AVAXJoeRouter02 as AVAXJoeRouter02Type,
 } from "../../typechain";
 
 import AVAXJoeRouter02 from "../../deployments/AVAXJoeRouter02.json";
@@ -21,7 +21,7 @@ context("unit/AeolusRouter", () => {
 
   let aeolusFactory: AeolusFactory;
   let aeolusRouter: AeolusRouter;
-  let exchangeRouter;
+  let exchangeRouter: AVAXJoeRouter02Type;
 
   let aeolusFactoryAsMicky: AeolusFactory;
   let aeolusRouterAsMicky: AeolusRouter;
@@ -38,10 +38,9 @@ context("unit/AeolusRouter", () => {
       AVAXStableTokens["USDT.e"].address
     );
 
-    exchangeRouter = new ethers.Contract(
-      AVAXJoeRouter02.address,
-      AVAXJoeRouter02.abi,
-      deployer
+    exchangeRouter = await ethers.getContractAt(
+      "IExchangeRouter",
+      AVAXJoeRouter02.address
     );
   });
 
@@ -49,6 +48,7 @@ context("unit/AeolusRouter", () => {
     it("can swap WAVAX to USDT.e", async () => {
       console.log("JoeRouter address", AVAXJoeRouter02.address);
       console.log("aeolusRouter.router()", await aeolusRouter.ROUTER());
+      console.log(exchangeRouter.address);
     });
   });
 });

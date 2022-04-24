@@ -83,6 +83,9 @@ const config: HardhatUserConfig = {
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY,
   },
+  typechain: {
+    externalArtifacts: ["deployments/AVAXJoeRouter02.json"],
+  },
 };
 
 export default config;
