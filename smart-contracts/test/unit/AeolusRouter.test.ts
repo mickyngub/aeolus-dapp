@@ -5,6 +5,7 @@ import {
   AeolusRouter,
   AeolusRouter__factory,
   AVAXJoeRouter02 as AVAXJoeRouter02Type,
+  IWAVAX,
 } from "../../typechain";
 
 import AVAXJoeRouter02 from "../../deployments/AVAXJoeRouter02.json";
@@ -23,6 +24,9 @@ context("unit/AeolusRouter", () => {
   let aeolusRouter: AeolusRouter;
   let exchangeRouter: AVAXJoeRouter02Type;
 
+  let WAVAX: IWAVAX;
+
+  let WAVAXAsMicky: IWAVAX;
   let aeolusFactoryAsMicky: AeolusFactory;
   let aeolusRouterAsMicky: AeolusRouter;
 
@@ -42,13 +46,30 @@ context("unit/AeolusRouter", () => {
       "IExchangeRouter",
       AVAXJoeRouter02.address
     );
+
+    WAVAX = await ethers.getContractAt(
+      "IWAVAX",
+      AVAXApprovedTokens.WAVAX.address
+    );
+
+    WAVAXAsMicky = WAVAX.connect(micky);
   });
 
   describe("config AeolusRouter", () => {
-    it("can swap WAVAX to USDT.e", async () => {
-      console.log("JoeRouter address", AVAXJoeRouter02.address);
-      console.log("aeolusRouter.router()", await aeolusRouter.ROUTER());
-      console.log(exchangeRouter.address);
+    it("can swap AVAX to WAVAX", async () => {
+      // await exchangeRouter.swapAVAXForExactTokens;
+      expect(await ethers.provider.getBalance(micky.address)).to.equal(
+        ethers.utils.parseEther("10000")
+      );
+      await WAVAXAsMicky.deposit({
+        value: ethers.utils.parseEther("1"),
+      });
+      expect(await ethers.provider.getBalance(micky.address))
+        .to.be.below(ethers.utils.parseEther("10000"))
+        .and.above(ethers.utils.parseEther("9998"));
+      expect(await WAVAX.balanceOf(micky.address)).to.equal(
+        ethers.utils.parseEther("1")
+      );
     });
   });
 });
