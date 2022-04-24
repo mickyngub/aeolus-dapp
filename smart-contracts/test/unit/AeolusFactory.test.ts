@@ -1,18 +1,12 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import {
-  AeolusFactory,
-  AeolusFactory__factory,
-  AeolusRouter,
-  AeolusRouter__factory,
-  IExchangeRouter,
-} from "../../typechain";
+import { AeolusFactory, AeolusFactory__factory } from "../../typechain";
 
 import AVAXJoeRouter02 from "../../deployments/AVAXJoeRouter02.json";
 import AVAXApprovedTokens from "../../deployments/AVAXApprovedTokens.json";
 import AVAXStableTokens from "../../deployments/AVAXStableTokens.json";
 
 import { expect } from "chai";
-import { network, ethers } from "hardhat";
+import { ethers } from "hardhat";
 
 context("unit/AeolusFactory", () => {
   let deployer: SignerWithAddress;
@@ -20,29 +14,10 @@ context("unit/AeolusFactory", () => {
   let signers: SignerWithAddress[];
 
   let AeolusFactory: AeolusFactory;
-  let AeolusRouter: AeolusRouter;
-  let ExchangeRouter;
-
-  let AeolusFactoryAsMicky: AeolusFactory;
-  let AeolusRouterAsMicky: AeolusRouter;
 
   before(async () => {
     [deployer, micky, ...signers] = await ethers.getSigners();
     AeolusFactory = await new AeolusFactory__factory(deployer).deploy();
-    AeolusFactoryAsMicky = AeolusFactory.connect(micky);
-
-    AeolusRouter = await new AeolusRouter__factory(deployer).deploy(
-      AeolusFactory.address,
-      AVAXJoeRouter02.address,
-      AVAXApprovedTokens.WAVAX.address,
-      AVAXStableTokens["USDT.e"].address
-    );
-
-    ExchangeRouter = new ethers.Contract(
-      AVAXJoeRouter02.address,
-      AVAXJoeRouter02.abi,
-      deployer
-    );
   });
 
   describe("config AeolusFactory", async () => {
