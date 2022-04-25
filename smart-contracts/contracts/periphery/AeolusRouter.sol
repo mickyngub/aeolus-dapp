@@ -81,10 +81,23 @@ contract AeolusRouter is IAeolusRouter, Ownable {
     }
 
     // **** REMOVE LIQUIDITY ****
-    // function redeemPair(uint256 pairID) public returns (uint256 amountA, uint256 amountB) {
-    //     (, address tokenA, address tokenB, address aeolusPairAddress) = FACTORY.getPair(pairID);
-    //     (uint256 token0LP, uint256 token1LP, uint256 amountInvest) = AeolusPair(aeolusPairAddress).getAmountLPInvest(msg.sender);
-    // }
+    function redeemPair(uint256 pairID) external {
+        (, address tokenA, address tokenB, address aeolusPairAddress) = FACTORY.getPair(pairID);
+        (uint256 pair0LP, uint256 pair1LP, address addressPair0LP, address addressPair1LP, uint256 amountInvest) = AeolusPair(aeolusPairAddress)
+            .getAmountLPInvest(msg.sender);
+        address tokenAStable = FACTORY.getStableAddressOfApprovedToken(tokenA);
+        address tokenBStable = FACTORY.getStableAddressOfApprovedToken(tokenB);
+        IERC20(addressPair0LP).safeTransferFrom(aeolusPairAddress, address(this), pair0LP);
+        IERC20(addressPair1LP).safeTransferFrom(aeolusPairAddress, address(this), pair1LP);
+        _approveTokenIfNeeded(addressPair0LP);
+        _approveTokenIfNeeded(addressPair1LP);
+        (uint256 amountTokenA, uint256 amountTokenAStable) = ROUTER.removeLiquidity(tokenA, tokenAStable, pair0LP, 0, 0, msg.sender, block.timestamp);
+        (uint256 amountTokenB, uint256 amountTokenBStable) = ROUTER.removeLiquidity(tokenB, tokenBStable, pair1LP, 0, 0, msg.sender, block.timestamp);
+        // console.log("amountTokenA is %s amountTokenAStable is %s", amountTokenA, amountTokenAStable);
+        // console.log("amountTokenB is %s amountTokenBStable is %s", amountTokenB, amountTokenBStable);
+        // uint256 amountUSDTdoteRedeem = _swap(tokenA, amountTokenA, USDTdotE, address(this));
+        // console.log("amount usdt redeeeeem", amountUSDTdoteRedeem);
+    }
 
     /* ========== Private Functions ========== */
 

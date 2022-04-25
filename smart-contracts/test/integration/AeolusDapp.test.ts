@@ -149,5 +149,8 @@ context("integration/AeolusDapp", () => {
         ethers.utils.parseUnits("1000", 6)
       );
     });
+    it("can redeem invested WBTC.e - WETH.e", async () => {
+      await AeolusRouterAsMicky.redeemPair(1);
+    });
   });
 });
