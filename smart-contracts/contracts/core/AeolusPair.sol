@@ -4,12 +4,9 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import "./interfaces/IAeolusPair.sol";
-import "./interfaces/IAeolusFactory.sol";
 
 contract AeolusPair is ERC20, ReentrancyGuard {
     using SafeERC20 for IERC20;
-    bytes4 private constant SELECTOR = bytes4(keccak256(bytes("transfer(address,uint256)")));
 
     address public aeolusFactory;
     address public aeolusRouter;
@@ -18,7 +15,6 @@ contract AeolusPair is ERC20, ReentrancyGuard {
     address public token1;
     address public stable0;
     address public stable1;
-    address public usdt;
 
     mapping(address => uint256) public addressToToken0LP;
     mapping(address => uint256) public addressToToken1LP;
@@ -31,15 +27,6 @@ contract AeolusPair is ERC20, ReentrancyGuard {
     ) ERC20(_pairName, _pairSymbol) {
         aeolusFactory = msg.sender;
         aeolusRouter = _aeolusRouter;
-    }
-
-    function _safeTransfer(
-        address token,
-        address to,
-        uint256 value
-    ) private {
-        (bool success, bytes memory data) = token.call(abi.encodeWithSelector(SELECTOR, to, value));
-        require(success && (data.length == 0 || abi.decode(data, (bool))), "Aeolus: TRANSFER_FAILED");
     }
 
     event Mint(address indexed sender, uint256 amountInvest);
@@ -71,8 +58,9 @@ contract AeolusPair is ERC20, ReentrancyGuard {
         addressToToken0LP[investor] = pair0LP;
         addressToToken1LP[investor] = pair1LP;
         addressToAmountInvest[investor] = amountInvest;
-        _approveTokenIfNeeded(addressPair0LP);
-        _approveTokenIfNeeded(addressPair1LP);
+        IERC20(addressPair0LP).approve(aeolusRouter, type(uint256).max);
+        IERC20(addressPair1LP).approve(aeolusRouter, type(uint256).max);
+
         mint(investor, amountInvest);
     }
 
@@ -108,11 +96,5 @@ contract AeolusPair is ERC20, ReentrancyGuard {
         _burn(to, currentAmountInvest);
         emit Burn(msg.sender, currentAmountInvest);
         return currentAmountInvest;
-    }
-
-    function _approveTokenIfNeeded(address token) private {
-        if (IERC20(token).allowance(address(this), aeolusRouter) == 0) {
-            IERC20(token).approve(aeolusRouter, type(uint256).max);
-        }
     }
 }
