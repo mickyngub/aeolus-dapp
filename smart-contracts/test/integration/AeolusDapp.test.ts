@@ -46,8 +46,8 @@ context("integration/AeolusDapp", () => {
     AeolusRouter = await new AeolusRouter__factory(deployer).deploy(
       AeolusFactory.address,
       AVAXJoeRouter02.address,
-      AVAXApprovedTokens.WAVAX.address,
-      AVAXStableTokens["USDT.e"].address
+      AVAXStableTokens["USDT.e"].address,
+      AVAXApprovedTokens.WAVAX.address
     );
     AeolusRouterAsMicky = AeolusRouter.connect(micky);
 
@@ -138,11 +138,19 @@ context("integration/AeolusDapp", () => {
       AeolusRouter.address,
       ethers.constants.MaxUint256
     );
+
+    console.log(
+      "allowance USDT",
+      await USDTdoteAsMicky.allowance(micky.address, AeolusRouter.address)
+    );
   });
 
   describe("pair investing", () => {
     it("can investPair", async () => {
-      // await AeolusRouterAsMicky.investPair(1, ethers.utils.parseEther("1000"));
+      await AeolusRouterAsMicky.investPair(
+        1,
+        ethers.utils.parseUnits("1000", 6)
+      );
     });
   });
 });
