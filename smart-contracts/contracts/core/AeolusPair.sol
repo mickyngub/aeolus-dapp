@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: MIT LICENSE
 pragma solidity ^0.8.9;
 
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./interfaces/IAeolusPair.sol";
-import "./AeolusERC20.sol";
-import "./interfaces/IERC20.sol";
 import "./interfaces/IAeolusFactory.sol";
 
-contract AeolusPair is AeolusERC20, ReentrancyGuard {
+contract AeolusPair is ERC20, ReentrancyGuard {
+    using SafeERC20 for IERC20;
     bytes4 private constant SELECTOR = bytes4(keccak256(bytes("transfer(address,uint256)")));
 
     address public factory;
@@ -21,6 +22,10 @@ contract AeolusPair is AeolusERC20, ReentrancyGuard {
     mapping(address => uint256) public addressToToken0LP;
     mapping(address => uint256) public addressToToken1LP;
 
+    constructor() ERC20("AEOLUS", "AEO") {
+        factory = msg.sender;
+    }
+
     function _safeTransfer(
         address token,
         address to,
@@ -32,10 +37,6 @@ contract AeolusPair is AeolusERC20, ReentrancyGuard {
 
     event Mint(address indexed sender, uint256 amountLiquidity);
     event Burn(address indexed sender, uint256 amountUSDT, address indexed to);
-
-    constructor() {
-        factory = msg.sender;
-    }
 
     // called once by the factory at time of deployment
     function initialize(
@@ -69,14 +70,6 @@ contract AeolusPair is AeolusERC20, ReentrancyGuard {
 
     // this low-level function should be called from a contract which performs important safety checks
     function burn(address to) external nonReentrant returns (uint256 amountUSDT) {
-        uint256 liquidity = balanceOf[address(this)];
-
-        uint256 _totalSupply = totalSupply; // gas savings, must be defined here since totalSupply can update in _mintFee
-        require(_totalSupply > 0, "Aeolus: INSUFFICIENT_LIQUIDITY_BURNED");
-
-        _burn(address(this), liquidity);
-        _safeTransfer(usdt, to, amountUSDT);
-
         emit Burn(msg.sender, amountUSDT, to);
     }
 }

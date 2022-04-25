@@ -2,15 +2,15 @@
 pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "./interfaces/IAeolusRouter.sol";
 import "./interfaces/IExchangeRouter.sol";
 
-import "../core/interfaces/IERC20.sol";
 import "../core/AeolusFactory.sol";
 import "../core/AeolusPair.sol";
 
 contract AeolusRouter is IAeolusRouter, Ownable {
+    using SafeERC20 for IERC20;
     AeolusFactory public FACTORY;
     // Exchange Router for swapping, addding lp, removing lp
     IExchangeRouter public ROUTER;
@@ -35,9 +35,8 @@ contract AeolusRouter is IAeolusRouter, Ownable {
     receive() external payable {}
 
     function investPair(uint256 pairID, uint256 amount) external returns (uint256 tokenALP, uint256 tokenBLP) {
-        IERC20(USDTdotE).transferFrom(msg.sender, address(this), amount);
+        IERC20(USDTdotE).safeTransferFrom(msg.sender, address(this), amount);
         _approveTokenIfNeeded(USDTdotE);
-
         (, address tokenA, address tokenB, address aeolusPairAddress) = FACTORY.getPair(pairID);
         address tokenAStable = FACTORY.getStableAddressOfApprovedToken(tokenA);
         address tokenBStable = FACTORY.getStableAddressOfApprovedToken(tokenB);
