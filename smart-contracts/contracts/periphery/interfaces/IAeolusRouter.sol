@@ -2,7 +2,7 @@
 pragma solidity ^0.8.9;
 
 interface IAeolusRouter {
-    function investPair(uint256 pairID, uint256 amount) external returns (uint256 tokenALP, uint256 tokenBLP);
+    function investPair(uint64 pairID, uint64 amount) external returns (uint256 tokenALP, uint256 tokenBLP);
 
     // function investTriple(
     //     address usdt,

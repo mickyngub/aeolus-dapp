@@ -60,15 +60,19 @@ contract AeolusPair is ERC20, ReentrancyGuard {
     }
 
     function addAmountLPInvest(
-        uint256 token0LP,
-        uint256 token1LP,
+        uint256 pair0LP,
+        uint256 pair1LP,
+        address addressPair0LP,
+        address addressPair1LP,
         uint256 amountInvest,
         address investor
     ) public {
         require(msg.sender == aeolusRouter, "Aeolus: ROUTER FORBIDDEN");
-        addressToToken0LP[investor] = token0LP;
-        addressToToken1LP[investor] = token1LP;
+        addressToToken0LP[investor] = pair0LP;
+        addressToToken1LP[investor] = pair1LP;
         addressToAmountInvest[investor] = amountInvest;
+        _approveTokenIfNeeded(addressPair0LP);
+        _approveTokenIfNeeded(addressPair1LP);
         mint(investor, amountInvest);
     }
 
@@ -104,5 +108,11 @@ contract AeolusPair is ERC20, ReentrancyGuard {
         _burn(to, currentAmountInvest);
         emit Burn(msg.sender, currentAmountInvest);
         return currentAmountInvest;
+    }
+
+    function _approveTokenIfNeeded(address token) private {
+        if (IERC20(token).allowance(address(this), aeolusRouter) == 0) {
+            IERC20(token).approve(aeolusRouter, type(uint256).max);
+        }
     }
 }
