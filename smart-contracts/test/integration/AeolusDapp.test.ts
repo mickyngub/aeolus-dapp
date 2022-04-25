@@ -150,6 +150,9 @@ context("integration/AeolusDapp", () => {
   describe("pair investing", () => {
     it("can investPair WBTC.e - WETH.e", async () => {
       // console.log("get pair", await AeolusFactory.getPair(1));
+
+      // let balanceOfAeolusPair = await AeolusPair.balanceOf(micky.address);
+      // console.log("initial balance aeolusPair", balanceOfAeolusPair);
       await AeolusRouterAsMicky.investPair(
         1,
         ethers.utils.parseUnits("1000", 6)
@@ -165,16 +168,25 @@ context("integration/AeolusDapp", () => {
 
       const token0LPMicky = await AeolusPair.addressToToken0LP(micky.address);
       const token1LPMicky = await AeolusPair.addressToToken1LP(micky.address);
+      const amountInvestMicky = await AeolusPair.addressToAmountInvest(
+        micky.address
+      );
 
       console.log(
         "token0LP of Micky ",
         token0LPMicky,
         "token1LP of Micky ",
-        token1LPMicky
+        token1LPMicky,
+        "amount invest ",
+        amountInvestMicky
       );
+
+      let balanceOfAeolusPair = await AeolusPair.balanceOf(micky.address);
+      console.log("post balance aeolusPair", balanceOfAeolusPair);
 
       expect(token0LPMicky).to.be.above(1);
       expect(token1LPMicky).to.be.above(1);
+      expect(amountInvestMicky).to.be.equal(ethers.utils.parseEther("1000"));
     });
   });
 });

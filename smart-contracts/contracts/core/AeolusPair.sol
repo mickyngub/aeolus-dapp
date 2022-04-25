@@ -22,6 +22,7 @@ contract AeolusPair is ERC20, ReentrancyGuard {
 
     mapping(address => uint256) public addressToToken0LP;
     mapping(address => uint256) public addressToToken1LP;
+    mapping(address => uint256) public addressToAmountInvest;
 
     constructor(address _aeolusRouter) ERC20("AEOLUS", "AEO") {
         aeolusFactory = msg.sender;
@@ -57,15 +58,18 @@ contract AeolusPair is ERC20, ReentrancyGuard {
     function addAmountLPInvest(
         uint256 token0LP,
         uint256 token1LP,
+        uint256 amountInvest,
         address investor
     ) public {
         require(msg.sender == aeolusRouter, "Aeolus: ROUTER FORBIDDEN");
         addressToToken0LP[investor] = token0LP;
         addressToToken1LP[investor] = token1LP;
+        addressToAmountInvest[investor] = amountInvest;
+        mint(investor, amountInvest);
     }
 
     // this low-level function should be called from a contract which performs important safety checks
-    function mint(address to, uint256 amountInvest) external nonReentrant returns (uint256) {
+    function mint(address to, uint256 amountInvest) internal nonReentrant returns (uint256) {
         _mint(to, amountInvest);
         emit Mint(msg.sender, amountInvest);
         return amountInvest;

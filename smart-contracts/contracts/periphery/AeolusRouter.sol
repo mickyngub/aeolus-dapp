@@ -36,27 +36,30 @@ contract AeolusRouter is IAeolusRouter, Ownable {
 
     receive() external payable {}
 
-    function investPair(uint256 pairID, uint256 amount) external returns (uint256 tokenALP, uint256 tokenBLP) {
-        IERC20(USDTdotE).safeTransferFrom(msg.sender, address(this), amount);
+    function investPair(uint256 pairID, uint256 amountInvest) external returns (uint256 tokenALP, uint256 tokenBLP) {
+        IERC20(USDTdotE).safeTransferFrom(msg.sender, address(this), amountInvest);
         _approveTokenIfNeeded(USDTdotE);
+
+        // amountInvest is USDT.e which has 6 decimals, thus need to convert for AeolusPair LP
+        uint256 amountInvest18Decimal = amountInvest * 10**12;
         (, address tokenA, address tokenB, address aeolusPairAddress) = FACTORY.getPair(pairID);
         // console.log("address A is %s address B is %s address pair is %s", tokenA, tokenB, aeolusPairAddress);
         address tokenAStable = FACTORY.getStableAddressOfApprovedToken(tokenA);
         address tokenBStable = FACTORY.getStableAddressOfApprovedToken(tokenB);
-        uint256 quarterAmount = amount / 4;
-        // console.log("address A's stable is %s address B's stable is %s invest amount is %s", tokenAStable, tokenBStable, quarterAmount);
-
-        uint256 amountTokenA = _swap(USDTdotE, quarterAmount, tokenA, address(this));
-        uint256 amountTokenB = _swap(USDTdotE, quarterAmount, tokenB, address(this));
+        uint256 quarterAmountInvest = amountInvest / 4;
+        // console.log("address A's stable is %s address B's stable is %s invest amountInvest is %s", tokenAStable, tokenBStable, quarterAmountInvest);
+        console.log("amount invest is %s quarter is %s", amountInvest, quarterAmountInvest);
+        uint256 amountTokenA = _swap(USDTdotE, quarterAmountInvest, tokenA, address(this));
+        uint256 amountTokenB = _swap(USDTdotE, quarterAmountInvest, tokenB, address(this));
         console.log("amountTokenA %s WBTC.e 6 decimals - amountTokenB %s WETH.e 18 decimals", amountTokenA, amountTokenB);
-        uint256 amountTokenAStable = quarterAmount;
-        uint256 amountTokenBStable = quarterAmount;
+        uint256 amountTokenAStable = quarterAmountInvest;
+        uint256 amountTokenBStable = quarterAmountInvest;
         if (tokenAStable != USDTdotE) {
-            amountTokenAStable = _swap(USDTdotE, quarterAmount, tokenAStable, address(this));
+            amountTokenAStable = _swap(USDTdotE, quarterAmountInvest, tokenAStable, address(this));
         }
 
         if (tokenBStable != USDTdotE) {
-            amountTokenBStable = _swap(USDTdotE, quarterAmount, tokenBStable, address(this));
+            amountTokenBStable = _swap(USDTdotE, quarterAmountInvest, tokenBStable, address(this));
         }
         console.log("amountTokenAStable %s - amountTokenBStable", amountTokenAStable, amountTokenBStable);
         _approveTokenIfNeeded(tokenA);
@@ -65,7 +68,9 @@ contract AeolusRouter is IAeolusRouter, Ownable {
         _approveTokenIfNeeded(tokenBStable);
         (, , tokenALP) = ROUTER.addLiquidity(tokenA, tokenAStable, amountTokenA, amountTokenAStable, 0, 0, aeolusPairAddress, block.timestamp);
         (, , tokenBLP) = ROUTER.addLiquidity(tokenB, tokenBStable, amountTokenB, amountTokenBStable, 0, 0, aeolusPairAddress, block.timestamp);
-        AeolusPair(aeolusPairAddress).addAmountLPInvest(tokenALP, tokenBLP, msg.sender);
+
+        // Cannot use amountInvest for quarterAmountInvest since stack is too deep
+        AeolusPair(aeolusPairAddress).addAmountLPInvest(tokenALP, tokenBLP, amountInvest18Decimal, msg.sender);
     }
 
     // **** REMOVE LIQUIDITY ****
@@ -88,7 +93,7 @@ contract AeolusRouter is IAeolusRouter, Ownable {
 
     function _swap(
         address _from,
-        uint256 amount,
+        uint256 amountInvest,
         address _to,
         address receiver
     ) private returns (uint256) {
@@ -99,7 +104,7 @@ contract AeolusRouter is IAeolusRouter, Ownable {
         path[1] = WAVAX;
         path[2] = _to;
 
-        uint256[] memory amounts = ROUTER.swapExactTokensForTokens(amount, 0, path, receiver, block.timestamp);
+        uint256[] memory amounts = ROUTER.swapExactTokensForTokens(amountInvest, 0, path, receiver, block.timestamp);
         return amounts[amounts.length - 1];
     }
 
