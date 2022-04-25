@@ -139,14 +139,15 @@ context("integration/AeolusDapp", () => {
       ethers.constants.MaxUint256
     );
 
-    console.log(
-      "allowance USDT",
-      await USDTdoteAsMicky.allowance(micky.address, AeolusRouter.address)
-    );
+    // console.log(
+    //   "allowance USDT",
+    //   await USDTdoteAsMicky.allowance(micky.address, AeolusRouter.address)
+    // );
   });
 
   describe("pair investing", () => {
     it("can investPair", async () => {
+      // console.log("get pair", await AeolusFactory.getPair(1));
       await AeolusRouterAsMicky.investPair(
         1,
         ethers.utils.parseUnits("1000", 6)

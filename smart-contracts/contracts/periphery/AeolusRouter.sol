@@ -9,6 +9,8 @@ import "./interfaces/IExchangeRouter.sol";
 import "../core/AeolusFactory.sol";
 import "../core/AeolusPair.sol";
 
+import "hardhat/console.sol";
+
 contract AeolusRouter is IAeolusRouter, Ownable {
     using SafeERC20 for IERC20;
     AeolusFactory public FACTORY;
@@ -38,13 +40,15 @@ contract AeolusRouter is IAeolusRouter, Ownable {
         IERC20(USDTdotE).safeTransferFrom(msg.sender, address(this), amount);
         _approveTokenIfNeeded(USDTdotE);
         (, address tokenA, address tokenB, address aeolusPairAddress) = FACTORY.getPair(pairID);
+        // console.log("address A is %s address B is %s address pair is %s", tokenA, tokenB, aeolusPairAddress);
         address tokenAStable = FACTORY.getStableAddressOfApprovedToken(tokenA);
         address tokenBStable = FACTORY.getStableAddressOfApprovedToken(tokenB);
-
         uint256 quarterAmount = amount / 4;
+        // console.log("address A's stable is %s address B's stable is %s invest amount is %s", tokenAStable, tokenBStable, quarterAmount);
+
         uint256 amountTokenA = _swap(USDTdotE, quarterAmount, tokenA, address(this));
         uint256 amountTokenB = _swap(USDTdotE, quarterAmount, tokenB, address(this));
-
+        console.log("amountTokenA %s WBTC.e 6 decimals - amountTokenB %s WETH.e 18 decimals", amountTokenA, amountTokenB);
         uint256 amountTokenAStable = quarterAmount;
         uint256 amountTokenBStable = quarterAmount;
         if (tokenAStable != USDTdotE) {
@@ -54,8 +58,11 @@ contract AeolusRouter is IAeolusRouter, Ownable {
         if (tokenBStable != USDTdotE) {
             amountTokenBStable = _swap(USDTdotE, quarterAmount, tokenBStable, address(this));
         }
-
-        // NEED TO CHANGE msg.sender
+        console.log("amountTokenAStable %s - amountTokenBStable", amountTokenAStable, amountTokenBStable);
+        _approveTokenIfNeeded(tokenA);
+        _approveTokenIfNeeded(tokenB);
+        _approveTokenIfNeeded(tokenAStable);
+        _approveTokenIfNeeded(tokenBStable);
         (, , tokenALP) = ROUTER.addLiquidity(tokenA, tokenAStable, amountTokenA, amountTokenAStable, 0, 0, aeolusPairAddress, block.timestamp);
         (, , tokenBLP) = ROUTER.addLiquidity(tokenB, tokenBStable, amountTokenB, amountTokenBStable, 0, 0, aeolusPairAddress, block.timestamp);
         AeolusPair(aeolusPairAddress).addAmountLPInvest(tokenALP, tokenBLP, msg.sender);
