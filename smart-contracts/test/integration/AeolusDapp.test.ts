@@ -114,7 +114,7 @@ context("integration/AeolusDapp", () => {
 
   before(async () => {
     await WAVAXAsMicky.deposit({
-      value: ethers.utils.parseEther("1000"),
+      value: ethers.utils.parseEther("5000"),
     });
 
     await WAVAXAsMicky.approve(
@@ -122,9 +122,9 @@ context("integration/AeolusDapp", () => {
       ethers.constants.MaxUint256
     );
 
-    await ExchangeRouterAsMicky.swapExactTokensForTokens(
+    await ExchangeRouterAsMicky.swapTokensForExactTokens(
+      ethers.utils.parseUnits("1000", 6),
       ethers.utils.parseEther("100"),
-      0,
       [AVAXApprovedTokens.WAVAX.address, AVAXStableTokens["USDT.e"].address],
       micky.address,
       ethers.constants.MaxUint256
@@ -148,9 +148,17 @@ context("integration/AeolusDapp", () => {
         1,
         ethers.utils.parseUnits("1000", 6)
       );
+      console.log(
+        "amount USDT in Micky after invest",
+        await USDTdote.balanceOf(micky.address)
+      );
     });
     it("can redeem invested WBTC.e - WETH.e", async () => {
       await AeolusRouterAsMicky.redeemPair(1);
+      console.log(
+        "amount USDT in Micky after redeem",
+        await USDTdote.balanceOf(micky.address)
+      );
     });
   });
 });
