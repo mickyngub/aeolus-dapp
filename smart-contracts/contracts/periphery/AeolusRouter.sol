@@ -37,7 +37,7 @@ contract AeolusRouter is IAeolusRouter, Ownable {
 
     receive() external payable {}
 
-    function investPair(uint64 pairID, uint64 amountInvest) external returns (uint256 amountTokenALP, uint256 amountTokenBLP) {
+    function investPair(uint256 pairID, uint256 amountInvest) external returns (uint256 amountTokenALP, uint256 amountTokenBLP) {
         IERC20(USDTdotE).safeTransferFrom(msg.sender, address(this), amountInvest);
         _approveTokenIfNeeded(USDTdotE);
 
@@ -45,17 +45,17 @@ contract AeolusRouter is IAeolusRouter, Ownable {
         address tokenAStable = FACTORY.getStableAddressOfApprovedToken(tokenA);
         address tokenBStable = FACTORY.getStableAddressOfApprovedToken(tokenB);
 
-        // Cannot use this - STACK TOO DEEP uint64 quarterAmountInvest = amountInvest / 4;
+        // Cannot use this - STACK TOO DEEP uint256 quarterAmountInvest = amountInvest / 4;
         // console.log("amount invest is %s quarter is %s", amountInvest, quarterAmountInvest);
-        uint64 amountTokenA = _swap(USDTdotE, amountInvest / 4, tokenA, address(this));
-        uint64 amountTokenB = _swap(USDTdotE, amountInvest / 4, tokenB, address(this));
+        uint256 amountTokenA = _swap(USDTdotE, amountInvest / 4, tokenA, address(this));
+        uint256 amountTokenB = _swap(USDTdotE, amountInvest / 4, tokenB, address(this));
         // console.log("amountTokenA %s WBTC.e 6 decimals - amountTokenB %s WETH.e 18 decimals", amountTokenA, amountTokenB);
 
         // amountInvest is USDT.e which has 6 decimals, thus need to convert for AeolusPair LP
-        uint64 amountInvest18Decimal = amountInvest * 10**12;
+        uint256 amountInvest18Decimal = amountInvest * 10**12;
 
-        uint64 amountTokenAStable = amountInvest / 4;
-        uint64 amountTokenBStable = amountInvest / 4;
+        uint256 amountTokenAStable = amountInvest / 4;
+        uint256 amountTokenBStable = amountInvest / 4;
         if (tokenAStable != USDTdotE) {
             amountTokenAStable = _swap(USDTdotE, amountInvest / 4, tokenAStable, address(this));
         }
@@ -127,7 +127,7 @@ contract AeolusRouter is IAeolusRouter, Ownable {
         uint256 amountInvest,
         address _to,
         address receiver
-    ) private returns (uint64) {
+    ) private returns (uint256) {
         address[] memory path;
 
         path = new address[](3);
@@ -136,7 +136,7 @@ contract AeolusRouter is IAeolusRouter, Ownable {
         path[2] = _to;
 
         uint256[] memory amounts = ROUTER.swapExactTokensForTokens(amountInvest, 0, path, receiver, block.timestamp);
-        return uint64(amounts[amounts.length - 1]);
+        return uint256(amounts[amounts.length - 1]);
     }
 
     /* ========== Admin FUNCTIONS ========== */
