@@ -161,8 +161,8 @@ context("unit/AeolusPair", () => {
         ethers.utils.parseUnits("1000", 6)
       );
 
-      const token0LPMicky = await AeolusPair.addressToToken0LP(micky.address);
-      const token1LPMicky = await AeolusPair.addressToToken1LP(micky.address);
+      const token0LPMicky = await AeolusPair.addressToPair0LP(micky.address);
+      const token1LPMicky = await AeolusPair.addressToPair1LP(micky.address);
       const amountInvestMicky = await AeolusPair.addressToAmountInvest(
         micky.address
       );

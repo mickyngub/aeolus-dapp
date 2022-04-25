@@ -16,8 +16,11 @@ contract AeolusPair is ERC20, ReentrancyGuard {
     address public stable0;
     address public stable1;
 
-    mapping(address => uint256) public addressToToken0LP;
-    mapping(address => uint256) public addressToToken1LP;
+    address public addressPair0LP;
+    address public addressPair1LP;
+
+    mapping(address => uint256) public addressToPair0LP;
+    mapping(address => uint256) public addressToPair1LP;
     mapping(address => uint256) public addressToAmountInvest;
 
     constructor(
@@ -49,17 +52,20 @@ contract AeolusPair is ERC20, ReentrancyGuard {
     function addAmountLPInvest(
         uint256 pair0LP,
         uint256 pair1LP,
-        address addressPair0LP,
-        address addressPair1LP,
+        address _addressPair0LP,
+        address _addressPair1LP,
         uint256 amountInvest,
         address investor
     ) public {
         require(msg.sender == aeolusRouter, "Aeolus: ROUTER FORBIDDEN");
-        addressToToken0LP[investor] = pair0LP;
-        addressToToken1LP[investor] = pair1LP;
+        addressToPair0LP[investor] = pair0LP;
+        addressToPair1LP[investor] = pair1LP;
         addressToAmountInvest[investor] = amountInvest;
-        IERC20(addressPair0LP).approve(aeolusRouter, type(uint256).max);
-        IERC20(addressPair1LP).approve(aeolusRouter, type(uint256).max);
+
+        IERC20(_addressPair0LP).approve(aeolusRouter, type(uint256).max);
+        IERC20(_addressPair1LP).approve(aeolusRouter, type(uint256).max);
+        addressPair0LP = _addressPair0LP;
+        addressPair1LP = _addressPair1LP;
 
         mint(investor, amountInvest);
     }
@@ -68,19 +74,21 @@ contract AeolusPair is ERC20, ReentrancyGuard {
         external
         view
         returns (
-            uint256 token0LP,
-            uint256 token1LP,
+            uint256 pair0LP,
+            uint256 pair1LP,
+            address _addressPair0LP,
+            address _addressPair1LP,
             uint256 amountInvest
         )
     {
-        return (addressToToken0LP[investor], addressToToken1LP[investor], addressToAmountInvest[investor]);
+        return (addressToPair0LP[investor], addressToPair1LP[investor], addressPair0LP, addressPair1LP, addressToAmountInvest[investor]);
     }
 
     function removeAmountLPInvest(address investor) external {
         require(msg.sender == aeolusRouter, "Aeolus: ROUTER REMOVE FORBIDDEN");
         burn(investor, addressToAmountInvest[investor]);
-        addressToToken0LP[investor] = 0;
-        addressToToken1LP[investor] = 0;
+        addressToPair0LP[investor] = 0;
+        addressToPair1LP[investor] = 0;
         addressToAmountInvest[investor] = 0;
     }
 
