@@ -42,8 +42,8 @@ contract AeolusPair is ERC20, ReentrancyGuard {
         require(success && (data.length == 0 || abi.decode(data, (bool))), "Aeolus: TRANSFER_FAILED");
     }
 
-    event Mint(address indexed sender, uint256 amountLiquidity);
-    event Burn(address indexed sender, uint256 amountUSDT, address indexed to);
+    event Mint(address indexed sender, uint256 amountInvest);
+    event Burn(address indexed sender, uint256 currentAmountInvest);
 
     // called once by the aeolusFactory at time of deployment
     function initialize(
@@ -72,6 +72,26 @@ contract AeolusPair is ERC20, ReentrancyGuard {
         mint(investor, amountInvest);
     }
 
+    function getAmountLPInvest(address investor)
+        external
+        view
+        returns (
+            uint256 token0LP,
+            uint256 token1LP,
+            uint256 amountInvest
+        )
+    {
+        return (addressToToken0LP[investor], addressToToken1LP[investor], addressToAmountInvest[investor]);
+    }
+
+    function removeAmountLPInvest(address investor) external {
+        require(msg.sender == aeolusRouter, "Aeolus: ROUTER REMOVE FORBIDDEN");
+        burn(investor, addressToAmountInvest[investor]);
+        addressToToken0LP[investor] = 0;
+        addressToToken1LP[investor] = 0;
+        addressToAmountInvest[investor] = 0;
+    }
+
     // this low-level function should be called from a contract which performs important safety checks
     function mint(address to, uint256 amountInvest) internal nonReentrant returns (uint256) {
         _mint(to, amountInvest);
@@ -80,7 +100,9 @@ contract AeolusPair is ERC20, ReentrancyGuard {
     }
 
     // this low-level function should be called from a contract which performs important safety checks
-    function burn(address to) external nonReentrant returns (uint256 amountUSDT) {
-        emit Burn(msg.sender, amountUSDT, to);
+    function burn(address to, uint256 currentAmountInvest) internal nonReentrant returns (uint256) {
+        _burn(to, currentAmountInvest);
+        emit Burn(msg.sender, currentAmountInvest);
+        return currentAmountInvest;
     }
 }
