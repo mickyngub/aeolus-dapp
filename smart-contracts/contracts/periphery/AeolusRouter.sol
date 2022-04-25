@@ -46,10 +46,8 @@ contract AeolusRouter is IAeolusRouter, Ownable {
         address tokenBStable = FACTORY.getStableAddressOfApprovedToken(tokenB);
 
         // Cannot use this - STACK TOO DEEP uint256 quarterAmountInvest = amountInvest / 4;
-        // console.log("amount invest is %s quarter is %s", amountInvest, quarterAmountInvest);
         uint256 amountTokenA = _swap(USDTdotE, amountInvest / 4, tokenA, address(this));
         uint256 amountTokenB = _swap(USDTdotE, amountInvest / 4, tokenB, address(this));
-        // console.log("amountTokenA %s WBTC.e 6 decimals - amountTokenB %s WETH.e 18 decimals", amountTokenA, amountTokenB);
 
         // amountInvest is USDT.e which has 6 decimals, thus need to convert for AeolusPair LP
         uint256 amountInvest18Decimal = amountInvest * 10**12;
@@ -63,7 +61,6 @@ contract AeolusRouter is IAeolusRouter, Ownable {
         if (tokenBStable != USDTdotE) {
             amountTokenBStable = _swap(USDTdotE, amountInvest / 4, tokenBStable, address(this));
         }
-        // console.log("amountTokenAStable %s - amountTokenBStable", amountTokenAStable, amountTokenBStable);
 
         _approveTokenIfNeeded(tokenA);
         _approveTokenIfNeeded(tokenB);
@@ -101,9 +98,6 @@ contract AeolusRouter is IAeolusRouter, Ownable {
         (uint256 amountTokenA, uint256 amountTokenAStable) = ROUTER.removeLiquidity(tokenA2, tokenAStable, pair0LP, 0, 0, address(this), block.timestamp);
         (uint256 amountTokenB, uint256 amountTokenBStable) = ROUTER.removeLiquidity(tokenB2, tokenBStable, pair1LP, 0, 0, address(this), block.timestamp);
 
-        console.log("amountTokenA is %s amountTokenAStable is %s", amountTokenA, amountTokenAStable);
-        console.log("Balance of tokenA", IERC20(tokenA2).balanceOf(address(this)));
-        // console.log("amountTokenB is %s amountTokenBStable is %s", amountTokenB, amountTokenBStable);
         uint256 amountUSDTdoteRedeem = _swap(tokenA2, amountTokenA, USDTdotE, address(this)) + _swap(tokenB2, amountTokenB, USDTdotE, address(this));
         if (tokenAStable == USDTdotE) {
             amountUSDTdoteRedeem = amountUSDTdoteRedeem + amountTokenAStable;
@@ -116,9 +110,6 @@ contract AeolusRouter is IAeolusRouter, Ownable {
         } else {
             amountUSDTdoteRedeem = amountUSDTdoteRedeem + _swap(tokenBStable, amountTokenBStable, USDTdotE, address(this));
         }
-        console.log("amount usdt redeeeeem", amountUSDTdoteRedeem);
-        console.log("usdtdote allowance", IERC20(USDTdotE).allowance(address(this), msg.sender));
-        console.log("amount usdt in contract", IERC20(USDTdotE).balanceOf(address(this)));
         IERC20(USDTdotE).safeTransfer(msg.sender, amountUSDTdoteRedeem);
     }
 
