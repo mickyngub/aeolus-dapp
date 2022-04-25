@@ -112,7 +112,11 @@ contract AeolusFactory is IAeolusFactory, Ownable {
         approvedTokenIDToStableTokenID[approvedTokenID] = stableTokenID;
     }
 
-    function createPair(string memory _symbolTokenA, string memory _symbolTokenB) external onlyOwner returns (AeolusPair newAeolusPair) {
+    function createPair(
+        string memory _symbolTokenA,
+        string memory _symbolTokenB,
+        address _aeolusRouter
+    ) external onlyOwner returns (AeolusPair newAeolusPair) {
         require(keccak256(abi.encodePacked(_symbolTokenA)) != keccak256(abi.encodePacked(_symbolTokenB)), "Aeolus: IDENTICAL_TOKEN_SYMBOL");
         // Check whether the token has been approved yet
         uint256 approvedTokenAID = symbolToApprovedTokenID[_symbolTokenA];
@@ -133,7 +137,7 @@ contract AeolusFactory is IAeolusFactory, Ownable {
         address addressOftablePairOfA = stableTokenOfA.stableAddress;
         address addresOfStableTokenOfB = stableTokenOfB.stableAddress;
 
-        newAeolusPair = new AeolusPair();
+        newAeolusPair = new AeolusPair(_aeolusRouter);
         newAeolusPair.initialize(approvedTokenAAddress, approvedTokenBAddress, addressOftablePairOfA, addresOfStableTokenOfB);
 
         string memory pairName = string(abi.encodePacked(_symbolTokenA, "-", _symbolTokenB));

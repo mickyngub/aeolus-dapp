@@ -11,7 +11,8 @@ contract AeolusPair is ERC20, ReentrancyGuard {
     using SafeERC20 for IERC20;
     bytes4 private constant SELECTOR = bytes4(keccak256(bytes("transfer(address,uint256)")));
 
-    address public factory;
+    address public aeolusFactory;
+    address public aeolusRouter;
 
     address public token0;
     address public token1;
@@ -22,8 +23,9 @@ contract AeolusPair is ERC20, ReentrancyGuard {
     mapping(address => uint256) public addressToToken0LP;
     mapping(address => uint256) public addressToToken1LP;
 
-    constructor() ERC20("AEOLUS", "AEO") {
-        factory = msg.sender;
+    constructor(address _aeolusRouter) ERC20("AEOLUS", "AEO") {
+        aeolusFactory = msg.sender;
+        aeolusRouter = _aeolusRouter;
     }
 
     function _safeTransfer(
@@ -38,14 +40,14 @@ contract AeolusPair is ERC20, ReentrancyGuard {
     event Mint(address indexed sender, uint256 amountLiquidity);
     event Burn(address indexed sender, uint256 amountUSDT, address indexed to);
 
-    // called once by the factory at time of deployment
+    // called once by the aeolusFactory at time of deployment
     function initialize(
         address _token0,
         address _token1,
         address _stable0,
         address _stable1
     ) external {
-        require(msg.sender == factory, "Aeolus: FORBIDDEN"); // sufficient check
+        require(msg.sender == aeolusFactory, "Aeolus: FORBIDDEN"); // sufficient check
         token0 = _token0;
         token1 = _token1;
         stable0 = _stable0;
@@ -57,6 +59,7 @@ contract AeolusPair is ERC20, ReentrancyGuard {
         uint256 token1LP,
         address investor
     ) public {
+        require(msg.sender == aeolusRouter, "Aeolus: ROUTER FORBIDDEN");
         addressToToken0LP[investor] = token0LP;
         addressToToken1LP[investor] = token1LP;
     }

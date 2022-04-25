@@ -1,5 +1,10 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { AeolusFactory, AeolusFactory__factory } from "../../typechain";
+import {
+  AeolusFactory,
+  AeolusFactory__factory,
+  AeolusRouter,
+  AeolusRouter__factory,
+} from "../../typechain";
 
 import AVAXJoeRouter02 from "../../deployments/AVAXJoeRouter02.json";
 import AVAXApprovedTokens from "../../deployments/AVAXApprovedTokens.json";
@@ -14,10 +19,17 @@ context("unit/AeolusFactory", () => {
   let signers: SignerWithAddress[];
 
   let AeolusFactory: AeolusFactory;
+  let AeolusRouter: AeolusRouter;
 
   before(async () => {
     [deployer, micky, ...signers] = await ethers.getSigners();
     AeolusFactory = await new AeolusFactory__factory(deployer).deploy();
+    AeolusRouter = await new AeolusRouter__factory(deployer).deploy(
+      AeolusFactory.address,
+      AVAXJoeRouter02.address,
+      AVAXStableTokens["USDT.e"].address,
+      AVAXApprovedTokens.WAVAX.address
+    );
   });
 
   describe("config AeolusFactory", async () => {
@@ -114,22 +126,22 @@ context("unit/AeolusFactory", () => {
     it("can create pair", async () => {
       // Needs to revert bc BNB is not approved yet
       await expect(
-        AeolusFactory.createPair("BNB", "WBTC.e")
+        AeolusFactory.createPair("BNB", "WBTC.e", AeolusRouter.address)
       ).to.be.revertedWith("Aeolus: TokenA is not approved");
       // Needs to revert bc LUNA is not approved yet
       await expect(
-        AeolusFactory.createPair("WBTC.e", "LUNA")
+        AeolusFactory.createPair("WBTC.e", "LUNA", AeolusRouter.address)
       ).to.be.revertedWith("Aeolus: TokenB is not approved");
       // Needs to revert since they are same token
       await expect(
-        AeolusFactory.createPair("WBTC.e", "WBTC.e")
+        AeolusFactory.createPair("WBTC.e", "WBTC.e", AeolusRouter.address)
       ).to.be.revertedWith("Aeolus: IDENTICAL_TOKEN_SYMBOL");
       // Needs to revert since it has no stable token pair
       await expect(
-        AeolusFactory.createPair("WBTC.e", "WETH.e")
+        AeolusFactory.createPair("WBTC.e", "WETH.e", AeolusRouter.address)
       ).to.be.revertedWith("Aeolus: TokenB has no stable pair");
 
-      await AeolusFactory.createPair("WBTC.e", "WAVAX");
+      await AeolusFactory.createPair("WBTC.e", "WAVAX", AeolusRouter.address);
 
       expect(await AeolusFactory.getNumberOfPools()).to.equal(1);
 

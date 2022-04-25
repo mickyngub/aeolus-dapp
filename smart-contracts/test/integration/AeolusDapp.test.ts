@@ -4,6 +4,7 @@ import {
   AeolusFactory__factory,
   AeolusRouter,
   AeolusRouter__factory,
+  AeolusPair,
   AVAXJoeRouter02 as AVAXJoeRouter02Type,
   IERC20,
   IWAVAX,
@@ -22,6 +23,7 @@ context("integration/AeolusDapp", () => {
   let signers: SignerWithAddress[];
   let AeolusFactory: AeolusFactory;
   let AeolusRouter: AeolusRouter;
+  let AeolusPair: AeolusPair;
   let ExchangeRouter: AVAXJoeRouter02Type;
 
   let AeolusFactoryAsMicky: AeolusFactory;
@@ -107,7 +109,7 @@ context("integration/AeolusDapp", () => {
     );
 
     // Create pair
-    await AeolusFactory.createPair("WBTC.e", "WETH.e");
+    await AeolusFactory.createPair("WBTC.e", "WETH.e", AeolusRouter.address);
   });
 
   before(async () => {
@@ -146,12 +148,33 @@ context("integration/AeolusDapp", () => {
   });
 
   describe("pair investing", () => {
-    it("can investPair", async () => {
+    it("can investPair WBTC.e - WETH.e", async () => {
       // console.log("get pair", await AeolusFactory.getPair(1));
       await AeolusRouterAsMicky.investPair(
         1,
         ethers.utils.parseUnits("1000", 6)
       );
+
+      // Get pair WBTC.e and WETH.e
+      const poolDetail = await AeolusFactoryAsMicky.getPair(1);
+
+      AeolusPair = await ethers.getContractAt(
+        "AeolusPair",
+        poolDetail.aeolusPairAddress
+      );
+
+      const token0LPMicky = await AeolusPair.addressToToken0LP(micky.address);
+      const token1LPMicky = await AeolusPair.addressToToken1LP(micky.address);
+
+      console.log(
+        "token0LP of Micky ",
+        token0LPMicky,
+        "token1LP of Micky ",
+        token1LPMicky
+      );
+
+      expect(token0LPMicky).to.be.above(1);
+      expect(token1LPMicky).to.be.above(1);
     });
   });
 });
