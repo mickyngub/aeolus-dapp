@@ -76,7 +76,7 @@ contract AeolusRouter is IAeolusRouter, Ownable {
         address pairALPAddress = _pairFor(exchangeFactory, tokenA, tokenAStable);
         address pairBLPAddress = _pairFor(exchangeFactory, tokenB, tokenBStable);
 
-        // Cannot use amountInvest for quarterAmountInvest since stack is too deep
+        // Cannot use amountInvest for quarterAmountInvest since STACK TOO DEEP
         AeolusPair(aeolusPairAddress).addAmountLPInvest(amountTokenALP, amountTokenBLP, pairALPAddress, pairBLPAddress, amountInvest18Decimal, msg.sender);
     }
 
@@ -85,18 +85,41 @@ contract AeolusRouter is IAeolusRouter, Ownable {
         (, address tokenA, address tokenB, address aeolusPairAddress) = FACTORY.getPair(pairID);
         (uint256 pair0LP, uint256 pair1LP, address addressPair0LP, address addressPair1LP, uint256 amountInvest) = AeolusPair(aeolusPairAddress)
             .getAmountLPInvest(msg.sender);
+
+        require(amountInvest != 0, "Aeolus: Invest first");
+
         address tokenAStable = FACTORY.getStableAddressOfApprovedToken(tokenA);
         address tokenBStable = FACTORY.getStableAddressOfApprovedToken(tokenB);
         IERC20(addressPair0LP).safeTransferFrom(aeolusPairAddress, address(this), pair0LP);
         IERC20(addressPair1LP).safeTransferFrom(aeolusPairAddress, address(this), pair1LP);
         _approveTokenIfNeeded(addressPair0LP);
         _approveTokenIfNeeded(addressPair1LP);
-        (uint256 amountTokenA, uint256 amountTokenAStable) = ROUTER.removeLiquidity(tokenA, tokenAStable, pair0LP, 0, 0, msg.sender, block.timestamp);
-        (uint256 amountTokenB, uint256 amountTokenBStable) = ROUTER.removeLiquidity(tokenB, tokenBStable, pair1LP, 0, 0, msg.sender, block.timestamp);
-        // console.log("amountTokenA is %s amountTokenAStable is %s", amountTokenA, amountTokenAStable);
+
+        // Quick solution to STACK TOO DEEP
+        (, address tokenA2, address tokenB2, ) = FACTORY.getPair(pairID);
+
+        (uint256 amountTokenA, uint256 amountTokenAStable) = ROUTER.removeLiquidity(tokenA2, tokenAStable, pair0LP, 0, 0, address(this), block.timestamp);
+        (uint256 amountTokenB, uint256 amountTokenBStable) = ROUTER.removeLiquidity(tokenB2, tokenBStable, pair1LP, 0, 0, address(this), block.timestamp);
+
+        console.log("amountTokenA is %s amountTokenAStable is %s", amountTokenA, amountTokenAStable);
+        console.log("Balance of tokenA", IERC20(tokenA2).balanceOf(address(this)));
         // console.log("amountTokenB is %s amountTokenBStable is %s", amountTokenB, amountTokenBStable);
-        // uint256 amountUSDTdoteRedeem = _swap(tokenA, amountTokenA, USDTdotE, address(this));
-        // console.log("amount usdt redeeeeem", amountUSDTdoteRedeem);
+        uint256 amountUSDTdoteRedeem = _swap(tokenA2, amountTokenA, USDTdotE, address(this)) + _swap(tokenB2, amountTokenB, USDTdotE, address(this));
+        if (tokenAStable == USDTdotE) {
+            amountUSDTdoteRedeem = amountUSDTdoteRedeem + amountTokenAStable;
+        } else {
+            amountUSDTdoteRedeem = amountUSDTdoteRedeem + _swap(tokenAStable, amountTokenAStable, USDTdotE, address(this));
+        }
+
+        if (tokenBStable == USDTdotE) {
+            amountUSDTdoteRedeem = amountUSDTdoteRedeem + amountTokenAStable;
+        } else {
+            amountUSDTdoteRedeem = amountUSDTdoteRedeem + _swap(tokenBStable, amountTokenBStable, USDTdotE, address(this));
+        }
+        console.log("amount usdt redeeeeem", amountUSDTdoteRedeem);
+        console.log("usdtdote allowance", IERC20(USDTdotE).allowance(address(this), msg.sender));
+        console.log("amount usdt in contract", IERC20(USDTdotE).balanceOf(address(this)));
+        IERC20(USDTdotE).safeTransfer(msg.sender, amountUSDTdoteRedeem);
     }
 
     /* ========== Private Functions ========== */
