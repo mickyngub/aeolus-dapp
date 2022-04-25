@@ -17,7 +17,7 @@ import AVAXStableTokens from "../../deployments/AVAXStableTokens.json";
 import { expect } from "chai";
 import { ethers } from "hardhat";
 
-context("integration/AeolusDapp", () => {
+context("unit/AeolusPair", () => {
   let deployer: SignerWithAddress;
   let micky: SignerWithAddress;
   let signers: SignerWithAddress[];
@@ -32,13 +32,9 @@ context("integration/AeolusDapp", () => {
 
   let WAVAX: IWAVAX;
   let USDTdote: IERC20;
-  let WBTCdote: IERC20;
-  let WETHdote: IERC20;
 
   let WAVAXAsMicky: IWAVAX;
   let USDTdoteAsMicky: IERC20;
-  let WBTCdoteAsMicky: IERC20;
-  let WETHdoteAsMicky: IERC20;
 
   before(async () => {
     [deployer, micky, ...signers] = await ethers.getSigners();
@@ -142,12 +138,41 @@ context("integration/AeolusDapp", () => {
     );
   });
 
-  describe("pair investing", () => {
-    it("can investPair WBTC.e - WETH.e", async () => {
+  describe("Aeolus Pair", () => {
+    it("displays correct pair name and pair symbol", async () => {
+      // Get pair WBTC.e and WETH.e
+      const poolDetail = await AeolusFactoryAsMicky.getPair(1);
+
+      AeolusPair = await ethers.getContractAt(
+        "AeolusPair",
+        poolDetail.aeolusPairAddress
+      );
+
+      const pairName = await AeolusPair.name();
+      const pairSymbol = await AeolusPair.symbol();
+
+      expect(pairName).to.be.equal("1-AEOLUS");
+      expect(pairSymbol).to.be.equal("WBTC.e-WETH.e");
+    });
+
+    it("displays correct amount of LP deposited", async () => {
       await AeolusRouterAsMicky.investPair(
         1,
         ethers.utils.parseUnits("1000", 6)
       );
+
+      const token0LPMicky = await AeolusPair.addressToToken0LP(micky.address);
+      const token1LPMicky = await AeolusPair.addressToToken1LP(micky.address);
+      const amountInvestMicky = await AeolusPair.addressToAmountInvest(
+        micky.address
+      );
+
+      let balanceOfAeolusPair = await AeolusPair.balanceOf(micky.address);
+      console.log("post balance aeolusPair", balanceOfAeolusPair);
+
+      expect(token0LPMicky).to.be.above(1);
+      expect(token1LPMicky).to.be.above(1);
+      expect(amountInvestMicky).to.be.equal(ethers.utils.parseEther("1000"));
     });
   });
 });
