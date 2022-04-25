@@ -167,12 +167,28 @@ context("unit/AeolusPair", () => {
         micky.address
       );
 
-      let balanceOfAeolusPair = await AeolusPair.balanceOf(micky.address);
-      console.log("post balance aeolusPair", balanceOfAeolusPair);
+      const balanceOfAeolusPair = await AeolusPair.balanceOf(micky.address);
+      expect(balanceOfAeolusPair).to.be.equal(ethers.utils.parseEther("1000"));
 
       expect(token0LPMicky).to.be.above(1);
       expect(token1LPMicky).to.be.above(1);
       expect(amountInvestMicky).to.be.equal(ethers.utils.parseEther("1000"));
+    });
+    it("remove LP amount after redeeming", async () => {
+      await AeolusRouterAsMicky.redeemPair(1);
+
+      const token0LPMicky = await AeolusPair.addressToPair0LP(micky.address);
+      const token1LPMicky = await AeolusPair.addressToPair1LP(micky.address);
+      const amountInvestMicky = await AeolusPair.addressToAmountInvest(
+        micky.address
+      );
+
+      const balanceOfAeolusPair = await AeolusPair.balanceOf(micky.address);
+      expect(balanceOfAeolusPair).to.be.equal(0);
+
+      expect(token0LPMicky).to.be.equal(0);
+      expect(token1LPMicky).to.be.equal(0);
+      expect(amountInvestMicky).to.be.equal(0);
     });
   });
 });

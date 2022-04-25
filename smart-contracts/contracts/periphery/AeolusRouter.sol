@@ -110,6 +110,7 @@ contract AeolusRouter is IAeolusRouter, Ownable {
         } else {
             amountUSDTdoteRedeem = amountUSDTdoteRedeem + _swap(tokenBStable, amountTokenBStable, USDTdotE, address(this));
         }
+        AeolusPair(aeolusPairAddress).removeAmountLPInvest(msg.sender);
         IERC20(USDTdotE).safeTransfer(msg.sender, amountUSDTdoteRedeem);
     }
 
