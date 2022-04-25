@@ -2,11 +2,12 @@
 pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 import "./interfaces/IAeolusFactory.sol";
 import "./AeolusPair.sol";
 
 contract AeolusFactory is IAeolusFactory, Ownable {
-    event PairCreated(string indexed token0, string indexed token1, uint256 id);
+    event PairCreated(string indexed pairSymbol, uint256 id);
 
     struct ApprovedToken {
         string tokenSymbol;
@@ -137,20 +138,22 @@ contract AeolusFactory is IAeolusFactory, Ownable {
         address addressOftablePairOfA = stableTokenOfA.stableAddress;
         address addresOfStableTokenOfB = stableTokenOfB.stableAddress;
 
-        newAeolusPair = new AeolusPair(_aeolusRouter);
+        uint256 pairID = pairs.length;
+        string memory pairName = string(abi.encodePacked(Strings.toString(pairID), "-AEOLUS"));
+        string memory pairSymbol = string(abi.encodePacked(_symbolTokenA, "-", _symbolTokenB));
+
+        newAeolusPair = new AeolusPair(_aeolusRouter, pairName, pairSymbol);
         newAeolusPair.initialize(approvedTokenAAddress, approvedTokenBAddress, addressOftablePairOfA, addresOfStableTokenOfB);
 
-        string memory pairName = string(abi.encodePacked(_symbolTokenA, "-", _symbolTokenB));
-
         Pair memory newPair = Pair(
-            pairName,
+            pairSymbol,
             approvedTokens[approvedTokenAID].tokenAddress,
             approvedTokens[approvedTokenBID].tokenAddress,
             address(newAeolusPair)
         );
-        nameToPairID[pairName] = pairs.length;
+        nameToPairID[pairSymbol] = pairID;
         pairs.push(newPair);
 
-        emit PairCreated(_symbolTokenA, _symbolTokenB, pairs.length - 1);
+        emit PairCreated(pairSymbol, pairID);
     }
 }

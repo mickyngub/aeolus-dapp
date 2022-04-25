@@ -24,7 +24,11 @@ contract AeolusPair is ERC20, ReentrancyGuard {
     mapping(address => uint256) public addressToToken1LP;
     mapping(address => uint256) public addressToAmountInvest;
 
-    constructor(address _aeolusRouter) ERC20("AEOLUS", "AEO") {
+    constructor(
+        address _aeolusRouter,
+        string memory _pairName,
+        string memory _pairSymbol
+    ) ERC20(_pairName, _pairSymbol) {
         aeolusFactory = msg.sender;
         aeolusRouter = _aeolusRouter;
     }

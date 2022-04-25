@@ -172,21 +172,18 @@ context("integration/AeolusDapp", () => {
         micky.address
       );
 
-      console.log(
-        "token0LP of Micky ",
-        token0LPMicky,
-        "token1LP of Micky ",
-        token1LPMicky,
-        "amount invest ",
-        amountInvestMicky
-      );
-
       let balanceOfAeolusPair = await AeolusPair.balanceOf(micky.address);
       console.log("post balance aeolusPair", balanceOfAeolusPair);
+
+      const pairName = await AeolusPair.name();
+      const pairSymbol = await AeolusPair.symbol();
 
       expect(token0LPMicky).to.be.above(1);
       expect(token1LPMicky).to.be.above(1);
       expect(amountInvestMicky).to.be.equal(ethers.utils.parseEther("1000"));
+
+      expect(pairName).to.be.equal("1-AEOLUS");
+      expect(pairSymbol).to.be.equal("WBTC.e-WETH.e");
     });
   });
 });
