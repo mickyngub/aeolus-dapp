@@ -8,6 +8,7 @@ import "@nomiclabs/hardhat-waffle";
 import "@typechain/hardhat";
 import "hardhat-gas-reporter";
 import "solidity-coverage";
+import "solidity-docgen";
 
 if (!process.env.COMPILE_ONLY) {
   import("./tasks/accounts");
