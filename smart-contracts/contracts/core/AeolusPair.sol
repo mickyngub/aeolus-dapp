@@ -67,7 +67,7 @@ contract AeolusPair is ERC20, IAeolusPair, ReentrancyGuard {
         address _token1,
         address _stable0,
         address _stable1
-    ) external {
+    ) external nonReentrant {
         if (msg.sender != aeolusFactory) revert NotAeolusFactory(msg.sender);
         token0 = _token0;
         token1 = _token1;
@@ -91,7 +91,7 @@ contract AeolusPair is ERC20, IAeolusPair, ReentrancyGuard {
         address _addressPair1LP,
         uint256 amountInvest,
         address investor
-    ) public {
+    ) external {
         if (msg.sender != aeolusRouter) revert NotAeolusRouter(msg.sender);
         addressToPair0LP[investor] = pair0LP;
         addressToPair1LP[investor] = pair1LP;

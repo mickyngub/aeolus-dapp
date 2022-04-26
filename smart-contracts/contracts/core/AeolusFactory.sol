@@ -7,6 +7,7 @@ pragma solidity ^0.8.9;
  * @custom:experimental This is an experimental contract.
  */
 
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "./interfaces/IAeolusFactory.sol";
@@ -43,7 +44,7 @@ error ZeroAddress(address tokenAddress);
  */
 error IdenticalTokenSymbol(string tokenSymbol);
 
-contract AeolusFactory is IAeolusFactory, Ownable {
+contract AeolusFactory is IAeolusFactory, ReentrancyGuard, Ownable {
     event PairCreated(string indexed pairSymbol, uint256 id);
 
     struct ApprovedToken {
@@ -93,7 +94,7 @@ contract AeolusFactory is IAeolusFactory, Ownable {
      * @return aeolusPairAddress address of created AeolusPair
      */
     function getPair(uint256 poolID)
-        public
+        external
         view
         returns (
             string memory name,
@@ -132,7 +133,7 @@ contract AeolusFactory is IAeolusFactory, Ownable {
      * @return stableSymbol symbol of stable token of the approved token
      * @return stableAddress address of stable token of the approved token
      */
-    function getStableTokenOfApprovedToken(string memory _symbolApprovedToken) public view returns (string memory stableSymbol, address stableAddress) {
+    function getStableTokenOfApprovedToken(string memory _symbolApprovedToken) external view returns (string memory stableSymbol, address stableAddress) {
         uint256 approvedTokenID = symbolToApprovedTokenID[_symbolApprovedToken];
         uint256 stableTokenID = approvedTokenIDToStableTokenID[approvedTokenID];
         StableToken memory stableToken = stableTokens[stableTokenID];
@@ -144,7 +145,7 @@ contract AeolusFactory is IAeolusFactory, Ownable {
      * @param approvedToken address of approved token
      * @return stableAddress address of stable token of approved token
      */
-    function getStableAddressOfApprovedToken(address approvedToken) public view returns (address stableAddress) {
+    function getStableAddressOfApprovedToken(address approvedToken) external view returns (address stableAddress) {
         return addressApprovedTokenToAddressStableToken[approvedToken];
     }
 
@@ -205,7 +206,7 @@ contract AeolusFactory is IAeolusFactory, Ownable {
         string memory _symbolTokenA,
         string memory _symbolTokenB,
         address _aeolusRouter
-    ) external onlyOwner returns (AeolusPair newAeolusPair) {
+    ) external onlyOwner nonReentrant returns (AeolusPair newAeolusPair) {
         if (keccak256(abi.encodePacked(_symbolTokenA)) == keccak256(abi.encodePacked(_symbolTokenB))) revert IdenticalTokenSymbol(_symbolTokenA);
         // Check whether the token has been approved yet
         uint256 approvedTokenAID = symbolToApprovedTokenID[_symbolTokenA];
