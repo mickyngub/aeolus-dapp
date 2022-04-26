@@ -17,20 +17,35 @@ import "../core/AeolusPair.sol";
 
 import "hardhat/console.sol";
 
+/**
+ * @dev need to invest more than 0 USDT.e
+ * @param amountInvest sent amount
+ */
+
+error InvalidAmount(uint256 amountInvest);
+
+/**
+ * @dev currentAmountInvest needs to be more than 0 USDT.e
+ * @param currentAmountInvest current amount invest
+ */
+
+error NotInvestor(uint256 currentAmountInvest);
+
 contract AeolusRouter is IAeolusRouter, Ownable {
     using SafeERC20 for IERC20;
-
+    /**
+     * @dev AeolusFactory for creating and getting pair
+     */
     AeolusFactory public FACTORY;
-    // Exchange Router for swapping, addding lp, removing lp
+
+    /**
+     * @dev Exchange Router for swapping, addding lp, removing lp
+     */
     IExchangeRouter public EXCHANGE_ROUTER;
 
-    // address public USDTdotE = 0xc7198437980c041c805a1edcba50c1ce5db95118;
-    // address public WAVAX = 0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7;
+    address public exchangeFactory;
     address public USDTdotE;
     address public WAVAX;
-    address public exchangeFactory;
-
-    // address public exchangeFactory = 0x9Ad6C38BE94206cA50bb0d90783181662f0Cfa10;
 
     constructor(
         address _factory,
@@ -48,7 +63,14 @@ contract AeolusRouter is IAeolusRouter, Ownable {
 
     receive() external payable {}
 
+    /**
+     * @dev invest money into selected pair ID
+     * @param pairID pair ID in AeolusFactory
+     * @param amountInvest amount of money invest in USDT.e (6 decimals)
+     */
+
     function investPair(uint256 pairID, uint256 amountInvest) external returns (uint256 amountTokenALP, uint256 amountTokenBLP) {
+        if (amountInvest == 0) revert InvalidAmount(amountInvest);
         IERC20(USDTdotE).safeTransferFrom(msg.sender, address(this), amountInvest);
         _approveTokenIfNeeded(USDTdotE);
 
@@ -84,17 +106,21 @@ contract AeolusRouter is IAeolusRouter, Ownable {
         address pairALPAddress = _pairFor(exchangeFactory, tokenA, tokenAStable);
         address pairBLPAddress = _pairFor(exchangeFactory, tokenB, tokenBStable);
 
-        // Cannot use amountInvest for quarterAmountInvest since STACK TOO DEEP
+        // Cannot use amountInvest for quarterAmountInvest - STACK TOO DEEP
         AeolusPair(aeolusPairAddress).addAmountLPInvest(amountTokenALP, amountTokenBLP, pairALPAddress, pairBLPAddress, amountInvest18Decimal, msg.sender);
     }
 
-    // **** REMOVE LIQUIDITY ****
+    /**
+     * @dev redeem invested money
+     * @param pairID pair ID in AeolusFactory
+     */
+
     function redeemPair(uint256 pairID) external {
         (, address tokenA, address tokenB, address aeolusPairAddress) = FACTORY.getPair(pairID);
         (uint256 pair0LP, uint256 pair1LP, address addressPair0LP, address addressPair1LP, uint256 amountInvest) = AeolusPair(aeolusPairAddress)
             .getAmountLPInvest(msg.sender);
 
-        require(amountInvest != 0, "Aeolus: Invest first");
+        if (amountInvest == 0) revert NotInvestor({currentAmountInvest: amountInvest});
 
         address tokenAStable = FACTORY.getStableAddressOfApprovedToken(tokenA);
         address tokenBStable = FACTORY.getStableAddressOfApprovedToken(tokenB);
@@ -103,7 +129,7 @@ contract AeolusRouter is IAeolusRouter, Ownable {
         _approveTokenIfNeeded(addressPair0LP);
         _approveTokenIfNeeded(addressPair1LP);
 
-        // Quick solution to STACK TOO DEEP
+        // Quick solution - STACK TOO DEEP
         (, address tokenA2, address tokenB2, ) = FACTORY.getPair(pairID);
 
         (uint256 amountTokenA, uint256 amountTokenAStable) = EXCHANGE_ROUTER.removeLiquidity(
@@ -141,13 +167,19 @@ contract AeolusRouter is IAeolusRouter, Ownable {
         IERC20(USDTdotE).safeTransfer(msg.sender, amountUSDTdoteRedeem);
     }
 
-    /* ========== Private Functions ========== */
+    /**
+     * @dev private function for sorting token by address
+     */
 
     function sortTokens(address tokenA, address tokenB) private pure returns (address token0, address token1) {
         require(tokenA != tokenB, "Aeolus: IDENTICAL_ADDRESSES");
         (token0, token1) = tokenA < tokenB ? (tokenA, tokenB) : (tokenB, tokenA);
         require(token0 != address(0), "Aeolus: ZERO_ADDRESS");
     }
+
+    /**
+     * @dev private function for getting address of LP pair
+     */
 
     function _pairFor(
         address factory,
@@ -171,11 +203,19 @@ contract AeolusRouter is IAeolusRouter, Ownable {
         );
     }
 
+    /**
+     * @dev private function for approving token spending
+     */
+
     function _approveTokenIfNeeded(address token) private {
         if (IERC20(token).allowance(address(this), address(EXCHANGE_ROUTER)) == 0) {
             IERC20(token).approve(address(EXCHANGE_ROUTER), type(uint256).max);
         }
     }
+
+    /**
+     * @dev private function for swapping
+     */
 
     function _swap(
         address _from,
@@ -194,15 +234,17 @@ contract AeolusRouter is IAeolusRouter, Ownable {
         return uint256(amounts[amounts.length - 1]);
     }
 
-    /* ========== Admin FUNCTIONS ========== */
-
-    function updateFactory(address _factory) external onlyOwner {
-        FACTORY = AeolusFactory(_factory);
-    }
+    /**
+     * @dev onlyOwner function for updating Exchange Router address
+     */
 
     function updateExchangeRouter(address _router) external onlyOwner {
         EXCHANGE_ROUTER = IExchangeRouter(_router);
     }
+
+    /**
+     * @dev onlyOwner function for updating Exchange Factory address
+     */
 
     function updateExchangeFactory(address _exchangeFactory) external onlyOwner {
         exchangeFactory = _exchangeFactory;

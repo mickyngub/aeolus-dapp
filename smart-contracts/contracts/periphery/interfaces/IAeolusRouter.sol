@@ -12,8 +12,6 @@ interface IAeolusRouter {
 
     function redeemPair(uint256 pairID) external;
 
-    function updateFactory(address _factory) external;
-
     function updateExchangeFactory(address _exchangeFactory) external;
 
     function updateExchangeRouter(address _router) external;
