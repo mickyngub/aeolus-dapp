@@ -2,41 +2,19 @@
 pragma solidity ^0.8.9;
 
 interface IAeolusRouter {
+    function USDTdotE() external view returns (address);
+
+    function WAVAX() external view returns (address);
+
+    function exchangeFactory() external view returns (address);
+
     function investPair(uint256 pairID, uint256 amount) external returns (uint256 tokenALP, uint256 tokenBLP);
 
-    // function investTriple(
-    //     address usdt,
-    //     uint256 amountADesired,
-    //     uint256 amountBDesired,
-    //     uint256 amountAMin,
-    //     uint256 amountBMin,
-    //     address to,
-    //     uint256 deadline
-    // )
-    //     external
-    //     returns (
-    //         uint256 amountA,
-    //         uint256 amountB,
-    //         uint256 liquidity
-    //     );
+    function redeemPair(uint256 pairID) external;
 
-    // function redeemPair(
-    //     address tokenA,
-    //     address tokenB,
-    //     uint256 liquidity,
-    //     uint256 amountAMin,
-    //     uint256 amountBMin,
-    //     address to,
-    //     uint256 deadline
-    // ) external returns (uint256 amountA, uint256 amountB);
+    function updateFactory(address _factory) external;
 
-    // function redeemTriple(
-    //     address tokenA,
-    //     address tokenB,
-    //     uint256 liquidity,
-    //     uint256 amountAMin,
-    //     uint256 amountBMin,
-    //     address to,
-    //     uint256 deadline
-    // ) external returns (uint256 amountA, uint256 amountB);
+    function updateExchangeFactory(address _exchangeFactory) external;
+
+    function updateExchangeRouter(address _router) external;
 }
