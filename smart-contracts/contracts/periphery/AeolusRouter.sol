@@ -235,7 +235,7 @@ contract AeolusRouter is IAeolusRouter, Ownable {
     }
 
     /**
-     * @dev onlyOwner function for updating Exchange Router address
+     * @dev ADMIN function for updating Exchange Router address
      */
 
     function updateExchangeRouter(address _router) external onlyOwner {
@@ -243,7 +243,7 @@ contract AeolusRouter is IAeolusRouter, Ownable {
     }
 
     /**
-     * @dev onlyOwner function for updating Exchange Factory address
+     * @dev ADMIN function for updating Exchange Factory address
      */
 
     function updateExchangeFactory(address _exchangeFactory) external onlyOwner {
