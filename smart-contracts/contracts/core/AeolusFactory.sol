@@ -1,6 +1,12 @@
 // SPDX-License-Identifier: MIT LICENSE
 pragma solidity ^0.8.9;
 
+/**
+ * @title AeolusFactory
+ * @author Pichaya Puttekulangkura
+ * @custom:experimental This is an experimental contract.
+ */
+
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "./interfaces/IAeolusFactory.sol";

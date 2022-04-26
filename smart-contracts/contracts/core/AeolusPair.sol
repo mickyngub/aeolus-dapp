@@ -1,6 +1,12 @@
 // SPDX-License-Identifier: MIT LICENSE
 pragma solidity ^0.8.9;
 
+/**
+ * @title AeolusPair
+ * @author Pichaya Puttekulangkura
+ * @custom:experimental This is an experimental contract.
+ */
+
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
