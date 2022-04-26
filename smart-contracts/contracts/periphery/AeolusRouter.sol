@@ -71,8 +71,9 @@ contract AeolusRouter is IAeolusRouter, Ownable {
      * @dev invest money into selected pair ID
      * @param pairID pair ID in AeolusFactory
      * @param amountInvest amount of money invest in USDT.e (6 decimals)
+     * @return amountTokenALP amount of LP from tokenA and its stable pair
+     * @return amountTokenBLP amount of LP from tokenB and its stable pair
      */
-
     function investPair(uint256 pairID, uint256 amountInvest) external returns (uint256 amountTokenALP, uint256 amountTokenBLP) {
         if (amountInvest == 0) revert InvalidAmount(amountInvest);
         IERC20(USDTdotE).safeTransferFrom(msg.sender, address(this), amountInvest);
@@ -118,7 +119,6 @@ contract AeolusRouter is IAeolusRouter, Ownable {
      * @dev redeem invested money
      * @param pairID pair ID in AeolusFactory
      */
-
     function redeemPair(uint256 pairID) external {
         (, address tokenA, address tokenB, address aeolusPairAddress) = FACTORY.getPair(pairID);
         (uint256 pair0LP, uint256 pair1LP, address addressPair0LP, address addressPair1LP, uint256 amountInvest) = AeolusPair(aeolusPairAddress)
@@ -172,7 +172,11 @@ contract AeolusRouter is IAeolusRouter, Ownable {
     }
 
     /**
-     * @dev private function for sorting token by address
+     * @dev PRIVATE function for sorting token by address
+     * @param tokenA address of tokenA
+     * @param tokenB address of tokenB
+     * @return token0 address of sorted token0
+     * @return token1 address of sorted token1
      */
     function sortTokens(address tokenA, address tokenB) private pure returns (address token0, address token1) {
         if (tokenA == tokenB) revert IdenticalTokenAddress(tokenA);
@@ -181,7 +185,11 @@ contract AeolusRouter is IAeolusRouter, Ownable {
     }
 
     /**
-     * @dev private function for getting address of LP pair
+     * @dev PRIVATE function for getting address of LP pair
+     * @param factory address of exchange factory
+     * @param tokenA address of tokenA
+     * @param tokenB address of tokenB
+     * @return pair LP address of tokenA and tokenB
      */
     function _pairFor(
         address factory,
@@ -206,7 +214,8 @@ contract AeolusRouter is IAeolusRouter, Ownable {
     }
 
     /**
-     * @dev private function for approving token spending
+     * @dev PRIVATE function for approving token spending
+     * @param token address of token
      */
     function _approveTokenIfNeeded(address token) private {
         if (IERC20(token).allowance(address(this), address(EXCHANGE_ROUTER)) == 0) {
@@ -215,7 +224,12 @@ contract AeolusRouter is IAeolusRouter, Ownable {
     }
 
     /**
-     * @dev private function for swapping
+     * @dev PRIVATE function for swapping
+     * @param _from address of token to swap
+     * @param amountInvest amount of token to swap
+     * @param _to address of token to get
+     * @param receiver address to send swapped token to
+     * @return amount of token to get
      */
     function _swap(
         address _from,
