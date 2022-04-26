@@ -76,11 +76,11 @@ context("unit/AeolusFactory", () => {
       // Needs to revert bc BNB is not approved yet
       await expect(
         AeolusFactory.linkOrUpdateApprovedTokenToStableToken("BNB", "USDT.e")
-      ).to.be.revertedWith("Approved Token DNE");
+      ).to.be.revertedWith(`custom error 'TokenNotApproved("BNB")'`);
       // Needs to revert bc MIM is not added yet
       await expect(
         AeolusFactory.linkOrUpdateApprovedTokenToStableToken("WBTC.e", "MIM")
-      ).to.be.revertedWith("Stable Pair DNE");
+      ).to.be.revertedWith(`custom error 'TokenNotApproved("MIM")'`);
 
       // Link approved token to stable token
       await AeolusFactory.linkOrUpdateApprovedTokenToStableToken(
@@ -129,19 +129,19 @@ context("unit/AeolusFactory", () => {
       // Needs to revert bc BNB is not approved yet
       await expect(
         AeolusFactory.createPair("BNB", "WBTC.e", AeolusRouter.address)
-      ).to.be.revertedWith("Aeolus: TokenA is not approved");
+      ).to.be.revertedWith(`custom error 'TokenNotApproved("BNB")'`);
       // Needs to revert bc LUNA is not approved yet
       await expect(
         AeolusFactory.createPair("WBTC.e", "LUNA", AeolusRouter.address)
-      ).to.be.revertedWith("Aeolus: TokenB is not approved");
+      ).to.be.revertedWith(`custom error 'TokenNotApproved("LUNA")'`);
       // Needs to revert since they are same token
       await expect(
         AeolusFactory.createPair("WBTC.e", "WBTC.e", AeolusRouter.address)
-      ).to.be.revertedWith("Aeolus: IDENTICAL_TOKEN_SYMBOL");
+      ).to.be.revertedWith(`custom error 'IdenticalTokenSymbol("WBTC.e")'`);
       // Needs to revert since it has no stable token pair
       await expect(
         AeolusFactory.createPair("WBTC.e", "WETH.e", AeolusRouter.address)
-      ).to.be.revertedWith("Aeolus: TokenB has no stable pair");
+      ).to.be.revertedWith(`custom error 'TokenHasNoStablePair("WETH.e")'`);
 
       await AeolusFactory.createPair("WBTC.e", "WAVAX", AeolusRouter.address);
 

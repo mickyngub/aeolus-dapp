@@ -12,6 +12,37 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "./interfaces/IAeolusFactory.sol";
 import "./AeolusPair.sol";
 
+/**
+ * @dev token needs to be approved
+ * @param tokenSymbol symbol of token
+ */
+error TokenNotApproved(string tokenSymbol);
+
+/**
+ * @dev token is already approved
+ * @param tokenSymbol symbol of token
+ * @param tokenAddress address of token
+ */
+error TokenAlreadyApproved(string tokenSymbol, address tokenAddress);
+
+/**
+ * @dev token has no stable pair
+ * @param tokenSymbol symbol of token
+ */
+error TokenHasNoStablePair(string tokenSymbol);
+
+/**
+ * @dev address sent is address(0)
+ * @param tokenAddress sent token address
+ */
+error ZeroAddress(address tokenAddress);
+
+/**
+ * @dev token symbols sent are identical
+ * @param tokenSymbol symbol of token
+ */
+error IdenticalTokenSymbol(string tokenSymbol);
+
 contract AeolusFactory is IAeolusFactory, Ownable {
     event PairCreated(string indexed pairSymbol, uint256 id);
 
@@ -44,13 +75,23 @@ contract AeolusFactory is IAeolusFactory, Ownable {
     Pair[] public pairs;
     mapping(string => uint256) public nameToPairID;
 
+    /**
+     * @dev make the arrays start from index 1 since mapping will always return 0 if DNE
+     */
     constructor() {
-        // Make the array starts from index 1 since mapping will always return 0 if DNE
         approvedTokens.push(ApprovedToken("BaseApprovedToken", address(0)));
         stableTokens.push(StableToken("BaseStableToken", address(0)));
         pairs.push(Pair("BasePair", address(0), address(0), address(0)));
     }
 
+    /**
+     * @dev get created AeolusPair by poolID
+     * @param poolID poolID of created AeolusPair
+     * @return name name of the created AeolusPair
+     * @return tokenA address of tokenA
+     * @return tokenB address of tokenB
+     * @return aeolusPairAddress address of created AeolusPair
+     */
     function getPair(uint256 poolID)
         public
         view
@@ -64,18 +105,33 @@ contract AeolusFactory is IAeolusFactory, Ownable {
         return (pairs[poolID].name, pairs[poolID].token0, pairs[poolID].token1, pairs[poolID].aeolusPairAddress);
     }
 
+    /**
+     * @dev get number of created AeolusPair
+     */
     function getNumberOfPools() external view returns (uint256 numberOfPools) {
         return pairs.length - 1;
     }
 
+    /**
+     * @dev get number of approved tokens
+     */
     function getNumberOfApprovedTokens() external view returns (uint256 numberOfApprovedTokens) {
         return approvedTokens.length - 1;
     }
 
+    /**
+     * @dev get number of approved stable tokens
+     */
     function getNumberOfStableTokens() external view returns (uint256 numberOfStableTokens) {
         return stableTokens.length - 1;
     }
 
+    /**
+     * @dev get stable token's symbol and address of approved token
+     * @param _symbolApprovedToken symbol of approved token
+     * @return stableSymbol symbol of stable token of the approved token
+     * @return stableAddress address of stable token of the approved token
+     */
     function getStableTokenOfApprovedToken(string memory _symbolApprovedToken) public view returns (string memory stableSymbol, address stableAddress) {
         uint256 approvedTokenID = symbolToApprovedTokenID[_symbolApprovedToken];
         uint256 stableTokenID = approvedTokenIDToStableTokenID[approvedTokenID];
@@ -83,32 +139,52 @@ contract AeolusFactory is IAeolusFactory, Ownable {
         return (stableToken.stableSymbol, stableToken.stableAddress);
     }
 
+    /**
+     * @dev get stable token's address of approved token
+     * @param approvedToken address of approved token
+     * @return stableAddress address of stable token of approved token
+     */
     function getStableAddressOfApprovedToken(address approvedToken) public view returns (address stableAddress) {
         return addressApprovedTokenToAddressStableToken[approvedToken];
     }
 
     /**
-    ADMIN FUNCTION */
-
+     * @dev ADMIN function for adding approved token
+     * @param _symbolApprovedToken symbol of approved token
+     * @param _address address of approved token
+     */
     function addApprovedToken(string memory _symbolApprovedToken, address _address) external onlyOwner {
-        require(symbolToApprovedTokenID[_symbolApprovedToken] == 0, "Approved Token Already Exists");
-        require(_address != address(0), "Aeolus: ZERO_ADDRESS");
+        if (symbolToApprovedTokenID[_symbolApprovedToken] != 0) revert TokenAlreadyApproved(_symbolApprovedToken, _address);
+        if (_address == address(0)) revert ZeroAddress(_address);
+
         ApprovedToken memory newApprovedToken = ApprovedToken(_symbolApprovedToken, _address);
         symbolToApprovedTokenID[_symbolApprovedToken] = approvedTokens.length;
         approvedTokens.push(newApprovedToken);
     }
 
+    /**
+     * @dev ADMIN function for adding stable token
+     * @param _symbolStableToken symbol of stable token
+     * @param _address address of stable token
+     */
     function addStableToken(string memory _symbolStableToken, address _address) external onlyOwner {
-        require(symbolToStableTokenID[_symbolStableToken] == 0, "Stable Pair Already Exists");
-        require(_address != address(0), "Aeolus: ZERO_ADDRESS");
+        if (symbolToStableTokenID[_symbolStableToken] != 0) revert TokenAlreadyApproved(_symbolStableToken, _address);
+        if (_address == address(0)) revert ZeroAddress(_address);
+
         StableToken memory newStableToken = StableToken(_symbolStableToken, _address);
         symbolToStableTokenID[_symbolStableToken] = stableTokens.length;
         stableTokens.push(newStableToken);
     }
 
+    /**
+     * @dev ADMIN function for linking or updating pair between approved token and stable token
+     * @param _symbolApprovedToken symbol of approved token
+     * @param _symbolStableToken symbol of stable token
+     */
     function linkOrUpdateApprovedTokenToStableToken(string memory _symbolApprovedToken, string memory _symbolStableToken) external onlyOwner {
-        require(symbolToApprovedTokenID[_symbolApprovedToken] != 0, "Approved Token DNE");
-        require(symbolToStableTokenID[_symbolStableToken] != 0, "Stable Pair DNE");
+        if (symbolToApprovedTokenID[_symbolApprovedToken] == 0) revert TokenNotApproved(_symbolApprovedToken);
+        if (symbolToStableTokenID[_symbolStableToken] == 0) revert TokenNotApproved(_symbolStableToken);
+
         uint256 approvedTokenID = symbolToApprovedTokenID[_symbolApprovedToken];
         uint256 stableTokenID = symbolToStableTokenID[_symbolStableToken];
 
@@ -119,18 +195,24 @@ contract AeolusFactory is IAeolusFactory, Ownable {
         approvedTokenIDToStableTokenID[approvedTokenID] = stableTokenID;
     }
 
+    /**
+     * @dev ADMIN function for creating AeolusPair
+     * @param _symbolTokenA symbol of approved tokenA
+     * @param _symbolTokenB symbol of approved tokenB
+     * @param _aeolusRouter address of AeolusRouter
+     */
     function createPair(
         string memory _symbolTokenA,
         string memory _symbolTokenB,
         address _aeolusRouter
     ) external onlyOwner returns (AeolusPair newAeolusPair) {
-        require(keccak256(abi.encodePacked(_symbolTokenA)) != keccak256(abi.encodePacked(_symbolTokenB)), "Aeolus: IDENTICAL_TOKEN_SYMBOL");
+        if (keccak256(abi.encodePacked(_symbolTokenA)) == keccak256(abi.encodePacked(_symbolTokenB))) revert IdenticalTokenSymbol(_symbolTokenA);
         // Check whether the token has been approved yet
         uint256 approvedTokenAID = symbolToApprovedTokenID[_symbolTokenA];
         uint256 approvedTokenBID = symbolToApprovedTokenID[_symbolTokenB];
 
-        require(approvedTokenAID != 0, "Aeolus: TokenA is not approved");
-        require(approvedTokenBID != 0, "Aeolus: TokenB is not approved");
+        if (approvedTokenAID == 0) revert TokenNotApproved(_symbolTokenA);
+        if (approvedTokenBID == 0) revert TokenNotApproved(_symbolTokenB);
 
         address approvedTokenAAddress = approvedTokens[approvedTokenAID].tokenAddress;
         address approvedTokenBAddress = approvedTokens[approvedTokenBID].tokenAddress;
@@ -138,8 +220,8 @@ contract AeolusFactory is IAeolusFactory, Ownable {
         StableToken memory stableTokenOfA = stableTokens[(approvedTokenIDToStableTokenID[approvedTokenAID])];
         StableToken memory stableTokenOfB = stableTokens[(approvedTokenIDToStableTokenID[approvedTokenBID])];
 
-        require(approvedTokenIDToStableTokenID[approvedTokenAID] != 0, "Aeolus: TokenA has no stable pair");
-        require(approvedTokenIDToStableTokenID[approvedTokenBID] != 0, "Aeolus: TokenB has no stable pair");
+        if (approvedTokenIDToStableTokenID[approvedTokenAID] == 0) revert TokenHasNoStablePair(_symbolTokenA);
+        if (approvedTokenIDToStableTokenID[approvedTokenBID] == 0) revert TokenHasNoStablePair(_symbolTokenB);
 
         address addressOftablePairOfA = stableTokenOfA.stableAddress;
         address addresOfStableTokenOfB = stableTokenOfB.stableAddress;
