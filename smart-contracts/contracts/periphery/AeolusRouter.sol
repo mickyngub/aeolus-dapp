@@ -23,13 +23,17 @@ import "hardhat/console.sol";
  */
 
 error InvalidAmount(uint256 amountInvest);
-
 /**
  * @dev currentAmountInvest needs to be more than 0 USDT.e
  * @param currentAmountInvest current amount invest
  */
-
 error NotInvestor(uint256 currentAmountInvest);
+
+/**
+ * @dev token addresses sent are identical
+ * @param tokenAddress address of token
+ */
+error IdenticalTokenAddress(address tokenAddress);
 
 contract AeolusRouter is IAeolusRouter, Ownable {
     using SafeERC20 for IERC20;
@@ -170,17 +174,15 @@ contract AeolusRouter is IAeolusRouter, Ownable {
     /**
      * @dev private function for sorting token by address
      */
-
     function sortTokens(address tokenA, address tokenB) private pure returns (address token0, address token1) {
-        require(tokenA != tokenB, "Aeolus: IDENTICAL_ADDRESSES");
+        if (tokenA == tokenB) revert IdenticalTokenAddress(tokenA);
         (token0, token1) = tokenA < tokenB ? (tokenA, tokenB) : (tokenB, tokenA);
-        require(token0 != address(0), "Aeolus: ZERO_ADDRESS");
+        if (token0 == address(0)) revert ZeroAddress(token0);
     }
 
     /**
      * @dev private function for getting address of LP pair
      */
-
     function _pairFor(
         address factory,
         address tokenA,
@@ -206,7 +208,6 @@ contract AeolusRouter is IAeolusRouter, Ownable {
     /**
      * @dev private function for approving token spending
      */
-
     function _approveTokenIfNeeded(address token) private {
         if (IERC20(token).allowance(address(this), address(EXCHANGE_ROUTER)) == 0) {
             IERC20(token).approve(address(EXCHANGE_ROUTER), type(uint256).max);
@@ -216,7 +217,6 @@ contract AeolusRouter is IAeolusRouter, Ownable {
     /**
      * @dev private function for swapping
      */
-
     function _swap(
         address _from,
         uint256 amountInvest,
@@ -237,7 +237,6 @@ contract AeolusRouter is IAeolusRouter, Ownable {
     /**
      * @dev ADMIN function for updating Exchange Router address
      */
-
     function updateExchangeRouter(address _router) external onlyOwner {
         EXCHANGE_ROUTER = IExchangeRouter(_router);
     }
@@ -245,7 +244,6 @@ contract AeolusRouter is IAeolusRouter, Ownable {
     /**
      * @dev ADMIN function for updating Exchange Factory address
      */
-
     function updateExchangeFactory(address _exchangeFactory) external onlyOwner {
         exchangeFactory = _exchangeFactory;
     }
