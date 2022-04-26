@@ -16,24 +16,28 @@ contract AeolusRouter is IAeolusRouter, Ownable {
 
     AeolusFactory public FACTORY;
     // Exchange Router for swapping, addding lp, removing lp
-    IExchangeRouter public ROUTER;
+    IExchangeRouter public EXCHANGE_ROUTER;
 
     // address public USDTdotE = 0xc7198437980c041c805a1edcba50c1ce5db95118;
     // address public WAVAX = 0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7;
     address public USDTdotE;
     address public WAVAX;
-    address public exchangeFactory = 0x9Ad6C38BE94206cA50bb0d90783181662f0Cfa10;
+    address public exchangeFactory;
+
+    // address public exchangeFactory = 0x9Ad6C38BE94206cA50bb0d90783181662f0Cfa10;
 
     constructor(
         address _factory,
         address _router,
         address _USDTdotE,
-        address _WAVAX
+        address _WAVAX,
+        address _exchangeFactory
     ) {
         FACTORY = AeolusFactory(_factory);
-        ROUTER = IExchangeRouter(_router);
+        EXCHANGE_ROUTER = IExchangeRouter(_router);
         USDTdotE = _USDTdotE;
         WAVAX = _WAVAX;
+        exchangeFactory = _exchangeFactory;
     }
 
     receive() external payable {}
@@ -68,8 +72,8 @@ contract AeolusRouter is IAeolusRouter, Ownable {
         _approveTokenIfNeeded(tokenAStable);
         _approveTokenIfNeeded(tokenBStable);
 
-        (, , amountTokenALP) = ROUTER.addLiquidity(tokenA, tokenAStable, amountTokenA, amountTokenAStable, 0, 0, aeolusPairAddress, block.timestamp);
-        (, , amountTokenBLP) = ROUTER.addLiquidity(tokenB, tokenBStable, amountTokenB, amountTokenBStable, 0, 0, aeolusPairAddress, block.timestamp);
+        (, , amountTokenALP) = EXCHANGE_ROUTER.addLiquidity(tokenA, tokenAStable, amountTokenA, amountTokenAStable, 0, 0, aeolusPairAddress, block.timestamp);
+        (, , amountTokenBLP) = EXCHANGE_ROUTER.addLiquidity(tokenB, tokenBStable, amountTokenB, amountTokenBStable, 0, 0, aeolusPairAddress, block.timestamp);
 
         address pairALPAddress = _pairFor(exchangeFactory, tokenA, tokenAStable);
         address pairBLPAddress = _pairFor(exchangeFactory, tokenB, tokenBStable);
@@ -96,8 +100,24 @@ contract AeolusRouter is IAeolusRouter, Ownable {
         // Quick solution to STACK TOO DEEP
         (, address tokenA2, address tokenB2, ) = FACTORY.getPair(pairID);
 
-        (uint256 amountTokenA, uint256 amountTokenAStable) = ROUTER.removeLiquidity(tokenA2, tokenAStable, pair0LP, 0, 0, address(this), block.timestamp);
-        (uint256 amountTokenB, uint256 amountTokenBStable) = ROUTER.removeLiquidity(tokenB2, tokenBStable, pair1LP, 0, 0, address(this), block.timestamp);
+        (uint256 amountTokenA, uint256 amountTokenAStable) = EXCHANGE_ROUTER.removeLiquidity(
+            tokenA2,
+            tokenAStable,
+            pair0LP,
+            0,
+            0,
+            address(this),
+            block.timestamp
+        );
+        (uint256 amountTokenB, uint256 amountTokenBStable) = EXCHANGE_ROUTER.removeLiquidity(
+            tokenB2,
+            tokenBStable,
+            pair1LP,
+            0,
+            0,
+            address(this),
+            block.timestamp
+        );
 
         uint256 amountUSDTdoteRedeem = _swap(tokenA2, amountTokenA, USDTdotE, address(this)) + _swap(tokenB2, amountTokenB, USDTdotE, address(this));
         if (tokenAStable == USDTdotE) {
@@ -146,8 +166,8 @@ contract AeolusRouter is IAeolusRouter, Ownable {
     }
 
     function _approveTokenIfNeeded(address token) private {
-        if (IERC20(token).allowance(address(this), address(ROUTER)) == 0) {
-            IERC20(token).approve(address(ROUTER), type(uint256).max);
+        if (IERC20(token).allowance(address(this), address(EXCHANGE_ROUTER)) == 0) {
+            IERC20(token).approve(address(EXCHANGE_ROUTER), type(uint256).max);
         }
     }
 
@@ -164,7 +184,7 @@ contract AeolusRouter is IAeolusRouter, Ownable {
         path[1] = WAVAX;
         path[2] = _to;
 
-        uint256[] memory amounts = ROUTER.swapExactTokensForTokens(amountInvest, 0, path, receiver, block.timestamp);
+        uint256[] memory amounts = EXCHANGE_ROUTER.swapExactTokensForTokens(amountInvest, 0, path, receiver, block.timestamp);
         return uint256(amounts[amounts.length - 1]);
     }
 
@@ -174,11 +194,11 @@ contract AeolusRouter is IAeolusRouter, Ownable {
         FACTORY = AeolusFactory(_factory);
     }
 
-    function updateExchangeFactory(address _exchangeFactory) external onlyOwner {
-        exchangeFactory = _exchangeFactory;
+    function updateExchangeRouter(address _router) external onlyOwner {
+        EXCHANGE_ROUTER = IExchangeRouter(_router);
     }
 
-    function updateExchangeRouter(address _router) external onlyOwner {
-        ROUTER = IExchangeRouter(_router);
+    function updateExchangeFactory(address _exchangeFactory) external onlyOwner {
+        exchangeFactory = _exchangeFactory;
     }
 }

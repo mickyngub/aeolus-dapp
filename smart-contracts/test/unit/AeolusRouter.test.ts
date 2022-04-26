@@ -12,6 +12,7 @@ import {
 import AVAXJoeRouter02 from "../../deployments/AVAXJoeRouter02.json";
 import AVAXApprovedTokens from "../../deployments/AVAXApprovedTokens.json";
 import AVAXStableTokens from "../../deployments/AVAXStableTokens.json";
+import AVAXJoeFactory from "../../deployments/AVAXJoeFactory.json";
 
 import { expect } from "chai";
 import { network, ethers } from "hardhat";
@@ -44,7 +45,8 @@ context("unit/AeolusRouter", () => {
       AeolusFactory.address,
       AVAXJoeRouter02.address,
       AVAXApprovedTokens.WAVAX.address,
-      AVAXStableTokens["USDT.e"].address
+      AVAXStableTokens["USDT.e"].address,
+      AVAXJoeFactory.address
     );
 
     ExchangeRouter = await ethers.getContractAt(

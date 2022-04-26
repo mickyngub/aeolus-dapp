@@ -3,6 +3,7 @@ import { AeolusFactory__factory, AeolusRouter__factory } from "../typechain";
 import AVAXJoeRouter02 from "../deployments/AVAXJoeRouter02.json";
 import AVAXApprovedTokens from "../deployments/AVAXApprovedTokens.json";
 import AVAXStableTokens from "../deployments/AVAXStableTokens.json";
+import AVAXJoeFactory from "../deployments/AVAXJoeFactory.json";
 
 task("deploy", "deploy contracts")
   .addFlag("verify")
@@ -17,7 +18,8 @@ task("deploy", "deploy contracts")
       aeolusFactory.address,
       AVAXJoeRouter02.address,
       AVAXApprovedTokens.WAVAX.address,
-      AVAXStableTokens["USDT.e"].address
+      AVAXStableTokens["USDT.e"].address,
+      AVAXJoeFactory.address
     );
     console.log(`AeolusRouter deployed at ${aeolusRouter.address}`);
 

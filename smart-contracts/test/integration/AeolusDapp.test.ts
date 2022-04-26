@@ -13,6 +13,7 @@ import {
 import AVAXJoeRouter02 from "../../deployments/AVAXJoeRouter02.json";
 import AVAXApprovedTokens from "../../deployments/AVAXApprovedTokens.json";
 import AVAXStableTokens from "../../deployments/AVAXStableTokens.json";
+import AVAXJoeFactory from "../../deployments/AVAXJoeFactory.json";
 
 import { expect } from "chai";
 import { ethers } from "hardhat";
@@ -49,7 +50,8 @@ context("integration/AeolusDapp", () => {
       AeolusFactory.address,
       AVAXJoeRouter02.address,
       AVAXStableTokens["USDT.e"].address,
-      AVAXApprovedTokens.WAVAX.address
+      AVAXApprovedTokens.WAVAX.address,
+      AVAXJoeFactory.address
     );
     AeolusRouterAsMicky = AeolusRouter.connect(micky);
 
