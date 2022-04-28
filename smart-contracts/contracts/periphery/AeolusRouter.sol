@@ -15,8 +15,6 @@ import "./interfaces/IExchangeRouter.sol";
 import "../core/AeolusFactory.sol";
 import "../core/AeolusPair.sol";
 
-import "hardhat/console.sol";
-
 /**
  * @dev need to invest more than 0 USDT.e
  * @param amountInvest sent amount
