@@ -24,6 +24,18 @@ let deployer: SignerWithAddress;
 let AeolusFactoryContract: AeolusFactory;
 let AeolusRouterContract: AeolusRouter;
 
+// Deployed AeolusFactory and AeolusRouter contracts on Avalanche Mainnet
+const getAeolusFactoryAndAeolusRouter = async () => {
+  AeolusFactoryContract = await hre.ethers.getContractAt(
+    "AeolusFactory",
+    "0xfac701de57226b83325abe2f0d8f053c8759dc46"
+  );
+  AeolusRouterContract = await hre.ethers.getContractAt(
+    "AeolusRouter",
+    "0xb2412d9ecc65d5919b681bca3f25fb1b2fe5a391"
+  );
+};
+
 const deploy = async () => {
   AeolusFactoryContract = await new AeolusFactory__factory(deployer).deploy();
   console.log(
@@ -169,6 +181,7 @@ const createAeolusPair = async () => {
   await deploy();
   await approvedTokens();
   await approvedStableTokens();
+  // await getAeolusFactoryAndAeolusRouter();
   await linkOrUpdateApprovedTokenToStableToken();
   await createAeolusPair();
 })();
