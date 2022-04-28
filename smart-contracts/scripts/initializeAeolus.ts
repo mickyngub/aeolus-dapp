@@ -29,6 +29,16 @@ const deploy = async () => {
   console.log(
     `AeolusFactory contract deployed at ${AeolusFactoryContract.address}`
   );
+
+  if (hre.network.name === "mainnet") {
+    console.log("verifying AeolusFactoryContract....");
+    await hre.run("verify:verify", {
+      address: AeolusFactoryContract.address,
+      constructorArguments: [],
+    });
+    console.log("AeolusFactoryContract verified");
+  }
+
   AeolusRouterContract = await new AeolusRouter__factory(deployer).deploy(
     AeolusFactoryContract.address,
     AVAXJoeRouter02.address,
@@ -39,6 +49,21 @@ const deploy = async () => {
   console.log(
     `AeolusRouter contract deployed at ${AeolusRouterContract.address}`
   );
+
+  if (hre.network.name === "mainnet") {
+    console.log("verifying AeolusFactoryRouter....");
+    await hre.run("verify:verify", {
+      address: AeolusRouterContract.address,
+      constructorArguments: [
+        AeolusFactoryContract.address,
+        AVAXJoeRouter02.address,
+        AVAXStableTokens["USDT.e"].address,
+        AVAXApprovedTokens.WAVAX.address,
+        AVAXJoeFactory.address,
+      ],
+    });
+    console.log("AeolusFactoryRouter verified");
+  }
 };
 const approvedTokens = async () => {
   await AeolusFactoryContract.addApprovedToken(
@@ -46,21 +71,25 @@ const approvedTokens = async () => {
     AVAXApprovedTokens["WBTC.e"].address
   );
   console.log(`approved WBTC.e`);
+
   await AeolusFactoryContract.addApprovedToken(
     "WETH.e",
     AVAXApprovedTokens["WETH.e"].address
   );
   console.log(`approved WETH.e`);
+
   await AeolusFactoryContract.addApprovedToken(
     "WAVAX",
     AVAXApprovedTokens.WAVAX.address
   );
   console.log(`approved WAVAX`);
+
   await AeolusFactoryContract.addApprovedToken(
     "SOL",
     AVAXApprovedTokens.SOL.address
   );
   console.log(`approved SOL`);
+
   await AeolusFactoryContract.addApprovedToken(
     "LUNA",
     AVAXApprovedTokens.LUNA.address
@@ -73,11 +102,13 @@ const approvedStableTokens = async () => {
     AVAXStableTokens["USDT.e"].address
   );
   console.log(`approved USDT.e`);
+
   await AeolusFactoryContract.addStableToken(
     "USDC.e",
     AVAXStableTokens["USDC.e"].address
   );
   console.log(`approved USDC.e`);
+
   await AeolusFactoryContract.addStableToken(
     "MIM",
     AVAXStableTokens.MIM.address
@@ -116,6 +147,7 @@ const createAeolusPair = async () => {
     AeolusRouterContract.address
   );
   console.log("AeolusPair WBTC.e-WETH.e created at ", AeolusPair1);
+
   const AeolusPair2 = await AeolusFactoryContract.createPair(
     "SOL",
     "LUNA",
