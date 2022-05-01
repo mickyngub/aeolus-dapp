@@ -27,7 +27,7 @@ const Home: NextPage = () => {
       >
         <main tw="">
           <p tw="text-xl font-bold px-8">
-            The best yield optimizer on AVAX chain
+            Earn extra yield on you invested funds
           </p>
           <WrapperCanvas>
             <CanvasWind lightIntensity={0} />
@@ -35,11 +35,10 @@ const Home: NextPage = () => {
           <div tw="text-center my-8">
             <h1 tw="font-bold text-8xl ">AEOLUS PROTOCOL</h1>
             <p tw="px-4 mt-4">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Doloribus, asperiores possimus in, ratione accusantium quisquam
-              exercitationem laborum libero qui molestias ut fugiat reiciendis
-              cumque dolore sunt rerum. Perferendis, quisquam voluptate?
+              Earn additional yield on top of your invested fund in a
+              decentralized, trustless, and permissionless approach.
             </p>
+            <p tw="px-4">The future of passive investment begins now.</p>
           </div>
           <div tw="flex justify-center my-8">
             <Link href="/main">
