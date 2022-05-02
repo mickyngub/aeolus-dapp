@@ -2,6 +2,7 @@ import { ethers } from "ethers";
 import type { ReactElement } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { useState } from "react";
+import { useMoralis } from "react-moralis";
 import "twin.macro";
 import Dashboard from "~/src/protocol/Dashboard";
 import CryptoCards from "~/src/protocol/CryptoCards/CryptoCards";
@@ -33,18 +34,46 @@ export async function getStaticProps() {
 }
 
 const Protocol = ({ fallback }: { [key: string]: any }) => {
+  const {
+    authenticate,
+    isAuthenticated,
+    isAuthenticating,
+    user,
+    account,
+    logout,
+  } = useMoralis();
   const [address, setAddress] = useState<string>("");
-  const [signer, setSigner] = useState<ethers.providers.JsonRpcSigner>();
+  // const [signer, setSigner] = useState<ethers.providers.JsonRpcSigner>();
 
-  const handleConnectWallet = async () => {
-    console.log("clicked connect wallet");
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    await provider.send("eth_requestAccounts", []);
-    const signer = provider.getSigner();
-    const signerAddress = await signer.getAddress();
-    setAddress(signerAddress);
-    setSigner(signer);
-    notifyWalletConnected();
+  // const handleConnectWallet = async () => {
+  //   console.log("clicked connect wallet");
+  //   const provider = new ethers.providers.Web3Provider(window.ethereum);
+  //   await provider.send("eth_requestAccounts", []);
+  //   const signer = provider.getSigner();
+  //   const signerAddress = await signer.getAddress();
+  //   setAddress(signerAddress);
+  //   setSigner(signer);
+  //   notifyWalletConnected();
+  // };
+
+  const connectWalletMoralis = async () => {
+    if (!isAuthenticated) {
+      await authenticate({ signingMessage: "Signin to Aeolus Protocol" })
+        .then((user) => {
+          console.log("logged in user", user);
+
+          const address = user!.get("ethAddress");
+          setAddress(address);
+          notifyWalletConnected();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
+  const moralisLogout = async () => {
+    await logout();
+    console.log("logged out");
   };
   const notifyWalletConnected = () => {
     toast("Wallet Connected");
@@ -61,12 +90,17 @@ const Protocol = ({ fallback }: { [key: string]: any }) => {
             </Link>
           </div>
 
-          {!address ? (
-            <Button size="small" onClick={handleConnectWallet}>
+          {!isAuthenticated ? (
+            <Button size="small" onClick={connectWalletMoralis}>
               Connect Wallet
             </Button>
           ) : (
-            address
+            <div>
+              {address}
+              <Button size="small" onClick={moralisLogout}>
+                Logout
+              </Button>
+            </div>
           )}
         </div>
         <div id="dashboard" tw="p-6">
