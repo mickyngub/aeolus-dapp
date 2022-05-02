@@ -63,9 +63,9 @@ const CustomStyles = createGlobalStyle`
   /*
     9. Create a root stacking context
   */
-  #root, #__next {
+  /* #__next {
     isolation: isolate;
-  }
+  } */
 
 `;
 
