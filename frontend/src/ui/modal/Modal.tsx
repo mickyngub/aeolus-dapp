@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Dialog } from "@headlessui/react";
 import "twin.macro";
 
-const HeadlessModal = () => {
+const Modal = () => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
@@ -20,4 +20,4 @@ const HeadlessModal = () => {
   );
 };
 
-export default HeadlessModal;
+export default Modal;
