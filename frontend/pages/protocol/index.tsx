@@ -80,37 +80,38 @@ const Protocol = ({ fallback }: { [key: string]: any }) => {
   };
   return (
     <SWRConfig value={{ fallback }}>
-      <div tw="bg-primary bg-noise">
-        <div tw="flex items-center p-6">
+      <div tw="">
+        <div tw="flex items-center py-6">
           <div tw="flex-1">
             <Link href="/main">
               <a>
-                <Button size="small">Back</Button>
+                <Button size="extraSmall">Back</Button>
               </a>
             </Link>
           </div>
           {!isAuthenticated ? (
-            <Button size="small" onClick={connectWalletMoralis}>
+            <Button size="extraSmall" onClick={connectWalletMoralis}>
               Connect Wallet
             </Button>
           ) : (
             <div tw="flex items-center gap-4">
               {address}
-              <Button size="small" onClick={moralisLogout}>
+              <Button size="extraSmall" onClick={moralisLogout}>
                 Logout
               </Button>
             </div>
           )}
         </div>
-        <div id="dashboard" tw="p-6">
+        <div id="dashboard" tw="">
+          <p tw="mb-4 text-xl">Dashboard</p>
           <Dashboard />
         </div>
-        <div id="cryptoMarket" tw="p-6">
-          <p tw="text-2xl">Cryptocurrency Market</p>
+        <div id="cryptoMarket" tw="">
+          <p tw="my-4 text-xl">Cryptocurrency Prices by Market Cap</p>
           <CryptoCards />
         </div>
-        <div id="pool" tw="p-6">
-          <p tw="text-2xl ">Pools</p>
+        <div id="pool" tw="">
+          <p tw="text-xl ">Pools</p>
           <PoolCards />
         </div>
         <ToastContainer />

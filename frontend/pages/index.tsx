@@ -43,7 +43,7 @@ const Home: NextPage = () => {
           <div tw="my-8 flex justify-center">
             <Link href="/main">
               <a>
-                <Button size="medium">Get Started</Button>
+                <Button size="small">Get Started</Button>
               </a>
             </Link>
           </div>

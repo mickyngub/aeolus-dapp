@@ -18,18 +18,18 @@ const Main = () => {
       }
     >
       <main tw="bg-primary bg-noise">
-        <div tw="relative">
+        <div tw="relative top-0 left-0 w-full">
           <CanvasWind lightIntensity={0.3} />
           <div tw="absolute bottom-0 px-8 pb-2">
-            <p tw="text-center text-7xl text-white">AEOLUS PROTOCOL</p>
+            <p tw="text-center text-5xl text-white">AEOLUS PROTOCOL</p>
           </div>
         </div>
-        <div tw="grid grid-cols-2 gap-8 p-8">
+        <div tw="grid grid-cols-2 gap-16 p-8">
           <div id="about" tw="">
-            <p tw="text-2xl">{"What's Aeolus Protocol?"}</p>
+            <p tw="text-xl">{"What's Aeolus Protocol?"}</p>
           </div>
           <div tw="">
-            <p tw="text-lg">
+            <p tw="text-sm">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam
               sapiente eligendi nisi iste quisquam adipisci nemo voluptate,
               labore, accusantium tenetur dolor officiis pariatur accusamus
@@ -41,7 +41,7 @@ const Main = () => {
             </p>
           </div>
           <div tw="">
-            <p tw="text-lg">
+            <p tw="text-sm">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam
               sapiente eligendi nisi iste quisquam adipisci nemo voluptate,
               labore, accusantium tenetur dolor officiis pariatur accusamus
@@ -53,13 +53,13 @@ const Main = () => {
             </p>
           </div>
           <div id="mechanics" tw="">
-            <p tw="text-2xl">How does Aeolus Protocol work?</p>
+            <p tw="text-xl">How does Aeolus Protocol work?</p>
           </div>
           <div id="team" tw="">
-            <p tw="text-2xl">{"Who's the team behind Aeolus Protocol?"}</p>
+            <p tw="text-xl">{"Who's the team behind Aeolus Protocol?"}</p>
           </div>
           <div tw="">
-            <p tw="text-lg">
+            <p tw="text-sm">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam
               sapiente eligendi nisi iste quisquam adipisci nemo voluptate,
               labore, accusantium tenetur dolor officiis pariatur accusamus
@@ -74,7 +74,7 @@ const Main = () => {
         <div tw="grid place-items-center py-12">
           <Link href="/protocol">
             <a>
-              <Button size="medium">Enter App</Button>
+              <Button size="small">Enter App</Button>
             </a>
           </Link>
         </div>

@@ -11,6 +11,7 @@ import {
   Legend,
 } from "chart.js";
 import "twin.macro";
+import dayjs from "dayjs";
 
 ChartJS.register(
   CategoryScale,
@@ -26,7 +27,7 @@ interface Props {
 }
 
 // Create labels for line graph
-const labels = new Array(7).fill("");
+const labels = new Array(14).fill("");
 
 const CryptoCard = ({ cryptoData }: Props) => {
   const options = {
@@ -37,19 +38,19 @@ const CryptoCard = ({ cryptoData }: Props) => {
       },
       title: {
         display: true,
-        text: "7D Price Change",
+        text: "14D Price Change",
       },
     },
-    tension: 0.3,
+    tension: 0.5,
     scales: {
       x: {
         grid: {
-          display: false,
+          display: true,
         },
       },
       y: {
         grid: {
-          display: false,
+          display: true,
         },
       },
     },
@@ -60,7 +61,7 @@ const CryptoCard = ({ cryptoData }: Props) => {
       {
         label: "Price",
         data: cryptoData.sparkline_in_7d.price.filter(
-          (cryptoData, index) => index % 24 === 24 - 1
+          (cryptoData, index) => index % 12 === 12 - 1
         ),
         borderColor: "hsl(18deg 75% 55%)",
         backgroundColor: "hsl(0deg 0% 100%)",
@@ -69,23 +70,36 @@ const CryptoCard = ({ cryptoData }: Props) => {
   };
 
   return (
-    <div tw="h-80 w-96 border-2 border-white">
-      <p>
-        {cryptoData.market_cap_rank} - {cryptoData.name}
-      </p>
-      <img src={cryptoData.image} alt={cryptoData.name + " image"} tw="w-12" />
-      <p>Current Price - ${cryptoData.current_price}</p>
-      {/* <p>{cryptoData.sparkline_in_7d.price}</p> */}
-      <p>24h Change - {cryptoData.price_change_percentage_24h.toFixed(2)}%</p>
-      {/* <p>
-        {cryptoData.sparkline_in_7d.price.map((priceData) => (
-          <p>{priceData.toFixed(2)}</p>
-        ))}
-      </p> */}
-
-      <p>{cryptoData.last_updated}</p>
-      <div tw="mx-auto w-11/12">
-        <Line data={graphData} options={options} />
+    <div tw="h-full w-56 border-2 border-white">
+      <div tw="flex items-center gap-2 border-b-2 border-white bg-accent p-2 text-white ">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={cryptoData.image}
+          alt={cryptoData.name + " image"}
+          tw="h-12 w-12"
+        />
+        <p tw="text-lg">{cryptoData.name}</p>
+      </div>
+      <div tw="border-2 border-accent bg-white bg-noise ">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <div tw="flex flex-col gap-2 p-2">
+          <p tw="text-sm">
+            Current Price: ${cryptoData.current_price.toFixed(2)}
+          </p>
+          {/* <p>{cryptoData.sparkline_in_7d.price}</p> */}
+          <p tw="text-sm">
+            24h Change: {cryptoData.price_change_percentage_24h.toFixed(2)}%
+          </p>
+          {/* <p>
+            {cryptoData.sparkline_in_7d.price.map((priceData) => (
+              <p>{priceData.toFixed(2)}</p>
+            ))}
+          </p> */}
+          <p tw="text-sm">Last Update: {cryptoData.last_updated}</p>
+        </div>
+        <div tw="mx-auto w-52">
+          <Line data={graphData} options={options} />
+        </div>
       </div>
     </div>
   );

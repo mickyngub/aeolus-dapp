@@ -12,6 +12,10 @@ interface Props
 }
 
 const buttonSize = {
+  extraSmall: {
+    width: 150,
+    height: 50,
+  },
   small: {
     width: 180,
     height: 60,
@@ -102,7 +106,7 @@ const StyledButton = styled.button<{
 
 const StyledSpan = styled.span`
   color: black;
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 400;
 `;
 

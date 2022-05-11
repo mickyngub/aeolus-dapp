@@ -1,6 +1,7 @@
 import React from "react";
 import Footer from "../footer/Footer";
 import Navbar from "../navbar/Navbar";
+import "twin.macro";
 
 interface Props {
   children?: any;
@@ -11,7 +12,7 @@ const Layout = ({ children, type }: Props) => {
   return (
     <>
       <Navbar type={type} />
-      {children}
+      <div tw="bg-primary bg-noise px-28">{children}</div>
       <Footer />
     </>
   );
