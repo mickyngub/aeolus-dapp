@@ -14,7 +14,7 @@ const CryptoCards = () => {
     fetcher
   );
   return (
-    <div id="#cryptoMarket" tw="flex gap-4 flex-wrap">
+    <div id="#cryptoMarket" tw="flex flex-wrap gap-4">
       {cryptoDatas
         ? cryptoDatas.map((cryptoData) => {
             return (

@@ -38,8 +38,8 @@ const Navbar = ({ type }: Props) => {
       ? navListsProtocol
       : "";
   return (
-    <nav tw="bg-primary-dark bg-noise h-14">
-      <div tw="h-full flex justify-around items-center">
+    <nav tw="h-14 bg-primary-dark bg-noise">
+      <div tw="flex h-full items-center justify-around">
         <Link href="/">
           <a>
             <p tw="text-xl font-bold">AEOLUS</p>

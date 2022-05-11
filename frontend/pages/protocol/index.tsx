@@ -81,7 +81,7 @@ const Protocol = ({ fallback }: { [key: string]: any }) => {
   return (
     <SWRConfig value={{ fallback }}>
       <div tw="bg-primary bg-noise">
-        <div tw="p-6 flex items-center">
+        <div tw="flex items-center p-6">
           <div tw="flex-1">
             <Link href="/main">
               <a>
@@ -89,13 +89,12 @@ const Protocol = ({ fallback }: { [key: string]: any }) => {
               </a>
             </Link>
           </div>
-
           {!isAuthenticated ? (
             <Button size="small" onClick={connectWalletMoralis}>
               Connect Wallet
             </Button>
           ) : (
-            <div>
+            <div tw="flex items-center gap-4">
               {address}
               <Button size="small" onClick={moralisLogout}>
                 Logout

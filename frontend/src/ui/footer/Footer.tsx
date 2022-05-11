@@ -15,8 +15,8 @@ const footerLists = [
 
 const Footer = () => {
   return (
-    <footer tw="bg-primary-dark bg-noise h-20">
-      <div tw="h-full flex justify-around items-center">
+    <footer tw="h-20 bg-primary-dark bg-noise">
+      <div tw="flex h-full items-center justify-around">
         <Link href="/">
           <a>
             <p tw="text-xl font-bold">AEOLUS</p>

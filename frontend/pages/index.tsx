@@ -20,27 +20,27 @@ const Home: NextPage = () => {
 
       <Suspense
         fallback={
-          <div tw="h-32 w-32 absolute top-0 bottom-0 right-0 left-0 m-auto grid place-content-center  ">
+          <div tw="absolute top-0 bottom-0 right-0 left-0 m-auto grid h-32 w-32 place-content-center  ">
             <Loading />
           </div>
         }
       >
         <main tw="">
-          <p tw="text-xl font-bold px-8">
+          <p tw="px-8 text-xl font-bold">
             Earn extra yield on you invested funds
           </p>
           <WrapperCanvas>
             <CanvasWind lightIntensity={0} />
           </WrapperCanvas>
-          <div tw="text-center my-8">
-            <h1 tw="font-bold text-8xl ">AEOLUS PROTOCOL</h1>
-            <p tw="px-4 mt-4">
+          <div tw="my-8 text-center">
+            <h1 tw="p-4 text-8xl font-bold">AEOLUS PROTOCOL</h1>
+            <p tw="mt-4 px-4">
               Earn additional yield on top of your invested fund in a
               decentralized, trustless, and permissionless approach.
             </p>
             <p tw="px-4">The future of passive investment begins now.</p>
           </div>
-          <div tw="flex justify-center my-8">
+          <div tw="my-8 flex justify-center">
             <Link href="/main">
               <a>
                 <Button size="medium">Get Started</Button>
@@ -50,7 +50,7 @@ const Home: NextPage = () => {
           <WrapperCanvas>
             <CanvasWind lightIntensity={0} />
           </WrapperCanvas>
-          <p tw="text-xl font-bold px-8 text-right">
+          <p tw="px-8 text-right text-xl font-bold">
             Optimize your investment in one-click
           </p>
         </main>

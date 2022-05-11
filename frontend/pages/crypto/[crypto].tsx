@@ -117,7 +117,7 @@ const CryptoDetail = ({ cryptoAPI }: { cryptoAPI: string }) => {
   };
   return (
     <div tw="flex items-center">
-      <div tw="flex-1 flex flex-col items-center">
+      <div tw="flex flex-1 flex-col items-center">
         <p>
           {crypto?.name} - {crypto?.symbol.toUpperCase()}
         </p>

@@ -69,7 +69,7 @@ const CryptoCard = ({ cryptoData }: Props) => {
   };
 
   return (
-    <div tw="border-2 border-white w-96 h-80">
+    <div tw="h-80 w-96 border-2 border-white">
       <p>
         {cryptoData.market_cap_rank} - {cryptoData.name}
       </p>
@@ -84,7 +84,7 @@ const CryptoCard = ({ cryptoData }: Props) => {
       </p> */}
 
       <p>{cryptoData.last_updated}</p>
-      <div tw="w-11/12 mx-auto">
+      <div tw="mx-auto w-11/12">
         <Line data={graphData} options={options} />
       </div>
     </div>
