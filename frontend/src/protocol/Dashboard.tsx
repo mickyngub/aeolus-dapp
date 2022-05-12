@@ -3,7 +3,7 @@ import "twin.macro";
 
 const Dashboard = () => {
   return (
-    <div tw="border-2 border-accent p-2">
+    <div tw="border-2 border-accent-500 p-2">
       <p tw="text-lg">My position</p>
       <div tw="my-6 grid grid-cols-3">
         <div>Total Position</div>

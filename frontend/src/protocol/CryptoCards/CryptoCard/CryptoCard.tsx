@@ -70,8 +70,8 @@ const CryptoCard = ({ cryptoData }: Props) => {
   };
 
   return (
-    <div tw="h-full w-56 border-2 border-white">
-      <div tw="flex items-center gap-2 border-b-2 border-white bg-accent p-2 text-white ">
+    <div tw="transition-duration[300ms] h-full w-56 border-2 border-white hover:opacity-70">
+      <div tw="flex items-center gap-2 border-b-2 border-white bg-accent-400 p-2 text-white ">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={cryptoData.image}
@@ -80,22 +80,28 @@ const CryptoCard = ({ cryptoData }: Props) => {
         />
         <p tw="text-lg">{cryptoData.name}</p>
       </div>
-      <div tw="border-2 border-accent bg-white bg-noise ">
+      <div tw="border-2 border-accent-400 bg-white bg-noise ">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <div tw="flex flex-col gap-2 p-2">
           <p tw="text-sm">
-            Current Price: ${cryptoData.current_price.toFixed(2)}
+            Current Price:{" "}
+            <span>&nbsp;${cryptoData.current_price.toFixed(2)}</span>
           </p>
           {/* <p>{cryptoData.sparkline_in_7d.price}</p> */}
           <p tw="text-sm">
-            24h Change: {cryptoData.price_change_percentage_24h.toFixed(2)}%
+            24h Change:
+            <span tw="text-base">
+              &nbsp;{cryptoData.price_change_percentage_24h.toFixed(2)}%
+            </span>
           </p>
           {/* <p>
             {cryptoData.sparkline_in_7d.price.map((priceData) => (
               <p>{priceData.toFixed(2)}</p>
             ))}
           </p> */}
-          <p tw="text-sm">Last Update: {cryptoData.last_updated}</p>
+          <p tw="text-sm">
+            Last Update:<span>&nbsp;{cryptoData.last_updated}</span>
+          </p>
         </div>
         <div tw="mx-auto w-52">
           <Line data={graphData} options={options} />

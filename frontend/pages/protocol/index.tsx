@@ -80,8 +80,8 @@ const Protocol = ({ fallback }: { [key: string]: any }) => {
   };
   return (
     <SWRConfig value={{ fallback }}>
-      <div tw="">
-        <div tw="flex items-center py-6">
+      <div tw="py-6">
+        <div tw="flex items-center">
           <div tw="flex-1">
             <Link href="/main">
               <a>
@@ -102,16 +102,18 @@ const Protocol = ({ fallback }: { [key: string]: any }) => {
             </div>
           )}
         </div>
-        <div id="dashboard" tw="">
-          <p tw="mb-4 text-xl">Dashboard</p>
+        <div id="dashboard" tw="my-12">
+          <p tw="mb-4 text-2xl font-bold">Dashboard</p>
           <Dashboard />
         </div>
-        <div id="cryptoMarket" tw="">
-          <p tw="my-4 text-xl">Cryptocurrency Prices by Market Cap</p>
+        <div id="cryptoMarket" tw="my-12">
+          <p tw="my-4 text-2xl font-bold">
+            Cryptocurrency Prices by Market Cap
+          </p>
           <CryptoCards />
         </div>
         <div id="pool" tw="">
-          <p tw="text-xl ">Pools</p>
+          <p tw="my-4 text-2xl font-bold">Pools</p>
           <PoolCards />
         </div>
         <ToastContainer />

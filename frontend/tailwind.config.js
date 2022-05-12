@@ -5,7 +5,11 @@ module.exports = {
         primary: "hsl(28deg 32% 90%)",
         "primary-dark": "hsl(28deg 32% 80%)",
         secondary: "hsl(41deg 58% 59%)",
-        accent: "hsl(18deg 75% 55%)",
+        accent: {
+          500: "hsl(18deg 75% 55%)",
+          400: "hsl(18deg 75% 50%)",
+          300: "hsl(18deg 75% 35%)",
+        },
         black: "hsl(0deg 0% 0%)",
       },
       backgroundImage: {
