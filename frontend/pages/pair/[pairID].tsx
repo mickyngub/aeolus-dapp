@@ -7,15 +7,17 @@ import "twin.macro";
 import Link from "next/link";
 import Button from "~/src/ui/button/Button";
 import useSWR from "swr";
-import { fetcher } from "~/pages/api/hello";
+import { fetcher } from "~/pages/api";
 import PairCard from "~/src/protocol/PairCards/PairCard/PairCard";
 import { findPairInPairDataArray } from "~/src/pair/utils";
+import { useMoralis } from "react-moralis";
 
 const coinGeckoAPI = process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO
   ? process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO
   : "/";
 
 const PairID = () => {
+  const { account } = useMoralis();
   const [investAmount, setInvestAmount] = useState<number>(0);
 
   let pair;
@@ -47,7 +49,7 @@ const PairID = () => {
         </div>
       }
     >
-      <div tw="pb-4">
+      <div tw="pb-6">
         <div tw="relative top-0 w-full border-t-2 border-b-2 border-white">
           <CanvasWind lightIntensity={0.5} />
           <div tw="absolute bottom-0 px-28 pb-2">
@@ -72,7 +74,10 @@ const PairID = () => {
                   {<PairCard pairData={pair}></PairCard>}
                 </div>
                 <div tw=" flex flex-1 flex-col items-end justify-between gap-4">
-                  <p>{pair.pairAddress}</p>
+                  <p>
+                    {pair.pairAddress}
+                    {account}
+                  </p>
                   <p>Invest Amount in USDT</p>
                   <input
                     type="number"

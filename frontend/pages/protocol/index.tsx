@@ -7,7 +7,7 @@ import CryptoCards from "~/src/protocol/CryptoCards/CryptoCards";
 import Button from "~/src/ui/button/Button";
 import Layout from "~/src/ui/layout/Layout";
 import PairCards from "~/src/protocol/PairCards/PairCards";
-import { fetcher } from "../api/hello";
+import { fetcher } from "../api";
 import { SWRConfig } from "swr";
 import Loading from "~/src/ui/loading/Loading";
 import Link from "next/link";

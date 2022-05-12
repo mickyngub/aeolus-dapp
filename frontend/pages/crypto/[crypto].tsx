@@ -15,7 +15,7 @@ import {
 import "twin.macro";
 import Layout from "~/src/ui/layout/Layout";
 import Button from "~/src/ui/button/Button";
-import { fetcher } from "../api/hello";
+import { fetcher } from "../api";
 import useSWR, { SWRConfig } from "swr";
 
 ChartJS.register(

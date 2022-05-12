@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "twin.macro";
 import Link from "next/link";
 import { useMoralis } from "react-moralis";
@@ -47,9 +47,8 @@ const Navbar = ({ type }: Props) => {
       await authenticate({ signingMessage: "Signin to Aeolus Protocol" })
         .then((user) => {
           console.log("logged in user", user);
-
-          const address = user!.get("ethAddress");
-          setAddress(address);
+          // const address = user!.get("ethAddress");
+          // setAddress(address);
           notifyWalletConnected();
         })
         .catch((error) => {
@@ -68,7 +67,6 @@ const Navbar = ({ type }: Props) => {
   const notifyWalletDisconnected = () => {
     toast.error("Wallet Disconnected");
   };
-  const [address, setAddress] = useState<string>("");
   const navLists =
     type === "main"
       ? navListsMain
@@ -100,10 +98,12 @@ const Navbar = ({ type }: Props) => {
             </Button>
           ) : (
             <div tw="flex items-center gap-4">
-              <p tw="text-white">
-                {address.substring(0, 8)}......
-                {address.substring(address.length - 8)}
-              </p>
+              {account && (
+                <p tw="text-white">
+                  {account.substring(0, 8)}......
+                  {account.substring(account.length - 8)}
+                </p>
+              )}
               <Button size="extraSmall" onClick={moralisLogout}>
                 Logout
               </Button>

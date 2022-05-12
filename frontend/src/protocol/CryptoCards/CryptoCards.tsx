@@ -2,7 +2,7 @@ import Link from "next/link";
 import CryptoCard from "./CryptoCard/CryptoCard";
 import "twin.macro";
 import useSWR from "swr";
-import { fetcher } from "~/pages/api/hello";
+import { fetcher } from "~/pages/api";
 
 const coinGeckoAPI = process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO_TOP_TEN
   ? process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO_TOP_TEN
