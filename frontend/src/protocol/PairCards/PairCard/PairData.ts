@@ -1,6 +1,7 @@
-const pairData: Pair[] = [
+const pairDataArray: Pair[] = [
   {
     pairName: "WBTC.e-WETH.e",
+    pairID: "bitcoin+ethereum",
     token0: "BTC",
     token1: "ETH",
     token0ID: "bitcoin",
@@ -10,6 +11,7 @@ const pairData: Pair[] = [
   },
   {
     pairName: "SOL-LUNA",
+    pairID: "solana+terra-luna",
     token0: "SOL",
     token1: "LUNA",
     token0ID: "solana",
@@ -19,6 +21,7 @@ const pairData: Pair[] = [
   },
   {
     pairName: "AVAX.e-ADA",
+    pairID: "avalanche-2+cardano",
     token0: "AVAX",
     token1: "ADA",
     token0ID: "avalanche-2",
@@ -28,6 +31,7 @@ const pairData: Pair[] = [
   },
   {
     pairName: "BNB-WETH.e",
+    pairID: "binancecoin+ethereum",
     token0: "BNB",
     token1: "ETH",
     token0ID: "binancecoin",
@@ -37,6 +41,7 @@ const pairData: Pair[] = [
   },
   {
     pairName: "XRP-WBTC.e",
+    pairID: "ripple+bitcoin",
     token0: "XRP",
     token1: "BTC",
     token0ID: "ripple",
@@ -46,6 +51,7 @@ const pairData: Pair[] = [
   },
   {
     pairName: "DOGE-SHIBA",
+    pairID: "dogecoin+shiba-inu",
     token0: "DOGE",
     token1: "SHIBA",
     token0ID: "dogecoin",
@@ -55,6 +61,7 @@ const pairData: Pair[] = [
   },
   {
     pairName: "WETH.e-AVAX.e",
+    pairID: "ethereum+avalanche-2",
     token0: "ETH",
     token1: "AVAX",
     token0ID: "ethereum",
@@ -64,6 +71,7 @@ const pairData: Pair[] = [
   },
   {
     pairName: "SOL-BNB",
+    pairID: "solana+binancecoin",
     token0: "SOL",
     token1: "BNB",
     token0ID: "solana",
@@ -73,6 +81,7 @@ const pairData: Pair[] = [
   },
   {
     pairName: "WETH.e-SHIBA",
+    pairID: "ethereum+shiba-inu",
     token0: "ETH",
     token1: "SHIBA",
     token0ID: "ethereum",
@@ -82,6 +91,7 @@ const pairData: Pair[] = [
   },
   {
     pairName: "GF-GALA",
+    pairID: "guildfi+gala",
     token0: "GF",
     token1: "GALA",
     token0ID: "guildfi",
@@ -91,6 +101,7 @@ const pairData: Pair[] = [
   },
   {
     pairName: "NEAR-BAND",
+    pairID: "near+band-protocol",
     token0: "NEAR",
     token1: "BAND",
     token0ID: "near",
@@ -100,4 +111,4 @@ const pairData: Pair[] = [
   },
 ];
 
-export { pairData };
+export { pairDataArray };
