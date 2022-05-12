@@ -70,10 +70,10 @@ const PairID = () => {
           <>
             {pair && crypto0Data && crypto1Data && (
               <div tw="flex justify-between">
-                <div tw="flex-1 hover:pointer-events-none">
+                <div tw=" hover:pointer-events-none">
                   {<PairCard pairData={pair}></PairCard>}
                 </div>
-                <div tw=" flex flex-1 flex-col items-end justify-between gap-4">
+                <div tw="flex flex-col items-end justify-between gap-4">
                   <p>
                     {pair.pairAddress}
                     {account}
@@ -84,7 +84,7 @@ const PairID = () => {
                     value={investAmount}
                     onChange={handleInputChange}
                     placeholder="Invest Amount"
-                    tw="text-right"
+                    tw="border-2 border-secondary bg-white bg-noise text-right ring-2 ring-white focus-visible:outline-none"
                   />
                   <p>
                     Estimated Amount of {pair.token0}:
