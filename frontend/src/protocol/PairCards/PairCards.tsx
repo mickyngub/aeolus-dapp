@@ -1,22 +1,18 @@
 import React from "react";
 import Link from "next/link";
 import PairCard from "./PairCard/PairCard";
+import { pairData } from "./PairCard/PairData";
 import "twin.macro";
-
-const pairCards = [
-  { name: "Bitcoin-USDT", url: "BTC-USDT" },
-  { name: "Ethereum-BNB-USDT", url: "ETH-BNB-USDT" },
-];
 
 const PairCards = () => {
   return (
-    <div id="#pair" tw="flex gap-4 ">
-      {pairCards
-        ? pairCards.map((pairCard) => {
+    <div id="#pair" tw="grid grid-cols-4 place-items-center gap-6">
+      {pairData
+        ? pairData.map((pair) => {
             return (
-              <Link href={`/pair/${pairCard.url}`} key={pairCard.name}>
+              <Link href={`/pair/${pair.pairName}`} key={pair.pairName}>
                 <a>
-                  <PairCard />
+                  <PairCard pairData={pair} />
                 </a>
               </Link>
             );
