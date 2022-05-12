@@ -9,27 +9,23 @@ import Button from "~/src/ui/button/Button";
 import useSWR from "swr";
 import { fetcher } from "~/pages/api/hello";
 import PairCard from "~/src/protocol/PairCards/PairCard/PairCard";
-import { pairDataArray } from "~/src/protocol/PairCards/PairCard/PairData";
+import { findPairInPairDataArray } from "~/src/pair/utils";
 
 const coinGeckoAPI = process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO
   ? process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO
   : "/";
 
-const findPairInPairDataArray = (pairID: string) => {
-  return pairDataArray.filter((pair) => pair.pairID === pairID)[0];
-};
-
 const PairID = () => {
-  let cryptoPair;
+  let pair;
   const router = useRouter();
   const { pairID } = router.query;
-  typeof pairID === "string" ? (cryptoPair = pairID.split("+")) : "";
+  typeof pairID === "string" && (pair = findPairInPairDataArray(pairID));
   const { data: crypto0Data }: { data?: CryptoData[] } = useSWR(
-    coinGeckoAPI + (cryptoPair && cryptoPair[0]),
+    coinGeckoAPI + (pair && pair.token0ID),
     fetcher
   );
   const { data: crypto1Data }: { data?: CryptoData[] } = useSWR(
-    coinGeckoAPI + (cryptoPair && cryptoPair[1]),
+    coinGeckoAPI + (pair && pair.token1ID),
     fetcher
   );
 
@@ -47,7 +43,7 @@ const PairID = () => {
         <div tw="relative top-0 w-full border-t-2 border-b-2 border-white">
           <CanvasWind lightIntensity={0.5} />
           <div tw="absolute bottom-0 px-28 pb-2">
-            <p tw="text-center text-5xl text-white ">AEOLUS PROTOCOL</p>
+            <p tw="text-center text-5xl text-white ">AEOLUS PAIR</p>
           </div>
         </div>
         <div tw="px-28">
@@ -61,9 +57,7 @@ const PairID = () => {
             </div>
           </div>
 
-          {pairID && typeof pairID === "string" && (
-            <PairCard pairData={findPairInPairDataArray(pairID)}></PairCard>
-          )}
+          {pair && <PairCard pairData={pair}></PairCard>}
         </div>
       </div>
     </Suspense>
