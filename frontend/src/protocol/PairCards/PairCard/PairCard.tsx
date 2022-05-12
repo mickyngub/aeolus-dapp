@@ -1,7 +1,7 @@
 import React from "react";
 import "twin.macro";
 
-const PoolCard = () => {
+const PairCard = () => {
   return (
     <div tw="transition-duration[300ms] h-full w-56 border-2 border-white hover:opacity-70">
       <div tw="flex items-center gap-2 border-b-2 border-white bg-accent-500  p-2 text-white ">
@@ -35,4 +35,4 @@ const PoolCard = () => {
   );
 };
 
-export default PoolCard;
+export default PairCard;

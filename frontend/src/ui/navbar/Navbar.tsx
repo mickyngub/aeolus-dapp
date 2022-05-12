@@ -23,7 +23,7 @@ const navListsProtocol = [
     url: "#dashboard",
   },
   { name: "Crypto Market", url: "#cryptoMarket" },
-  { name: "Pool", url: "#pool" },
+  { name: "Pair", url: "#pair" },
 ];
 
 interface Props {

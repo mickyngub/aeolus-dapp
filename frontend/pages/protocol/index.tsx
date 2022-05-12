@@ -9,14 +9,14 @@ import Dashboard from "~/src/protocol/Dashboard";
 import CryptoCards from "~/src/protocol/CryptoCards/CryptoCards";
 import Button from "~/src/ui/button/Button";
 import Layout from "~/src/ui/layout/Layout";
-import PoolCards from "~/src/protocol/PoolCards/PoolCards";
+import PairCards from "~/src/protocol/PairCards/PairCards";
 import { fetcher } from "../api/hello";
 import { SWRConfig } from "swr";
 import Loading from "~/src/ui/loading/Loading";
 import Link from "next/link";
 import CanvasWind from "~/src/ui/canvasWind/CanvasWind";
 
-const poolCards = [
+const pairCards = [
   { name: "Bitcoin-USDT", url: "BTC-USDT" },
   { name: "Ethereum-BNB-USDT", url: "ETH-BNB-USDT" },
 ];
@@ -133,9 +133,9 @@ const Protocol = ({ fallback }: { [key: string]: any }) => {
               </p>
               <CryptoCards />
             </div>
-            <div id="pool" tw="">
-              <p tw="my-4 text-2xl font-bold">Pools</p>
-              <PoolCards />
+            <div id="pair" tw="">
+              <p tw="my-4 text-2xl font-bold">Pairs</p>
+              <PairCards />
             </div>
           </div>
           <ToastContainer />

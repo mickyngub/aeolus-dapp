@@ -1,22 +1,22 @@
 import React from "react";
 import Link from "next/link";
-import PoolCard from "./PoolCard/PoolCard";
+import PairCard from "./PairCard/PairCard";
 import "twin.macro";
 
-const poolCards = [
+const pairCards = [
   { name: "Bitcoin-USDT", url: "BTC-USDT" },
   { name: "Ethereum-BNB-USDT", url: "ETH-BNB-USDT" },
 ];
 
-const PoolCards = () => {
+const PairCards = () => {
   return (
-    <div id="#pool" tw="flex gap-4 ">
-      {poolCards
-        ? poolCards.map((poolCard) => {
+    <div id="#pair" tw="flex gap-4 ">
+      {pairCards
+        ? pairCards.map((pairCard) => {
             return (
-              <Link href={`/pool/${poolCard.url}`} key={poolCard.name}>
+              <Link href={`/pair/${pairCard.url}`} key={pairCard.name}>
                 <a>
-                  <PoolCard />
+                  <PairCard />
                 </a>
               </Link>
             );
@@ -26,4 +26,4 @@ const PoolCards = () => {
   );
 };
 
-export default PoolCards;
+export default PairCards;
