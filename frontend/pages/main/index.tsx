@@ -6,6 +6,7 @@ import Layout from "~/src/ui/layout/Layout";
 import Link from "next/link";
 import CanvasWind from "~/src/ui/canvasWind/CanvasWind";
 import Loading from "~/src/ui/loading/Loading";
+import Image from "next/image";
 const Main = () => {
   return (
     <Suspense
@@ -31,7 +32,7 @@ const Main = () => {
               id="about"
               tw="sticky top-44 self-start border-2 border-black bg-primary-dark bg-noise p-4"
             >
-              <p tw="text-2xl ">{"What's Aeolus Protocol?"}</p>
+              <p tw="mb-4 text-2xl">{"What's Aeolus Protocol?"}</p>
             </div>
           </div>
           <div tw="">
@@ -82,9 +83,25 @@ const Main = () => {
           <div>
             <div
               id="mechanics"
-              tw="sticky top-44 self-start border-2 border-black  bg-primary-dark bg-noise p-4"
+              tw="sticky top-44 flex flex-col justify-center gap-4 self-start border-2 border-black bg-primary-dark bg-noise p-4"
             >
-              <p tw="text-2xl ">How does Aeolus Protocol work?</p>
+              <p tw="mb-4 text-2xl">How does Aeolus Protocol work?</p>
+              <div tw="grid place-content-center border-2 border-black">
+                <Image
+                  src="/aeolus-overview.png"
+                  height="350px"
+                  width="550px"
+                  alt="crypto overview"
+                />
+              </div>
+              <div tw="grid place-content-center border-2 border-black">
+                <Image
+                  src="/aeolus-contracts-overview.png"
+                  height="450px"
+                  width="550px"
+                  alt="crypto overview"
+                />
+              </div>
             </div>
           </div>
           {/* Needs this div for sticky to work properly */}
