@@ -12,7 +12,7 @@ const Layout = ({ children, type }: Props) => {
   return (
     <>
       <Navbar type={type} />
-      <div tw="bg-primary bg-noise px-28">{children}</div>
+      <div tw="bg-primary bg-noise">{children}</div>
       <Footer />
     </>
   );

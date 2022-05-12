@@ -20,11 +20,11 @@ const Main = () => {
       <main tw="bg-primary bg-noise">
         <div tw="relative top-0 left-0 w-full">
           <CanvasWind lightIntensity={0.3} />
-          <div tw="absolute bottom-0 px-8 pb-2">
+          <div tw="absolute bottom-0 px-28 pb-4">
             <p tw="text-center text-5xl text-white">AEOLUS PROTOCOL</p>
           </div>
         </div>
-        <div tw="grid grid-cols-2 gap-16 p-8">
+        <div tw="grid grid-cols-2 gap-16 py-8 px-28">
           <div id="about" tw="">
             <p tw="text-xl">{"What's Aeolus Protocol?"}</p>
           </div>
