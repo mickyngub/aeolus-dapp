@@ -92,8 +92,8 @@ const Protocol = ({ fallback }: { [key: string]: any }) => {
           </div>
         }
       >
-        <div tw="pb-6">
-          <div tw="relative top-0 w-full">
+        <div tw="pb-16">
+          <div tw="relative top-0 w-full border-t-2 border-b-2 border-white">
             <CanvasWind lightIntensity={0.5} />
             <div tw="absolute bottom-0 px-28 pb-2">
               <p tw="text-center text-3xl text-white ">

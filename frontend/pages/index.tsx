@@ -61,6 +61,9 @@ const Home: NextPage = () => {
 
 const WrapperCanvas = styled.div`
   height: 150px;
+  border-top-width: 2px;
+  border-bottom-width: 2px;
+  border-color: white;
 `;
 
 export default Home;
