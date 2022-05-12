@@ -27,10 +27,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       }
     >
       {getLayout(
-        <div>
+        <>
           <GlobalStyles />
           <Component {...pageProps} />
-        </div>
+        </>
       )}
     </MoralisProvider>
   );

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { ReactElement, Suspense } from "react";
+import { ChangeEvent, ReactElement, Suspense, useState } from "react";
 import Loading from "~/src/ui/loading/Loading";
 import Layout from "~/src/ui/layout/Layout";
 import CanvasWind from "~/src/ui/canvasWind/CanvasWind";
@@ -16,6 +16,8 @@ const coinGeckoAPI = process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO
   : "/";
 
 const PairID = () => {
+  const [investAmount, setInvestAmount] = useState<number>(0);
+
   let pair;
   const router = useRouter();
   const { pairID } = router.query;
@@ -28,6 +30,12 @@ const PairID = () => {
     coinGeckoAPI + (pair && pair.token1ID),
     fetcher
   );
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const inputValue = parseInt(e.target.value, 10);
+    if (inputValue < 0 || inputValue > 10000) return;
+    setInvestAmount(inputValue);
+  };
 
   return (
     <Suspense
@@ -57,7 +65,39 @@ const PairID = () => {
             </div>
           </div>
 
-          {pair && <PairCard pairData={pair}></PairCard>}
+          <>
+            {pair && crypto0Data && crypto1Data && (
+              <div tw="flex justify-between">
+                <div tw="flex-1 hover:pointer-events-none">
+                  {<PairCard pairData={pair}></PairCard>}
+                </div>
+                <div tw=" flex flex-1 flex-col items-end justify-between gap-4">
+                  <p>{pair.pairAddress}</p>
+                  <p>Invest Amount in USDT</p>
+                  <input
+                    type="number"
+                    value={investAmount}
+                    onChange={handleInputChange}
+                    placeholder="Invest Amount"
+                    tw="text-right"
+                  />
+                  <p>
+                    Estimated Amount of {pair.token0}:
+                    {(investAmount / 2 / crypto0Data[0].current_price).toFixed(
+                      4
+                    )}
+                  </p>
+                  <p>
+                    Estimated Amount of {pair.token1}:
+                    {(investAmount / 2 / crypto1Data[0].current_price).toFixed(
+                      4
+                    )}
+                  </p>
+                  <Button size="small">Invest</Button>
+                </div>
+              </div>
+            )}
+          </>
         </div>
       </div>
     </Suspense>
