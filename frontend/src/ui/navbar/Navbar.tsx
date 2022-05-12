@@ -59,10 +59,14 @@ const Navbar = ({ type }: Props) => {
   };
   const moralisLogout = async () => {
     await logout();
+    notifyWalletDisconnected();
     console.log("logged out");
   };
   const notifyWalletConnected = () => {
     toast("Wallet Connected");
+  };
+  const notifyWalletDisconnected = () => {
+    toast.error("Wallet Disconnected");
   };
   const [address, setAddress] = useState<string>("");
   const navLists =
@@ -107,7 +111,7 @@ const Navbar = ({ type }: Props) => {
           )}
         </div>
       </div>
-      <ToastContainer />
+      <ToastContainer position="bottom-right" />
     </nav>
   );
 };
