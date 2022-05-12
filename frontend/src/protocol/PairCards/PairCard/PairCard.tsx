@@ -54,7 +54,7 @@ const PairCard = ({ pairData }: Props) => {
       <div tw="border-2 border-accent-500 bg-white bg-noise ">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <div tw="flex flex-col gap-4 p-2">
-          <p tw="flex justify-between text-sm">
+          <p tw="flex justify-between text-sm font-bold">
             <span>Ratio: </span>
             <span>{pairData.ratio}</span>
           </p>

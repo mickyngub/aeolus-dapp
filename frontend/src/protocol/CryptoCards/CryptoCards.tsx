@@ -16,20 +16,9 @@ const CryptoCards = () => {
   return (
     <div id="#cryptoMarket" tw="grid grid-cols-4 place-items-center gap-6">
       {cryptoDatas
-        ? cryptoDatas.map((cryptoData) => {
-            return (
-              <Link
-                href={{
-                  pathname: `/crypto/${cryptoData.id}`,
-                }}
-                key={cryptoData.name}
-              >
-                <a>
-                  <CryptoCard cryptoData={cryptoData} />
-                </a>
-              </Link>
-            );
-          })
+        ? cryptoDatas.map((cryptoData) => (
+            <CryptoCard key={cryptoData.id} cryptoData={cryptoData} />
+          ))
         : null}
     </div>
   );

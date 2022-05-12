@@ -70,7 +70,7 @@ const CryptoCard = ({ cryptoData }: Props) => {
   };
 
   return (
-    <div tw="transition-duration[300ms] h-full w-56 border-2 border-white hover:translate-x-0.5 hover:-translate-y-1 hover:opacity-70">
+    <div tw="transition-duration[300ms] h-full w-56 border-2 border-white hover:translate-x-0.5 hover:-translate-y-1 hover:cursor-default hover:opacity-70">
       <div tw="flex items-center gap-2 border-b-2 border-white bg-secondary bg-noise p-2 text-white ">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -78,7 +78,9 @@ const CryptoCard = ({ cryptoData }: Props) => {
           alt={cryptoData.name + " image"}
           tw="h-12 w-12"
         />
-        <p tw="text-lg">{cryptoData.name}</p>
+        <p tw="text-lg">
+          {cryptoData.name} ({cryptoData.symbol.toUpperCase()})
+        </p>
       </div>
       <div tw="border-2 border-secondary bg-white bg-noise ">
         {/* eslint-disable-next-line @next/next/no-img-element */}
