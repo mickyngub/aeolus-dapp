@@ -134,7 +134,7 @@ const Protocol = ({ fallback }: { [key: string]: any }) => {
               <CryptoCards />
             </div>
             <div id="pair" tw="">
-              <p tw="my-12 text-3xl font-bold">Pairs</p>
+              <p tw="my-12 text-3xl font-bold">Aeolus Pairs</p>
               <PairCards />
             </div>
           </div>

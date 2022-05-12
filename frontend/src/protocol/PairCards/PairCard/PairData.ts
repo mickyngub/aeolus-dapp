@@ -71,6 +71,33 @@ const pairData: Pair[] = [
     pairAddress: "https://snowtrace.io/",
     ratio: "50/50",
   },
+  {
+    pairName: "WETH.e-SHIBA",
+    token0: "ETH",
+    token1: "SHIBA",
+    token0ID: "ethereum",
+    token1ID: "shiba-inu",
+    pairAddress: "https://snowtrace.io/",
+    ratio: "50/50",
+  },
+  {
+    pairName: "GF-GALA",
+    token0: "GF",
+    token1: "GALA",
+    token0ID: "guildfi",
+    token1ID: "gala",
+    pairAddress: "https://snowtrace.io/",
+    ratio: "50/50",
+  },
+  {
+    pairName: "NEAR-BAND",
+    token0: "NEAR",
+    token1: "BAND",
+    token0ID: "near",
+    token1ID: "band-protocol",
+    pairAddress: "https://snowtrace.io/",
+    ratio: "50/50",
+  },
 ];
 
 export { pairData };
