@@ -7,6 +7,7 @@ import Link from "next/link";
 import CanvasWind from "~/src/ui/canvasWind/CanvasWind";
 import Loading from "~/src/ui/loading/Loading";
 import Image from "next/image";
+
 const Main = () => {
   return (
     <Suspense

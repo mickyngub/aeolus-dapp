@@ -15,7 +15,7 @@ type AppPropsWithLayout = AppProps & {
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
-  return getLayout(
+  return (
     <MoralisProvider
       appId={
         process.env.NEXT_PUBLIC_APP_ID ? process.env.NEXT_PUBLIC_APP_ID : ""
@@ -26,8 +26,12 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
           : ""
       }
     >
-      <GlobalStyles />
-      <Component {...pageProps} />
+      {getLayout(
+        <div>
+          <GlobalStyles />
+          <Component {...pageProps} />
+        </div>
+      )}
     </MoralisProvider>
   );
 }
