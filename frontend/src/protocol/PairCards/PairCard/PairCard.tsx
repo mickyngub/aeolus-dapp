@@ -55,26 +55,26 @@ const PairCard = ({ pairData }: Props) => {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <div tw="flex flex-col gap-4 p-2">
           <p tw="flex justify-between text-sm font-bold">
-            <span>Ratio: </span>
+            <span>⚖ &nbsp;Ratio: </span>
             <span>{pairData.ratio}</span>
           </p>
           <div>
             <p tw="flex justify-between text-sm font-bold">
-              <span>{pairData.token0} Price:</span>
+              <span>∇ &nbsp;{pairData.token0} Price:</span>
               <span>
                 &nbsp;$
                 {crypto0Data && crypto0Data[0].current_price}
               </span>
             </p>
             <p tw="flex justify-between text-sm">
-              <span>{pairData.token0} 24 High:</span>
+              <span>↑ &nbsp;{pairData.token0} 24 High:</span>
               <span>
                 &nbsp;$
                 {crypto0Data && crypto0Data[0].high_24h}
               </span>
             </p>
             <p tw="flex justify-between text-sm">
-              <span>{pairData.token0} 24 Low:</span>
+              <span>↓ &nbsp;{pairData.token0} 24 Low:</span>
               <span>
                 &nbsp;$
                 {crypto0Data && crypto0Data[0].low_24h}
@@ -83,21 +83,21 @@ const PairCard = ({ pairData }: Props) => {
           </div>
           <div>
             <p tw="flex justify-between text-sm font-bold">
-              <span>{pairData.token1} Price:</span>
+              <span>∇ &nbsp;{pairData.token1} Price:</span>
               <span>
                 &nbsp;$
                 {crypto1Data && crypto1Data[0].current_price}
               </span>
             </p>
             <p tw="flex justify-between text-sm">
-              <span>{pairData.token0} 24 High:</span>
+              <span>↑ &nbsp;{pairData.token0} 24 High:</span>
               <span>
                 &nbsp;$
                 {crypto1Data && crypto1Data[0].high_24h}
               </span>
             </p>
             <p tw="flex justify-between text-sm">
-              <span>{pairData.token0} 24 Low:</span>
+              <span>↓ &nbsp;{pairData.token0} 24 Low:</span>
               <span>
                 &nbsp;$
                 {crypto1Data && crypto1Data[0].low_24h}

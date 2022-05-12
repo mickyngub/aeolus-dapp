@@ -87,26 +87,26 @@ const CryptoCard = ({ cryptoData }: Props) => {
         <div tw="flex flex-col gap-2 p-2">
           <div tw="my-2">
             <p tw="flex justify-between text-sm">
-              <span>Market Cap Rank:</span>{" "}
+              <span>♔ &nbsp;Market Cap Rank:</span>{" "}
               <span>&nbsp;{cryptoData.market_cap_rank}</span>
             </p>
             <p tw="flex justify-between text-sm font-bold">
-              <span>Current Price:</span>
+              <span>∇ &nbsp;Current Price:</span>
               <span>&nbsp;${cryptoData.current_price}</span>
             </p>
           </div>
           {/* <p>{cryptoData.sparkline_in_7d.price}</p> */}
           <div tw="my-1">
             <p tw="flex justify-between text-sm">
-              <span>24h High:</span>
+              <span>↑ &nbsp;24h High:</span>
               <span>&nbsp;${cryptoData.high_24h}</span>
             </p>{" "}
             <p tw="flex justify-between text-sm">
-              <span>24h Low:</span>
+              <span>↓ &nbsp;24h Low:</span>
               <span>&nbsp;${cryptoData.low_24h}</span>
             </p>
             <p tw="flex justify-between text-sm">
-              <span>24h Change:</span>
+              <span>Δ 24h Change:</span>
               <span>
                 &nbsp;{cryptoData.price_change_percentage_24h.toFixed(2)}%
               </span>
