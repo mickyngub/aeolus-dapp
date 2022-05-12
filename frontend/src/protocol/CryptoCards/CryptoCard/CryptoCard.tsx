@@ -70,7 +70,7 @@ const CryptoCard = ({ cryptoData }: Props) => {
   };
 
   return (
-    <div tw="transition-duration[300ms] h-full w-56 border-2 border-white hover:opacity-70">
+    <div tw="transition-duration[300ms] h-full w-56 border-2 border-white hover:translate-x-0.5 hover:-translate-y-1 hover:opacity-70">
       <div tw="flex items-center gap-2 border-b-2 border-white bg-secondary bg-noise p-2 text-white ">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -83,25 +83,41 @@ const CryptoCard = ({ cryptoData }: Props) => {
       <div tw="border-2 border-secondary bg-white bg-noise ">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <div tw="flex flex-col gap-2 p-2">
-          <p tw="text-sm">
-            Current Price:{" "}
-            <span>&nbsp;${cryptoData.current_price.toFixed(2)}</span>
-          </p>
+          <div tw="my-2">
+            <p tw="flex justify-between text-sm">
+              <span>Market Cap Rank:</span>{" "}
+              <span>&nbsp;{cryptoData.market_cap_rank}</span>
+            </p>
+            <p tw="flex justify-between text-sm font-bold">
+              <span>Current Price:</span>
+              <span>&nbsp;${cryptoData.current_price}</span>
+            </p>
+          </div>
           {/* <p>{cryptoData.sparkline_in_7d.price}</p> */}
-          <p tw="text-sm">
-            24h Change:
-            <span tw="text-base">
-              &nbsp;{cryptoData.price_change_percentage_24h.toFixed(2)}%
-            </span>
-          </p>
+          <div tw="my-1">
+            <p tw="flex justify-between text-sm">
+              <span>24h High:</span>
+              <span>&nbsp;${cryptoData.high_24h}</span>
+            </p>{" "}
+            <p tw="flex justify-between text-sm">
+              <span>24h Low:</span>
+              <span>&nbsp;${cryptoData.low_24h}</span>
+            </p>
+            <p tw="flex justify-between text-sm">
+              <span>24h Change:</span>
+              <span>
+                &nbsp;{cryptoData.price_change_percentage_24h.toFixed(2)}%
+              </span>
+            </p>
+          </div>
           {/* <p>
             {cryptoData.sparkline_in_7d.price.map((priceData) => (
               <p>{priceData.toFixed(2)}</p>
             ))}
           </p> */}
-          <p tw="text-sm">
+          {/* <p tw="text-sm">
             Last Update:<span>&nbsp;{cryptoData.last_updated}</span>
-          </p>
+          </p> */}
         </div>
         <div tw="mx-auto w-52">
           <Line data={graphData} options={options} />

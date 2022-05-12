@@ -96,7 +96,7 @@ const Protocol = ({ fallback }: { [key: string]: any }) => {
           <div tw="relative top-0 w-full">
             <CanvasWind lightIntensity={0.5} />
             <div tw="absolute bottom-0 px-28 pb-2">
-              <p tw="text-center text-3xl text-white">
+              <p tw="text-center text-3xl text-white ">
                 START YOUR INVESTMENT JOURNEY WITH AEOLUS
               </p>
             </div>
@@ -124,17 +124,17 @@ const Protocol = ({ fallback }: { [key: string]: any }) => {
           </div>
           <div tw="px-28">
             <div id="dashboard" tw="my-12">
-              <p tw="mb-4 text-2xl font-bold">Dashboard</p>
+              <p tw="mb-12 text-3xl font-bold">Dashboard</p>
               <Dashboard />
             </div>
             <div id="cryptoMarket" tw="my-12">
-              <p tw="my-4 text-2xl font-bold">
+              <p tw="my-12 text-3xl font-bold">
                 Cryptocurrency Prices by Market Cap
               </p>
               <CryptoCards />
             </div>
             <div id="pair" tw="">
-              <p tw="my-4 text-2xl font-bold">Pairs</p>
+              <p tw="my-12 text-3xl font-bold">Pairs</p>
               <PairCards />
             </div>
           </div>
