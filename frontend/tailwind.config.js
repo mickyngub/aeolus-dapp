@@ -7,7 +7,7 @@ module.exports = {
         secondary: "hsl(41deg 58% 59%)",
         accent: {
           500: "hsl(18deg 75% 55%)",
-          400: "hsl(18deg 75% 50%)",
+          400: "hsl(18deg 75% 47%)",
           300: "hsl(18deg 75% 35%)",
         },
         black: "hsl(0deg 0% 0%)",

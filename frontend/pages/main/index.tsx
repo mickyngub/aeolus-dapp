@@ -21,7 +21,7 @@ const Main = () => {
       <main tw="bg-primary bg-noise">
         <div tw="relative  left-0 w-full border-b-2 border-t-2 border-white ">
           <CanvasWind lightIntensity={0.3} />
-          <div tw="absolute bottom-0 px-28 pb-4">
+          <div tw="absolute bottom-0 px-28 pb-2">
             <p tw="text-center text-5xl text-white">AEOLUS PROTOCOL</p>
           </div>
         </div>
