@@ -66,43 +66,52 @@ const PairID = () => {
               </Link>
             </div>
           </div>
-
-          <>
-            {pair && crypto0Data && crypto1Data && (
-              <div tw="flex justify-between">
-                <div tw=" hover:pointer-events-none">
-                  {<PairCard pairData={pair}></PairCard>}
+          {account ? (
+            <>
+              {pair && crypto0Data && crypto1Data && (
+                <div tw="flex justify-between">
+                  <div tw=" hover:pointer-events-none">
+                    {<PairCard pairData={pair}></PairCard>}
+                  </div>
+                  <div tw="flex flex-col items-end justify-between gap-4">
+                    <p>
+                      {pair.pairAddress}
+                      {account}
+                    </p>
+                    <p>Invest Amount in USDT</p>
+                    <input
+                      type="number"
+                      value={investAmount}
+                      onChange={handleInputChange}
+                      placeholder="Invest Amount"
+                      tw="border-2 border-secondary bg-white bg-noise text-right ring-2 ring-white focus-visible:outline-none"
+                    />
+                    <p>
+                      Estimated Amount of {pair.token0}:
+                      {(
+                        investAmount /
+                        2 /
+                        crypto0Data[0].current_price
+                      ).toFixed(4)}
+                    </p>
+                    <p>
+                      Estimated Amount of {pair.token1}:
+                      {(
+                        investAmount /
+                        2 /
+                        crypto1Data[0].current_price
+                      ).toFixed(4)}
+                    </p>
+                    <Button size="small">Approve Token</Button>
+                  </div>
                 </div>
-                <div tw="flex flex-col items-end justify-between gap-4">
-                  <p>
-                    {pair.pairAddress}
-                    {account}
-                  </p>
-                  <p>Invest Amount in USDT</p>
-                  <input
-                    type="number"
-                    value={investAmount}
-                    onChange={handleInputChange}
-                    placeholder="Invest Amount"
-                    tw="border-2 border-secondary bg-white bg-noise text-right ring-2 ring-white focus-visible:outline-none"
-                  />
-                  <p>
-                    Estimated Amount of {pair.token0}:
-                    {(investAmount / 2 / crypto0Data[0].current_price).toFixed(
-                      4
-                    )}
-                  </p>
-                  <p>
-                    Estimated Amount of {pair.token1}:
-                    {(investAmount / 2 / crypto1Data[0].current_price).toFixed(
-                      4
-                    )}
-                  </p>
-                  <Button size="small">Invest</Button>
-                </div>
-              </div>
-            )}
-          </>
+              )}
+            </>
+          ) : (
+            <div tw="h-80">
+              <p tw="text-2xl">Please Login with your Metamask Wallet</p>
+            </div>
+          )}
         </div>
       </div>
     </Suspense>

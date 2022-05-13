@@ -1,5 +1,6 @@
 import React from "react";
 import "twin.macro";
+import useContract from "../hooks/useContract";
 
 const Dashboard = () => {
   return (
@@ -20,10 +21,8 @@ const Dashboard = () => {
       </div>
       <div tw="grid grid-cols-2 gap-4 bg-white bg-noise p-4">
         <p tw="text-lg">AVAX Balances</p>
-        <p tw="text-lg">USDT Balances</p>
-        <p tw="text-lg">BUSD Balances</p>
-        <p tw="text-lg">UST Balances</p>
-        <p tw="text-lg">USDC Balances</p>
+        <p tw="text-lg">USDT.e Balances</p>
+        <p tw="text-lg">USDC.e Balances</p>
         <p tw="text-lg">MIM Balances</p>
       </div>
     </div>
