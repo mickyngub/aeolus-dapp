@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { ChangeEvent, ReactElement, Suspense, useState } from "react";
 import Loading from "~/src/ui/loading/Loading";
@@ -10,14 +11,30 @@ import useSWR from "swr";
 import { fetcher } from "~/pages/api";
 import PairCard from "~/src/protocol/PairCards/PairCard/PairCard";
 import { findPairInPairDataArray } from "~/src/pair/utils";
-import { useMoralis } from "react-moralis";
+import {
+  MoralisContextValue,
+  useMoralis,
+  useWeb3Contract,
+} from "react-moralis";
+import useContract from "~/src/hooks/useContract";
+import deployedContract from "~/src/deployments/contract.json";
+import aeolusFactoryABI from "~/src/abi/core/AeolusFactory.sol/AeolusFactory.json";
+import ERC20ABI from "~/src/abi/ERC20/ERC20.sol/ERC20.json";
+import { ethers } from "ethers";
 
 const coinGeckoAPI = process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO
   ? process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO
   : "/";
 
 const PairID = () => {
-  const { account } = useMoralis();
+  const {
+    account,
+    isAuthenticated,
+    enableWeb3,
+    web3,
+    isWeb3Enabled,
+  }: MoralisContextValue = useMoralis();
+
   const [investAmount, setInvestAmount] = useState<number>(0);
 
   let pair;
@@ -38,6 +55,30 @@ const PairID = () => {
     if (inputValue < 0 || inputValue > 10000) return;
     setInvestAmount(inputValue);
   };
+
+  const {
+    data,
+    error,
+    runContractFunction: runApproveUSDTDotE,
+    isFetching,
+    isLoading,
+  } = useWeb3Contract({
+    abi: ERC20ABI,
+    contractAddress: deployedContract.AVAXStableTokens["USDT.e"].address,
+    functionName: "approve",
+    params: {
+      spender: deployedContract.AeolusRouter.address,
+      amount: ethers.constants.MaxUint256,
+    },
+  });
+
+  useEffect(() => {
+    (async () => {
+      if (!isWeb3Enabled) {
+        await enableWeb3();
+      }
+    })();
+  }, [isWeb3Enabled]);
 
   return (
     <Suspense
@@ -66,7 +107,7 @@ const PairID = () => {
               </Link>
             </div>
           </div>
-          {account ? (
+          {isAuthenticated ? (
             <>
               {pair && crypto0Data && crypto1Data && (
                 <div tw="flex justify-between">
@@ -102,7 +143,13 @@ const PairID = () => {
                         crypto1Data[0].current_price
                       ).toFixed(4)}
                     </p>
-                    <Button size="small">Approve Token</Button>
+                    {
+                      <div>
+                        <Button size="small" onClick={runApproveUSDTDotE}>
+                          Approve Token
+                        </Button>
+                      </div>
+                    }
                   </div>
                 </div>
               )}
