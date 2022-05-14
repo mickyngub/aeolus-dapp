@@ -42,13 +42,13 @@ const Navbar = ({ type }: Props) => {
     account,
     logout,
   } = useMoralis();
+  // Temporary solution for account null when refreshing, cannot detect new wallet after switching
+  const dbAddress = user?.get("ethAddress");
   const connectWalletMoralis = async () => {
     if (!isAuthenticated) {
       await authenticate({ signingMessage: "Signin to Aeolus Protocol" })
         .then((user) => {
           console.log("logged in user", user);
-          // const address = user!.get("ethAddress");
-          // setAddress(address);
           notifyWalletConnected();
         })
         .catch((error) => {
@@ -98,10 +98,10 @@ const Navbar = ({ type }: Props) => {
             </Button>
           ) : (
             <div tw="flex items-center gap-4">
-              {account && (
+              {dbAddress && (
                 <p tw="text-white">
-                  {account.substring(0, 8)}......
-                  {account.substring(account.length - 8)}
+                  {dbAddress.substring(0, 8)}......
+                  {dbAddress.substring(dbAddress.length - 8)}
                 </p>
               )}
               <Button size="extraSmall" onClick={moralisLogout}>
