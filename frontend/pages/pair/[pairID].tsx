@@ -21,9 +21,11 @@ import {
   useMoralis,
   useWeb3Contract,
 } from "react-moralis";
+import { toast } from "react-toastify";
 import useContract from "~/src/hooks/useContract";
 import deployedContract from "~/src/deployments/contract.json";
 import aeolusFactoryABI from "~/src/abi/core/AeolusFactory.sol/AeolusFactory.json";
+import aeolusRouterABI from "~/src/abi/periphery/AeolusRouter.sol/AeolusRouter.json";
 import ERC20ABI from "~/src/abi/ERC20/ERC20.sol/ERC20.json";
 import { ethers } from "ethers";
 
@@ -76,11 +78,9 @@ const PairID = () => {
   });
 
   const {
-    data,
-    error,
+    data: runGetApprovedUSDTDotEData,
+    error: runGetApprovedUSDTDotEError,
     runContractFunction: runGetApprovedUSDTDotE,
-    isFetching,
-    isLoading,
   }: any = useWeb3Contract({
     abi: ERC20ABI,
     contractAddress: deployedContract.AVAXStableTokens["USDT.e"].address,
@@ -90,6 +90,30 @@ const PairID = () => {
       spender: deployedContract.AeolusRouter.address,
     },
   });
+
+  const { error: runInvestPairError, runContractFunction: runInvestPair }: any =
+    useWeb3Contract({
+      abi: aeolusRouterABI,
+      contractAddress: deployedContract.AeolusRouter.address,
+      functionName: "investPair",
+      params: {
+        pairID: 1,
+        amountInvest: ethers.utils.parseUnits(investAmount.toString(), 6),
+      },
+    });
+
+  const { error: runRedeemPairError, runContractFunction: runRedeemPair }: any =
+    useWeb3Contract({
+      abi: aeolusRouterABI,
+      contractAddress: deployedContract.AeolusRouter.address,
+      functionName: "redeemPair",
+      params: {
+        pairID: 1,
+      },
+    });
+  const notifyError = (err: any) => {
+    toast(err);
+  };
 
   useEffect(() => {
     (async () => {
@@ -107,7 +131,7 @@ const PairID = () => {
     })();
   }, [web3, user]);
 
-  console.log("data", data);
+  console.log("get approved usdt.e data", runGetApprovedUSDTDotEData);
 
   return (
     <Suspense
@@ -172,17 +196,23 @@ const PairID = () => {
                         crypto1Data[0].current_price
                       ).toFixed(4)}
                     </p>
-                    {data?._hex === "0x00" ? (
+                    {runGetApprovedUSDTDotEData?._hex === "0x00" ? (
                       <Button size="small" onClick={runApproveUSDTDotE}>
                         Approve Token
                       </Button>
                     ) : (
                       <>
-                        <Button size="small" onClick={runApproveUSDTDotE}>
+                        <Button size="small" onClick={runInvestPair}>
                           Invest
                         </Button>
                       </>
                     )}
+                    <Button size="small" onClick={runRedeemPair}>
+                      Redeem
+                    </Button>
+                    {runGetApprovedUSDTDotEError &&
+                      notifyError(runGetApprovedUSDTDotEError)}
+                    {runInvestPairError && notifyError(runInvestPairError)}
                   </div>
                 </div>
               )}
