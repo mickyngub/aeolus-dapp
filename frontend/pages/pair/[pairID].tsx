@@ -1,6 +1,11 @@
-import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { ChangeEvent, ReactElement, Suspense, useState } from "react";
+import {
+  ChangeEvent,
+  ReactElement,
+  Suspense,
+  useState,
+  useEffect,
+} from "react";
 import Loading from "~/src/ui/loading/Loading";
 import Layout from "~/src/ui/layout/Layout";
 import CanvasWind from "~/src/ui/canvasWind/CanvasWind";
@@ -31,12 +36,16 @@ const PairID = () => {
     account,
     isAuthenticated,
     enableWeb3,
+    user,
     web3,
     isWeb3Enabled,
   }: MoralisContextValue = useMoralis();
 
+  const dbAddress = user?.get("ethAddress");
   const [investAmount, setInvestAmount] = useState<number>(0);
 
+  console.log("dbAddress", dbAddress);
+  console.log("account", account);
   let pair;
   const router = useRouter();
   const { pairID } = router.query;
@@ -56,19 +65,29 @@ const PairID = () => {
     setInvestAmount(inputValue);
   };
 
-  const {
-    data,
-    error,
-    runContractFunction: runApproveUSDTDotE,
-    isFetching,
-    isLoading,
-  } = useWeb3Contract({
+  const { runContractFunction: runApproveUSDTDotE } = useWeb3Contract({
     abi: ERC20ABI,
     contractAddress: deployedContract.AVAXStableTokens["USDT.e"].address,
     functionName: "approve",
     params: {
       spender: deployedContract.AeolusRouter.address,
       amount: ethers.constants.MaxUint256,
+    },
+  });
+
+  const {
+    data,
+    error,
+    runContractFunction: runGetApprovedUSDTDotE,
+    isFetching,
+    isLoading,
+  }: any = useWeb3Contract({
+    abi: ERC20ABI,
+    contractAddress: deployedContract.AVAXStableTokens["USDT.e"].address,
+    functionName: "allowance",
+    params: {
+      owner: dbAddress,
+      spender: deployedContract.AeolusRouter.address,
     },
   });
 
@@ -79,6 +98,16 @@ const PairID = () => {
       }
     })();
   }, [isWeb3Enabled]);
+
+  useEffect(() => {
+    (async () => {
+      if (isWeb3Enabled) {
+        await runGetApprovedUSDTDotE();
+      }
+    })();
+  }, [web3, user]);
+
+  console.log("data", data);
 
   return (
     <Suspense
@@ -94,7 +123,7 @@ const PairID = () => {
         <div tw="relative top-0 w-full border-t-2 border-b-2 border-white">
           <CanvasWind lightIntensity={0.5} />
           <div tw="absolute bottom-0 px-28 pb-2">
-            <p tw="text-center text-5xl text-white ">AEOLUS PAIR</p>
+            <p tw="text-center text-5xl text-white">AEOLUS PAIR</p>
           </div>
         </div>
         <div tw="px-28">
@@ -143,13 +172,17 @@ const PairID = () => {
                         crypto1Data[0].current_price
                       ).toFixed(4)}
                     </p>
-                    {
-                      <div>
+                    {data?._hex === "0x00" ? (
+                      <Button size="small" onClick={runApproveUSDTDotE}>
+                        Approve Token
+                      </Button>
+                    ) : (
+                      <>
                         <Button size="small" onClick={runApproveUSDTDotE}>
-                          Approve Token
+                          Invest
                         </Button>
-                      </div>
-                    }
+                      </>
+                    )}
                   </div>
                 </div>
               )}
