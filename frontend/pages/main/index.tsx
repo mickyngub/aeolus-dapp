@@ -1,4 +1,5 @@
 import "twin.macro";
+import tw from "twin.macro";
 import type { ReactElement } from "react";
 import { Suspense } from "react";
 import Button from "~/src/ui/button/Button";
@@ -26,68 +27,96 @@ const Main = () => {
             <p tw="text-center text-5xl text-white">AEOLUS INTRODUCTION</p>
           </div>
         </div>
-        <div tw="grid grid-cols-2 gap-16 py-8 px-28 ">
+        <div tw="grid grid-cols-2 gap-16 pt-12 px-28 ">
           {/* Needs this div for sticky to work properly */}
+          <div tw="">
+            <TextDescription>
+              &emsp;&emsp; Aeolus Protocol is a passive cryptocurrency fund
+              operating on Avalanche Blockchain that earns additional yield on
+              top of capital gains by providing the underlying assets in the
+              fund to the liquidity pool.
+            </TextDescription>
+          </div>
           <div>
             <div
               id="about"
-              tw="sticky top-44 self-start border-2 border-black bg-primary-dark bg-noise p-4"
+              tw="sticky top-44 self-start  bg-primary-dark bg-noise p-4"
             >
-              <p tw="mb-4 text-2xl">{"What's Aeolus Protocol?"}</p>
+              <TextHeader>What is Aeolus Protocol?</TextHeader>
+            </div>
+          </div>
+
+          {/* Needs this div for sticky to work properly */}
+          <div>
+            <div
+              id="why"
+              tw="sticky top-44 self-start  bg-primary-dark bg-noise p-4"
+            >
+              <TextHeader>Why uses Aeolus Protocol?</TextHeader>
             </div>
           </div>
           <div tw="">
-            <p tw="text-sm leading-7">
-              &emsp;&emsp;Lorem ipsum dolor sit amet consectetur adipisicing
-              elit. Quam sapiente eligendi nisi iste quisquam adipisci nemo
-              voluptate, labore, accusantium tenetur dolor officiis pariatur
-              accusamus consequatur consequuntur dicta, culpa et velit. Atque
-              delectus dolor laudantium sequi quae beatae. Aliquam, corporis
-              error asperiores repellendus explicabo sint dolore tempora
-              pariatur iure eius hic ab provident obcaecati id, ipsum, nesciunt
-              maxime enim. Voluptates, possimus!
-            </p>
-            <p tw="text-sm leading-7">
-              &emsp;&emsp;Lorem ipsum dolor sit amet consectetur adipisicing
-              elit. Quam sapiente eligendi nisi iste quisquam adipisci nemo
-              voluptate, labore, accusantium tenetur dolor officiis pariatur
-              accusamus consequatur consequuntur dicta, culpa et velit. Atque
-              delectus dolor laudantium sequi quae beatae. Aliquam, corporis
-              error asperiores repellendus explicabo sint dolore tempora
-              pariatur iure eius hic ab provident obcaecati id, ipsum, nesciunt
-              maxime enim. Voluptates, possimus!
-            </p>
+            <p tw="my-2">∆ &nbsp;Extra Yield</p>
+            <TextDescription>
+              &emsp;&emsp;By using Aeolus Protocol investors will earn
+              additional yield comparing to tradition cyptocurrency fund. This
+              strategy is proven to be resilient to sideway and bear market
+              condition.
+            </TextDescription>
+            <p tw="my-2">∆ &nbsp;One-step Process</p>
+            <TextDescription>
+              &emsp;&emsp;Aeolus Protocol simplifies the process of yield
+              farming into a one-click process. Traditionally, if the investor
+              wishes to use the same strategy as Aeolus Protocol to invest in 2
+              pairs of LP, it would have taken 4 transactions to swap the token,
+              2 transactions to add liquidity, and another 2 transactions to add
+              LP in the pool. Aeolus Protocol combine the whole process into 1
+              transaction.
+            </TextDescription>
           </div>
-          <div tw="">
-            <p tw="text-sm leading-7">
-              &emsp;&emsp;Lorem ipsum dolor sit amet consectetur adipisicing
-              elit. Quam sapiente eligendi nisi iste quisquam adipisci nemo
-              voluptate, labore, accusantium tenetur dolor officiis pariatur
-              accusamus consequatur consequuntur dicta, culpa et velit. Atque
-              delectus dolor laudantium sequi quae beatae. Aliquam, corporis
-              error asperiores repellendus explicabo sint dolore tempora
-              pariatur iure eius hic ab provident obcaecati id, ipsum, nesciunt
-              maxime enim. Voluptates, possimus!
-            </p>
-            <p tw="text-sm leading-7">
-              &emsp;&emsp;Lorem ipsum dolor sit amet consectetur adipisicing
-              elit. Quam sapiente eligendi nisi iste quisquam adipisci nemo
-              voluptate, labore, accusantium tenetur dolor officiis pariatur
-              accusamus consequatur consequuntur dicta, culpa et velit. Atque
-              delectus dolor laudantium sequi quae beatae. Aliquam, corporis
-              error asperiores repellendus explicabo sint dolore tempora
-              pariatur iure eius hic ab provident obcaecati id, ipsum, nesciunt
-              maxime enim. Voluptates, possimus!
-            </p>
+
+          {/* Needs this div for sticky to work properly */}
+          <div>
+            <div
+              id="why"
+              tw="sticky top-20 self-start  bg-primary-dark bg-noise p-4"
+            >
+              <TextDescription>
+                &emsp;&emsp;
+                {`The three main parts of this dAPP are smart contracts,
+                  frontend, and backend. The smart contracts are the execution part of this protocol. 
+                  The frontend allows users to interact
+                  with the protocol through the web interface. The backend acts
+                  as the database for tracking users’ transactions. `}
+              </TextDescription>
+              <TextDescription>
+                &emsp;&emsp;
+                {`Smart contracts are separated into two main parts, the core
+                  contracts including AeolusFactory and AeolusPair contracts,
+                  which is the central logic of Aeolus Protocol, and the
+                  periphery contract includes AeolusRouter contract, which is
+                  the contract that communicates with users and other
+                  decentralized exchange’s contracts.`}
+              </TextDescription>
+              <TextDescription>
+                &emsp;&emsp;After users chose and invest in AeolusPair with
+                USDT.e, AeolusRouter contract will then swap the supplied USDT.e
+                into the designated token of the AeolusPair through DEX
+                contract. Then, the those tokens will be paired, and provided in
+                a liquidity pool on the DEX. Once the process is done, the
+                AeolusPair LP token will be minted to the investor to represent
+                the ownership of money in AeolusPair.
+              </TextDescription>
+            </div>
           </div>
           {/* Needs this div for sticky to work properly */}
           <div>
             <div
               id="mechanics"
-              tw="sticky top-44 flex flex-col justify-center gap-4 self-start border-2 border-black bg-primary-dark bg-noise p-4"
+              tw="sticky top-44 flex flex-col justify-center gap-4 self-start  bg-primary-dark bg-noise p-4"
             >
-              <p tw="mb-4 text-2xl">How does Aeolus Protocol work?</p>
-              <div tw="grid place-content-center border-2 border-black">
+              <TextHeader tw="my-4">How does Aeolus Protocol work?</TextHeader>
+              <div tw="grid place-content-center ">
                 <Image
                   src="/aeolus-overview.png"
                   height="350px"
@@ -95,7 +124,7 @@ const Main = () => {
                   alt="crypto overview"
                 />
               </div>
-              <div tw="grid place-content-center border-2 border-black">
+              <div tw="grid place-content-center ">
                 <Image
                   src="/aeolus-contracts-overview.png"
                   height="450px"
@@ -108,39 +137,72 @@ const Main = () => {
           {/* Needs this div for sticky to work properly */}
           <div>
             <div
-              id="team"
-              tw="sticky top-44 self-start border-2 border-black bg-primary-dark bg-noise p-4"
+              id="Code"
+              tw="sticky top-44 self-start  bg-primary-dark bg-noise p-4"
             >
-              <p tw="text-2xl">{"Who's the team behind Aeolus Protocol?"}</p>
+              <TextHeader>
+                {"Is the source code for Aeolus Protocol verified?"}
+              </TextHeader>
             </div>
           </div>
           <div tw="">
-            <p tw="text-sm leading-7">
-              &emsp;&emsp;Lorem ipsum dolor sit amet consectetur adipisicing
-              elit. Quam sapiente eligendi nisi iste quisquam adipisci nemo
-              voluptate, labore, accusantium tenetur dolor officiis pariatur
-              accusamus consequatur consequuntur dicta, culpa et velit. Atque
-              delectus dolor laudantium sequi quae beatae. Aliquam, corporis
-              error asperiores repellendus explicabo sint dolore tempora
-              pariatur iure eius hic ab provident obcaecati id, ipsum, nesciunt
-              maxime enim. Voluptates, possimus!
-            </p>
-            <p tw="text-sm leading-7">
-              &emsp;&emsp;Lorem ipsum dolor sit amet consectetur adipisicing
-              elit. Quam sapiente eligendi nisi iste quisquam adipisci nemo
-              voluptate, labore, accusantium tenetur dolor officiis pariatur
-              accusamus consequatur consequuntur dicta, culpa et velit. Atque
-              delectus dolor laudantium sequi quae beatae. Aliquam, corporis
-              error asperiores repellendus explicabo sint dolore tempora
-              pariatur iure eius hic ab provident obcaecati id, ipsum, nesciunt
-              maxime enim. Voluptates, possimus!
-            </p>
+            <TextDescription>
+              &emsp;&emsp;All contracts of Aeolus Protocol were verified and
+              deployed on the Avalanche C-Chain Mainnet, AeolusFactory was
+              deployed at the address 0xfAC701de57226B83325ABE2f0D8f053C8759dC
+              46 on blocknumber 14015130. The source code can be inspected in
+              the link https://snowtrace.io/address/0xfac701de57226b83325ab
+              e2f0d8f053c8759dc46#code. AeolusRouter was deployed at the address
+              0xB2412D9eCc65D5919B681Bca3f25Fb1B2fE5a391 on blocknumber
+              14015145. The source code is available at
+              https://snowtrace.io/address/0xb2412d9ecc65d5919b681bca3f25fb1b2fe5a391#code.
+            </TextDescription>
+          </div>
+          <div>
+            <TextDescription>
+              &emsp;&emsp;The decentralized exchange chosen in the initial phase
+              for exchaning token and providing liquidity under the hood is
+              Trader Joe, due to its being the highest trading volume DEX as
+              well as the numerous offering of various liquidity pools on the
+              Avalanche C-Chain Mainnet. Users can interact directly with the
+              AeolusRouter contract, and observe its state variable on the
+              Snowtrace website through the read-write section at the link
+              https://snowtrace.io/address/0xb2412d9ecc65d5919b681bca3f25fb1b2fe5a391#writeContract
+              or they can choose to interact with the dAPP and its underlying
+              smart contracts through this website.
+            </TextDescription>
+          </div>
+          <div>
+            <div
+              id="dex"
+              tw="sticky top-44 self-start  bg-primary-dark bg-noise p-4"
+            >
+              <TextHeader>
+                {"What DEX does Aeolus Protocol interact with?"}
+              </TextHeader>
+            </div>
+          </div>
+          <div>
+            <div
+              id="disclaimer"
+              tw="sticky top-44 self-start  bg-primary-dark bg-noise p-4"
+            >
+              <TextHeader>{"Disclaimer"}</TextHeader>
+            </div>
+          </div>
+          <div tw="">
+            <TextDescription>
+              &emsp;&emsp;Aeolus Protocol is developed as a Proof-of-Concept and
+              is in the beta stage. While the protocol is fully functional and
+              has been tested, investors should NOT invest until the official
+              version is released.
+            </TextDescription>
           </div>
         </div>
         <div tw="grid place-items-center py-12">
           <Link href="/protocol">
             <a>
-              <Button size="small">Enter App</Button>
+              <Button size="medium">Enter App</Button>
             </a>
           </Link>
         </div>
@@ -152,5 +214,13 @@ const Main = () => {
 Main.getLayout = function getLayout(page: ReactElement) {
   return <Layout type="main">{page}</Layout>;
 };
+
+const TextHeader = tw.p`
+text-2xl before:content-["◆ "] text-center text-primary  underline text-underline-offset[8px]
+`;
+
+const TextDescription = tw.p`
+text-sm leading-7 word-break[break-all]
+`;
 
 export default Main;
