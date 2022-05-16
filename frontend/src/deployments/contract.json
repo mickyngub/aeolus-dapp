@@ -45,6 +45,11 @@
       "address": "0xd586e7f844cea2f87f50152665bcbc2c279d8d70"
     }
   },
+  "AeolusLPTokens": {
+    "WBTC.e-WETH.e": {
+      "address": "0xa38c51C53503Ea7cAc4b49788b616053936F6b0A"
+    }
+  },
   "AeolusFactory": {
     "address": "0xfAC701de57226B83325ABE2f0D8f053C8759dC46"
   },

@@ -6,7 +6,7 @@ const pairDataArray: Pair[] = [
     token1: "ETH",
     token0ID: "bitcoin",
     token1ID: "ethereum",
-    pairAddress: "https://snowtrace.io/",
+    pairAddress: "0xa38c51C53503Ea7cAc4b49788b616053936F6b0A",
     ratio: "50/50",
   },
   {
