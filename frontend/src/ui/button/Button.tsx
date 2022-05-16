@@ -21,8 +21,8 @@ const buttonSize = {
     height: 60,
   },
   medium: {
-    width: 240,
-    height: 80,
+    width: 200,
+    height: 70,
   },
   large: {
     width: 300,

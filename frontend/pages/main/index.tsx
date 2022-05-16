@@ -29,33 +29,71 @@ const Main = () => {
         </div>
         <div tw="grid grid-cols-2 gap-16 pt-12 px-28 ">
           {/* Needs this div for sticky to work properly */}
-          <div tw="">
-            <TextDescription>
+          <div>
+            <div tw="sticky top-44 self-start  bg-primary-dark bg-noise p-4">
+              <TextHeader tw="my-6">What is Aeolus Protocol?</TextHeader>
+              {/* <Image
+                src="/aeolus-protocol.png"
+                height="250px"
+                width="650px"
+                alt="aeolus overview"
+              /> */}
+              <div tw="grid grid-cols-3 border-[1px] border-white">
+                <div tw="border-[1px] border-white">
+                  <CanvasWind lightIntensity={0.5} />
+                </div>
+                <div tw="border-[1px] border-white">
+                  <CanvasWind
+                    lightIntensity={0.4}
+                    tw="border-[1px] border-white"
+                  />
+                </div>
+
+                <div tw="border-[1px] border-white">
+                  <CanvasWind
+                    lightIntensity={0.6}
+                    tw="border-[1px] border-white"
+                  />
+                </div>
+                <div tw="border-[1px] border-white">
+                  <CanvasWind lightIntensity={0.5} />
+                </div>
+                <div tw="border-[1px] border-white">
+                  <CanvasWind
+                    lightIntensity={0.4}
+                    tw="border-[1px] border-white"
+                  />
+                </div>
+
+                <div tw="border-[1px] border-white">
+                  <CanvasWind
+                    lightIntensity={0.6}
+                    tw="border-[1px] border-white"
+                  />
+                </div>
+                <div tw="border-[1px] border-white">
+                  <CanvasWind lightIntensity={0.5} />
+                </div>
+                <div tw="border-[1px] border-white">
+                  <CanvasWind
+                    lightIntensity={0.4}
+                    tw="border-[1px] border-white"
+                  />
+                </div>
+
+                <div tw="border-2 border-white">
+                  <CanvasWind lightIntensity={0.6} tw="border-2 border-white" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div tw="" id="about">
+            <TextDescription tw="mb-8">
               &emsp;&emsp; Aeolus Protocol is a passive cryptocurrency fund
               operating on Avalanche Blockchain that earns additional yield on
               top of capital gains by providing the underlying assets in the
               fund to the liquidity pool.
             </TextDescription>
-          </div>
-          <div>
-            <div
-              id="about"
-              tw="sticky top-44 self-start  bg-primary-dark bg-noise p-4"
-            >
-              <TextHeader>What is Aeolus Protocol?</TextHeader>
-            </div>
-          </div>
-
-          {/* Needs this div for sticky to work properly */}
-          <div>
-            <div
-              id="why"
-              tw="sticky top-44 self-start  bg-primary-dark bg-noise p-4"
-            >
-              <TextHeader>Why uses Aeolus Protocol?</TextHeader>
-            </div>
-          </div>
-          <div tw="">
             <p tw="my-2">∆ &nbsp;Extra Yield</p>
             <TextDescription>
               &emsp;&emsp;By using Aeolus Protocol investors will earn
@@ -77,17 +115,13 @@ const Main = () => {
 
           {/* Needs this div for sticky to work properly */}
           <div>
-            <div
-              id="why"
-              tw="sticky top-20 self-start  bg-primary-dark bg-noise p-4"
-            >
+            <div id="why" tw="sticky top-20 self-start p-4">
               <TextDescription>
-                &emsp;&emsp;
-                {`The three main parts of this dAPP are smart contracts,
-                  frontend, and backend. The smart contracts are the execution part of this protocol. 
-                  The frontend allows users to interact
-                  with the protocol through the web interface. The backend acts
-                  as the database for tracking users’ transactions. `}
+                &emsp;&emsp; The three main parts of this dAPP are smart
+                contracts, frontend, and backend. The smart contracts are the
+                execution part of this protocol. The frontend allows users to
+                interact with the protocol through the web interface. The
+                backend acts as the database for tracking users’ transactions.
               </TextDescription>
               <TextDescription>
                 &emsp;&emsp;
@@ -135,51 +169,79 @@ const Main = () => {
             </div>
           </div>
           {/* Needs this div for sticky to work properly */}
+          <div tw="bg-primary-dark bg-noise p-4" id="code">
+            <TextHeader tw="mb-6">
+              {"Is the source code for Aeolus Protocol verified?"}
+            </TextHeader>
+            <Image
+              src="/aeolus-code.png"
+              height="500px"
+              width="1400px"
+              alt="aeolus code"
+            />
+          </div>
+
           <div>
-            <div
-              id="Code"
-              tw="sticky top-44 self-start  bg-primary-dark bg-noise p-4"
-            >
-              <TextHeader>
-                {"Is the source code for Aeolus Protocol verified?"}
-              </TextHeader>
+            <div tw="sticky top-44 self-start p-4">
+              <TextDescription tw="word-break[break-all]">
+                &emsp;&emsp;All contracts of Aeolus Protocol were verified and
+                deployed on the Avalanche C-Chain Mainnet, AeolusFactory was
+                deployed at the address
+                &nbsp;0xfAC701de57226B83325ABE2f0D8f053C8759dC46 on blocknumber
+                14015130. The source code can be inspected in the link
+                <a
+                  tw="text-accent-300 opacity-70 underline text-underline-offset[3px] hover:opacity-100"
+                  href="https://snowtrace.io/address/0xfac701de57226b83325abe2f0d8f053c8759dc46#code"
+                >
+                  &nbsp;https://snowtrace.io/address/0xfac701de57226b83325abe2f0d8f053c8759dc46#code.
+                </a>
+                &nbsp;AeolusRouter was deployed at the address
+                0xB2412D9eCc65D5919B681Bca3f25Fb1B2fE5a391 on blocknumber
+                14015145. The source code is available at
+                <a
+                  tw="text-accent-300 opacity-70 underline text-underline-offset[3px] hover:opacity-100"
+                  href="https://snowtrace.io/address/0xb2412d9ecc65d5919b681bca3f25fb1b2fe5a391#code"
+                >
+                  &nbsp;https://snowtrace.io/address/0xb2412d9ecc65d5919b681bca3f25fb1b2fe5a391#code.
+                </a>
+              </TextDescription>
             </div>
           </div>
-          <div tw="">
-            <TextDescription>
-              &emsp;&emsp;All contracts of Aeolus Protocol were verified and
-              deployed on the Avalanche C-Chain Mainnet, AeolusFactory was
-              deployed at the address 0xfAC701de57226B83325ABE2f0D8f053C8759dC
-              46 on blocknumber 14015130. The source code can be inspected in
-              the link https://snowtrace.io/address/0xfac701de57226b83325ab
-              e2f0d8f053c8759dc46#code. AeolusRouter was deployed at the address
-              0xB2412D9eCc65D5919B681Bca3f25Fb1B2fE5a391 on blocknumber
-              14015145. The source code is available at
-              https://snowtrace.io/address/0xb2412d9ecc65d5919b681bca3f25fb1b2fe5a391#code.
-            </TextDescription>
-          </div>
           <div>
-            <TextDescription>
-              &emsp;&emsp;The decentralized exchange chosen in the initial phase
-              for exchaning token and providing liquidity under the hood is
-              Trader Joe, due to its being the highest trading volume DEX as
-              well as the numerous offering of various liquidity pools on the
-              Avalanche C-Chain Mainnet. Users can interact directly with the
-              AeolusRouter contract, and observe its state variable on the
-              Snowtrace website through the read-write section at the link
-              https://snowtrace.io/address/0xb2412d9ecc65d5919b681bca3f25fb1b2fe5a391#writeContract
-              or they can choose to interact with the dAPP and its underlying
-              smart contracts through this website.
-            </TextDescription>
+            <div tw="sticky top-44 self-start p-4">
+              <TextDescription tw="word-break[break-word]">
+                &emsp;&emsp;The decentralized exchange chosen in the initial
+                phase for exchanging token and providing liquidity under the
+                hood is Trader Joe, due to its being the highest trading volume
+                DEX as well as the numerous offering of various liquidity pools.
+                Users can interact directly with the AeolusRouter contract, and
+                observe its state variable on the Snowtrace website through the
+                read-write section at
+                <a
+                  tw="text-accent-300 opacity-70 underline text-underline-offset[3px] hover:opacity-100"
+                  href="https://snowtrace.io/address/0xb2412d9ecc65d5919b681bca3f25fb1b2fe5a391#writeContract"
+                >
+                  &nbsp;https://snowtrace.io/address/0xb2412d9ecc65d5919b681bca3f25fb1b2fe5a391#writeContract
+                </a>
+                &nbsp;or they can choose to interact with the dAPP and its
+                underlying smart contracts through this website.
+              </TextDescription>
+            </div>
           </div>
           <div>
             <div
               id="dex"
               tw="sticky top-44 self-start  bg-primary-dark bg-noise p-4"
             >
-              <TextHeader>
+              <TextHeader tw="mb-8">
                 {"What DEX does Aeolus Protocol interact with?"}
               </TextHeader>
+              <Image
+                src="/traderjoe.jpeg"
+                height="350px"
+                width="550px"
+                alt="crypto overview"
+              />
             </div>
           </div>
           <div>
@@ -220,7 +282,7 @@ text-2xl before:content-["◆ "] text-center text-primary  underline text-underl
 `;
 
 const TextDescription = tw.p`
-text-sm leading-7 word-break[break-all]
+text-sm leading-7 
 `;
 
 export default Main;

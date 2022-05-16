@@ -15,9 +15,14 @@ const navListsMain = [
     url: "#mechanics",
   },
   {
-    name: "Team",
-    url: "#team",
+    name: "Code",
+    url: "#code",
   },
+  {
+    name: "DEX",
+    url: "#dex",
+  },
+  { name: "Disclaimer", url: "#disclaimer" },
 ];
 
 const navListsProtocol = [
@@ -26,7 +31,7 @@ const navListsProtocol = [
     url: "#dashboard",
   },
   { name: "Crypto Market", url: "#cryptoMarket" },
-  { name: "Pair", url: "#pair" },
+  { name: "Aeolus Pair", url: "#pair" },
 ];
 
 interface Props {
