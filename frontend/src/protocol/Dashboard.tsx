@@ -1,7 +1,7 @@
 import React from "react";
 import "twin.macro";
 import listTokens from "~/src/deployments/contract.json";
-
+import { ethers } from "ethers";
 interface Props {
   userERC20Balances:
     | {
@@ -67,41 +67,36 @@ const Dashboard = ({ userERC20Balances, userNativeBalance }: Props) => {
   }
 
   return (
-    <div tw="border-2 border-secondary">
-      <p tw="border-b-2 border-secondary bg-accent-400 bg-noise p-4 text-3xl font-bold text-white">
+    <div tw="my-8 flex items-stretch gap-4">
+      <p tw="flex max-w-max items-center border-2 border-white bg-secondary p-4 text-2xl font-bold">
         Dashboard
       </p>
-      <div tw="border-t-2 border-b-2 border-secondary bg-white bg-noise">
-        <div tw="m-4">
-          <p tw="my-6 text-xl">My Position</p>
-          <div tw="grid grid-cols-2 gap-4">
-            <div>
-              {stableTokenBalances.map((stableTokenBalance) => {
-                return (
-                  <p key={stableTokenBalance.symbol}>
-                    <p>STABLE TOKEN</p>
-                    {stableTokenBalance.symbol} {stableTokenBalance.balance}
-                  </p>
-                );
-              })}
-            </div>
-            <div>
-              {aeolusLPTokenBalances.map((aeolusLPTokenBalance) => {
-                return (
-                  <p key={aeolusLPTokenBalance.symbol}>
-                    <p>LP TOKEN</p>
-                    {aeolusLPTokenBalance.symbol} {aeolusLPTokenBalance.balance}
-                  </p>
-                );
-              })}
-            </div>
-            <div>
-              <p>AVAX TOKEN</p>AVAX Balances {userNativeBalance.balance}
-            </div>
-          </div>
-        </div>
+      <div tw="transition-duration[400ms] border-2 border-white bg-accent-500 p-4 text-center transition-all hover:scale-105 hover:opacity-90">
+        <p tw="text-lg text-white">♖ Avalanche (AVAX)</p>
+        {userNativeBalance.formatted}
       </div>
-      <div tw="grid grid-cols-2 gap-4 bg-white bg-noise p-4"></div>
+      <div tw="transition-duration[400ms] border-2 border-white bg-secondary bg-noise p-4 text-center transition-all hover:scale-105 hover:opacity-90">
+        {stableTokenBalances.map((stableTokenBalance) => {
+          return (
+            <div key={stableTokenBalance.symbol}>
+              <p tw="text-lg text-white">♗ STABLE COINS</p>
+              {ethers.utils.formatUnits(stableTokenBalance.balance, 6)}{" "}
+              {stableTokenBalance.symbol}
+            </div>
+          );
+        })}
+      </div>
+      <div tw="transition-duration[400ms] border-2 border-white bg-accent-500 p-4 text-center transition-all hover:scale-105 hover:opacity-90">
+        {aeolusLPTokenBalances.map((aeolusLPTokenBalance) => {
+          return (
+            <div key={aeolusLPTokenBalance.symbol}>
+              <p tw="text-lg text-white">♘ Aeolus LP TOKEN</p>
+              {ethers.utils.formatEther(aeolusLPTokenBalance.balance)}{" "}
+              {aeolusLPTokenBalance.symbol} LP
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

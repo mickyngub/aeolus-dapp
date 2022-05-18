@@ -95,31 +95,22 @@ const Protocol = ({ fallback }: { [key: string]: any }) => {
             </div>
           </div>
           <div tw="px-28">
-            <div tw="my-4 flex w-full items-center">
-              <div tw="flex-1">
-                <Link href="/main">
-                  <a>
-                    <Button size="extraSmall">Back</Button>
-                  </a>
-                </Link>
-              </div>
-            </div>
             <div id="dashboard" tw="mt-4 mb-12 ">
               <Dashboard
                 userERC20Balances={data}
                 userNativeBalance={nativeBalance}
               />
             </div>
-            {/* {/* {console.log("dataaa", JSON.stringify(data))} */}
-            {/* {console.log("native balance", JSON.stringify(nativeBalance))} */}
             <div id="cryptoMarket" tw="my-12">
-              <p tw="my-12 text-3xl font-bold">
+              <p tw="my-12 max-w-max border-2 border-white bg-secondary p-4 text-2xl font-bold">
                 Cryptocurrency Prices by Market Cap
               </p>
               <CryptoCards />
             </div>
             <div id="pair" tw="">
-              <p tw="my-12 text-3xl font-bold">Aeolus Pairs</p>
+              <p tw="my-12 max-w-max border-2 border-white bg-secondary p-4 text-2xl font-bold">
+                Aeolus Pairs
+              </p>
               <PairCards />
             </div>
           </div>
