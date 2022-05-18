@@ -22,10 +22,9 @@ import {
   useWeb3Contract,
 } from "react-moralis";
 import { toast } from "react-toastify";
-import useContract from "~/src/hooks/useContract";
 import deployedContract from "~/src/deployments/contract.json";
-import aeolusFactoryABI from "~/src/abi/core/AeolusFactory.sol/AeolusFactory.json";
 import aeolusRouterABI from "~/src/abi/periphery/AeolusRouter.sol/AeolusRouter.json";
+import aeolusPairABI from "~/src/abi/core/AeolusPair.sol/AeolusPair.json";
 import ERC20ABI from "~/src/abi/ERC20/ERC20.sol/ERC20.json";
 import { ethers } from "ethers";
 
@@ -43,15 +42,13 @@ const PairID = () => {
     isWeb3Enabled,
   }: MoralisContextValue = useMoralis();
 
-  const dbAddress = user?.get("ethAddress");
   const [investAmount, setInvestAmount] = useState<number>(0);
+  const [dbAddress, setDBAddress] = useState(user?.get("ethAddress"));
+  const [pair, setPair] = useState<Pair | undefined>();
+  const [aeolusPairAddress, setAeolusPairAddress] = useState("");
 
-  console.log("dbAddress", dbAddress);
-  console.log("account", account);
-  let pair;
   const router = useRouter();
   const { pairID } = router.query;
-  typeof pairID === "string" && (pair = findPairInPairDataArray(pairID));
   const { data: crypto0Data }: { data?: CryptoData[] } = useSWR(
     coinGeckoAPI + (pair && pair.token0ID),
     fetcher
@@ -66,14 +63,16 @@ const PairID = () => {
     if (inputValue < 0 || inputValue > 10000) return;
     setInvestAmount(inputValue);
   };
-
-  const { runContractFunction: runApproveUSDTDotE } = useWeb3Contract({
-    abi: ERC20ABI,
-    contractAddress: deployedContract.AVAXStableTokens["USDT.e"].address,
-    functionName: "approve",
+  const {
+    data: runGetLPOfPairSymbolData,
+    error: runGetLPOfPairSymbolError,
+    runContractFunction: runGetLPOfPairSymbol,
+  }: any = useWeb3Contract({
+    abi: aeolusPairABI,
+    contractAddress: aeolusPairAddress,
+    functionName: "addressToAmountInvest",
     params: {
-      spender: deployedContract.AeolusRouter.address,
-      amount: ethers.constants.MaxUint256,
+      "": dbAddress,
     },
   });
 
@@ -91,6 +90,16 @@ const PairID = () => {
     },
   });
 
+  const { runContractFunction: runApproveUSDTDotE } = useWeb3Contract({
+    abi: ERC20ABI,
+    contractAddress: deployedContract.AVAXStableTokens["USDT.e"].address,
+    functionName: "approve",
+    params: {
+      spender: deployedContract.AeolusRouter.address,
+      amount: ethers.constants.MaxUint256,
+    },
+  });
+
   const { error: runInvestPairError, runContractFunction: runInvestPair }: any =
     useWeb3Contract({
       abi: aeolusRouterABI,
@@ -98,7 +107,8 @@ const PairID = () => {
       functionName: "investPair",
       params: {
         pairID: 1,
-        amountInvest: ethers.utils.parseUnits(investAmount.toString(), 6),
+        amountInvest:
+          investAmount && ethers.utils.parseUnits(investAmount.toString(), 6),
       },
     });
 
@@ -111,28 +121,36 @@ const PairID = () => {
         pairID: 1,
       },
     });
-  const notifyError = (err: any) => {
-    toast(err);
-  };
 
   useEffect(() => {
-    (async () => {
-      if (!isWeb3Enabled) {
-        await enableWeb3();
-      }
-    })();
-  }, [isWeb3Enabled]);
+    setDBAddress(user?.get("ethAddress"));
+  }, [user, isAuthenticated]);
+
+  useEffect(() => {
+    if (typeof pairID === "string") setPair(findPairInPairDataArray(pairID));
+    if (pair) {
+      setAeolusPairAddress(
+        deployedContract.AeolusLPTokens[
+          pair.pairName as keyof typeof deployedContract.AeolusLPTokens
+        ].address
+      );
+    }
+  }, [pairID, pair]);
 
   useEffect(() => {
     (async () => {
       if (isWeb3Enabled) {
         await runGetApprovedUSDTDotE();
+        await runGetLPOfPairSymbol();
+      } else {
+        await enableWeb3();
       }
     })();
-  }, [web3, user]);
+  }, [isWeb3Enabled, runGetLPOfPairSymbol]);
 
   console.log("get approved usdt.e data", runGetApprovedUSDTDotEData);
-
+  console.log("LP amount", runGetLPOfPairSymbolData);
+  console.log("aeoluspair address", aeolusPairAddress);
   return (
     <Suspense
       fallback={
@@ -168,11 +186,18 @@ const PairID = () => {
                     {<PairCard pairData={pair}></PairCard>}
                   </div>
                   <div tw="flex flex-col items-end justify-between gap-4">
-                    <p>
-                      {pair.pairAddress}
-                      {account}
-                    </p>
-                    <p>Invest Amount in USDT</p>
+                    <p>Current LP of {pair.pairName}</p>
+                    <div>
+                      <p>AeolusPair Address</p>
+                      <a
+                        href={`https://snowtrace.io/${pair.pairAddress}`}
+                        target="_blank"
+                        rel="noopener noreferer noreferrer"
+                      >
+                        {pair.pairAddress}
+                      </a>
+                    </div>
+                    <p>Invest Amount in USDT.e</p>
                     <input
                       type="number"
                       value={investAmount}
@@ -186,7 +211,7 @@ const PairID = () => {
                         investAmount /
                         2 /
                         crypto0Data[0].current_price
-                      ).toFixed(4)}
+                      ).toFixed(10)}
                     </p>
                     <p>
                       Estimated Amount of {pair.token1}:
@@ -194,31 +219,29 @@ const PairID = () => {
                         investAmount /
                         2 /
                         crypto1Data[0].current_price
-                      ).toFixed(4)}
+                      ).toFixed(10)}
                     </p>
                     {runGetApprovedUSDTDotEData?._hex === "0x00" ? (
                       <Button size="small" onClick={runApproveUSDTDotE}>
                         Approve Token
                       </Button>
-                    ) : (
+                    ) : runGetLPOfPairSymbolData?.hex === "0x00" ? (
                       <>
                         <Button size="small" onClick={runInvestPair}>
                           Invest
                         </Button>
                       </>
+                    ) : (
+                      <Button size="small" onClick={runRedeemPair}>
+                        Redeem
+                      </Button>
                     )}
-                    <Button size="small" onClick={runRedeemPair}>
-                      Redeem
-                    </Button>
-                    {runGetApprovedUSDTDotEError &&
-                      notifyError(runGetApprovedUSDTDotEError)}
-                    {runInvestPairError && notifyError(runInvestPairError)}
                   </div>
                 </div>
               )}
             </>
           ) : (
-            <div tw="h-80">
+            <div tw="h-80 grid place-content-center">
               <p tw="text-2xl">Please Login with your Metamask Wallet</p>
             </div>
           )}
