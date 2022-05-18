@@ -21,6 +21,7 @@ import {
   useMoralis,
   useWeb3Contract,
 } from "react-moralis";
+import BigNumber from "bignumber.js";
 import { toast } from "react-toastify";
 import deployedContract from "~/src/deployments/contract.json";
 import aeolusRouterABI from "~/src/abi/periphery/AeolusRouter.sol/AeolusRouter.json";
@@ -131,8 +132,8 @@ const PairID = () => {
     if (pair) {
       setAeolusPairAddress(
         deployedContract.AeolusLPTokens[
-          pair.pairName as keyof typeof deployedContract.AeolusLPTokens
-        ].address
+          pair?.pairName as keyof typeof deployedContract.AeolusLPTokens
+        ]?.address
       );
     }
   }, [pairID, pair]);
@@ -165,7 +166,10 @@ const PairID = () => {
         <div tw="relative top-0 w-full border-t-2 border-b-2 border-white">
           <CanvasWind lightIntensity={0.5} />
           <div tw="absolute bottom-0 px-28 pb-2">
-            <p tw="text-center text-5xl text-white">AEOLUS PAIR</p>
+            <p tw="text-center text-5xl">
+              <span tw="text-white">AEOLUS PAIR </span>
+              <span tw="text-black">{pair?.pairName}</span>
+            </p>
           </div>
         </div>
         <div tw="px-28">
@@ -182,66 +186,102 @@ const PairID = () => {
             <>
               {pair && crypto0Data && crypto1Data && (
                 <div tw="flex justify-between">
-                  <div tw=" hover:pointer-events-none">
+                  <div tw="h-full hover:pointer-events-none">
                     {<PairCard pairData={pair}></PairCard>}
                   </div>
-                  <div tw="flex flex-col items-end justify-between gap-4">
-                    <p>Current LP of {pair.pairName}</p>
-                    <div>
-                      <p>AeolusPair Address</p>
-                      <a
-                        href={`https://snowtrace.io/${pair.pairAddress}`}
-                        target="_blank"
-                        rel="noopener noreferer noreferrer"
-                      >
-                        {pair.pairAddress}
-                      </a>
+                  <div tw="flex flex-col items-stretch justify-start gap-4">
+                    <div tw="flex justify-between">
+                      <p>Current LP of {pair.pairName}:&nbsp;</p>
+                      <p>
+                        {runGetLPOfPairSymbolData
+                          ? ethers.utils.formatEther(
+                              runGetLPOfPairSymbolData._hex
+                            )
+                          : "0"}{" "}
+                        LP Token
+                      </p>
                     </div>
-                    <p>Invest Amount in USDT.e</p>
-                    <input
-                      type="number"
-                      value={investAmount}
-                      onChange={handleInputChange}
-                      placeholder="Invest Amount"
-                      tw="border-2 border-secondary bg-white bg-noise text-right ring-2 ring-white focus-visible:outline-none"
-                    />
-                    <p>
-                      Estimated Amount of {pair.token0}:
-                      {(
-                        investAmount /
-                        2 /
-                        crypto0Data[0].current_price
-                      ).toFixed(10)}
-                    </p>
-                    <p>
-                      Estimated Amount of {pair.token1}:
-                      {(
-                        investAmount /
-                        2 /
-                        crypto1Data[0].current_price
-                      ).toFixed(10)}
-                    </p>
-                    {runGetApprovedUSDTDotEData?._hex === "0x00" ? (
-                      <Button size="small" onClick={runApproveUSDTDotE}>
-                        Approve Token
-                      </Button>
-                    ) : runGetLPOfPairSymbolData?.hex === "0x00" ? (
-                      <>
-                        <Button size="small" onClick={runInvestPair}>
-                          Invest
-                        </Button>
-                      </>
+                    <div tw="flex justify-between">
+                      <p>Aeolus Pair Address:&nbsp;</p>
+
+                      <p>
+                        <a
+                          tw="text-underline-offset[3px] text-accent-300 underline opacity-70 hover:opacity-100"
+                          href={`https://snowtrace.io/${pair.pairAddress}`}
+                          target="_blank"
+                          rel="noopener noreferer noreferrer"
+                        >
+                          {pair.pairAddress ? pair.pairAddress : "0x"}
+                        </a>
+                      </p>
+                    </div>
+                    {runGetLPOfPairSymbolData?._hex === "0x00" ||
+                    runGetLPOfPairSymbolData?._hex === undefined ? (
+                      <div>
+                        <div tw="flex justify-between gap-4">
+                          <p>Invest Amount in USDT.e</p>
+                          <input
+                            type="number"
+                            value={investAmount}
+                            onChange={handleInputChange}
+                            placeholder="Invest Amount"
+                            tw="border-2 border-secondary bg-white bg-noise text-right ring-2 ring-white focus-visible:outline-none"
+                          />
+                        </div>
+                        {investAmount ? (
+                          <>
+                            <div tw="my-3 flex justify-between">
+                              <p>Estimated Amount of {pair.token0}:&nbsp;</p>
+                              <p>
+                                {(
+                                  investAmount /
+                                  2 /
+                                  crypto0Data[0].current_price
+                                ).toFixed(8)}
+                              </p>
+                            </div>
+                            <div tw="my-3 flex justify-between">
+                              <p>Estimated Amount of {pair.token1}:&nbsp;</p>
+                              <p>
+                                {(
+                                  investAmount /
+                                  2 /
+                                  crypto1Data[0].current_price
+                                ).toFixed(8)}
+                              </p>
+                            </div>
+                          </>
+                        ) : (
+                          ""
+                        )}
+                      </div>
                     ) : (
-                      <Button size="small" onClick={runRedeemPair}>
-                        Redeem
-                      </Button>
+                      ""
                     )}
+                    <div tw="self-end">
+                      {runGetApprovedUSDTDotEData?._hex === "0x00" ? (
+                        <Button size="small" onClick={runApproveUSDTDotE}>
+                          Approve Token
+                        </Button>
+                      ) : runGetLPOfPairSymbolData?._hex === "0x00" ||
+                        runGetLPOfPairSymbolData?._hex === undefined ? (
+                        <>
+                          <Button size="small" onClick={runInvestPair}>
+                            Invest
+                          </Button>
+                        </>
+                      ) : (
+                        <Button size="small" onClick={runRedeemPair}>
+                          Redeem
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 </div>
               )}
             </>
           ) : (
-            <div tw="h-80 grid place-content-center">
+            <div tw="grid h-80 place-content-center">
               <p tw="text-2xl">Please Login with your Metamask Wallet</p>
             </div>
           )}
