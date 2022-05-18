@@ -1,6 +1,12 @@
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { ethers } from "ethers";
+import {
+  MoralisContextValue,
+  useERC20Balances,
+  useNativeBalance,
+} from "react-moralis";
 import type { ReactElement } from "react";
+import { useMoralis } from "react-moralis";
 import "twin.macro";
 import Dashboard from "~/src/protocol/Dashboard";
 import CryptoCards from "~/src/protocol/CryptoCards/CryptoCards";
@@ -42,6 +48,34 @@ const Protocol = ({ fallback }: { [key: string]: any }) => {
   //   notifyWalletConnected();
   // };
 
+  const {
+    isAuthenticated,
+    account,
+    user,
+    isWeb3Enabled,
+    enableWeb3,
+  }: MoralisContextValue = useMoralis();
+
+  const { fetchERC20Balances, data, isLoading, isFetching, error } =
+    useERC20Balances();
+
+  const { getBalances: fetchNativeBalances, data: nativeBalance } =
+    useNativeBalance();
+
+  useEffect(() => {
+    (async () => {
+      if (!isWeb3Enabled) {
+        await enableWeb3();
+      }
+    })();
+  }, [isWeb3Enabled, enableWeb3]);
+
+  useEffect(() => {
+    (async () => {
+      await fetchERC20Balances();
+      await fetchNativeBalances();
+    })();
+  }, [account]);
   return (
     <SWRConfig value={{ fallback }}>
       <Suspense
@@ -71,8 +105,13 @@ const Protocol = ({ fallback }: { [key: string]: any }) => {
               </div>
             </div>
             <div id="dashboard" tw="mt-4 mb-12 ">
-              <Dashboard />
+              <Dashboard
+                userERC20Balances={data}
+                userNativeBalance={nativeBalance}
+              />
             </div>
+            {/* {/* {console.log("dataaa", JSON.stringify(data))} */}
+            {/* {console.log("native balance", JSON.stringify(nativeBalance))} */}
             <div id="cryptoMarket" tw="my-12">
               <p tw="my-12 text-3xl font-bold">
                 Cryptocurrency Prices by Market Cap
