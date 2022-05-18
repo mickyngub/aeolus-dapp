@@ -4,6 +4,7 @@ import type { AppProps } from "next/app";
 // import GlobalStyles from "../styles/GlobalStyles";
 import GlobalStyles from "~/styles/GlobalStyles";
 import { MoralisProvider } from "react-moralis";
+import "animate.css/animate.min.css";
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;

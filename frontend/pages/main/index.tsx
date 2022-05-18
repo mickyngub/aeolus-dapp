@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import Button from "~/src/ui/button/Button";
 import Layout from "~/src/ui/layout/Layout";
 import Link from "next/link";
+import { AnimationOnScroll } from "react-animation-on-scroll";
 import CanvasWind from "~/src/ui/canvasWind/CanvasWind";
 import Loading from "~/src/ui/loading/Loading";
 import Image from "next/image";
@@ -27,7 +28,7 @@ const Main = () => {
             <p tw="text-center text-5xl text-white">AEOLUS INTRODUCTION</p>
           </div>
         </div>
-        <div tw="grid grid-cols-2 gap-16 pt-12 px-28 ">
+        <div tw="grid grid-cols-2 gap-16 px-28 pt-12 ">
           {/* Needs this div for sticky to work properly */}
           <div>
             <div tw="sticky top-44 self-start  bg-primary-dark bg-noise p-4">
@@ -112,9 +113,12 @@ const Main = () => {
               transaction.
             </TextDescription>
           </div>
-
-          {/* Needs this div for sticky to work properly */}
-          <div>
+          <AnimationOnScroll
+            animateIn="animate__fadeIn"
+            delay={500}
+            animateOnce
+          >
+            {/* Needs this div for sticky to work properly */}
             <div id="why" tw="sticky top-20 self-start p-4">
               <TextDescription>
                 &emsp;&emsp; The three main parts of this dAPP are smart
@@ -142,9 +146,10 @@ const Main = () => {
                 the ownership of money in AeolusPair.
               </TextDescription>
             </div>
-          </div>
+          </AnimationOnScroll>
+
           {/* Needs this div for sticky to work properly */}
-          <div>
+          <AnimationOnScroll animateIn="animate__fadeIn">
             <div
               id="mechanics"
               tw="sticky top-44 flex flex-col justify-center gap-4 self-start  bg-primary-dark bg-noise p-4"
@@ -167,21 +172,23 @@ const Main = () => {
                 />
               </div>
             </div>
-          </div>
+          </AnimationOnScroll>
           {/* Needs this div for sticky to work properly */}
-          <div tw="bg-primary-dark bg-noise p-4" id="code">
-            <TextHeader tw="mb-6">
-              {"Is the source code for Aeolus Protocol verified?"}
-            </TextHeader>
-            <Image
-              src="/aeolus-code.png"
-              height="500px"
-              width="1400px"
-              alt="aeolus code"
-            />
-          </div>
+          <AnimationOnScroll animateIn="animate__fadeIn">
+            <div tw="bg-primary-dark bg-noise p-4" id="code">
+              <TextHeader tw="mb-6">
+                {"Is the source code for Aeolus Protocol verified?"}
+              </TextHeader>
+              <Image
+                src="/aeolus-code.png"
+                height="500px"
+                width="1400px"
+                alt="aeolus code"
+              />
+            </div>
+          </AnimationOnScroll>
 
-          <div>
+          <AnimationOnScroll animateIn="animate__fadeIn" delay={500}>
             <div tw="sticky top-44 self-start p-4">
               <TextDescription tw="word-break[break-all]">
                 &emsp;&emsp;All contracts of Aeolus Protocol were verified and
@@ -190,7 +197,7 @@ const Main = () => {
                 &nbsp;0xfAC701de57226B83325ABE2f0D8f053C8759dC46 on blocknumber
                 14015130. The source code can be inspected in the link
                 <a
-                  tw="text-accent-300 opacity-70 underline text-underline-offset[3px] hover:opacity-100"
+                  tw="text-underline-offset[3px] text-accent-300 underline opacity-70 hover:opacity-100"
                   href="https://snowtrace.io/address/0xfac701de57226b83325abe2f0d8f053c8759dc46#code"
                 >
                   &nbsp;https://snowtrace.io/address/0xfac701de57226b83325abe2f0d8f053c8759dc46#code.
@@ -199,15 +206,15 @@ const Main = () => {
                 0xB2412D9eCc65D5919B681Bca3f25Fb1B2fE5a391 on blocknumber
                 14015145. The source code is available at
                 <a
-                  tw="text-accent-300 opacity-70 underline text-underline-offset[3px] hover:opacity-100"
+                  tw="text-underline-offset[3px] text-accent-300 underline opacity-70 hover:opacity-100"
                   href="https://snowtrace.io/address/0xb2412d9ecc65d5919b681bca3f25fb1b2fe5a391#code"
                 >
                   &nbsp;https://snowtrace.io/address/0xb2412d9ecc65d5919b681bca3f25fb1b2fe5a391#code.
                 </a>
               </TextDescription>
             </div>
-          </div>
-          <div>
+          </AnimationOnScroll>
+          <AnimationOnScroll animateIn="animate__fadeIn" delay={500}>
             <div tw="sticky top-44 self-start p-4">
               <TextDescription tw="word-break[break-word]">
                 &emsp;&emsp;The decentralized exchange chosen in the initial
@@ -218,7 +225,7 @@ const Main = () => {
                 observe its state variable on the Snowtrace website through the
                 read-write section at
                 <a
-                  tw="text-accent-300 opacity-70 underline text-underline-offset[3px] hover:opacity-100"
+                  tw="text-underline-offset[3px] text-accent-300 underline opacity-70 hover:opacity-100"
                   href="https://snowtrace.io/address/0xb2412d9ecc65d5919b681bca3f25fb1b2fe5a391#writeContract"
                 >
                   &nbsp;https://snowtrace.io/address/0xb2412d9ecc65d5919b681bca3f25fb1b2fe5a391#writeContract
@@ -227,8 +234,8 @@ const Main = () => {
                 underlying smart contracts through this website.
               </TextDescription>
             </div>
-          </div>
-          <div>
+          </AnimationOnScroll>
+          <AnimationOnScroll animateIn="animate__fadeIn">
             <div
               id="dex"
               tw="sticky top-44 self-start  bg-primary-dark bg-noise p-4"
@@ -243,23 +250,23 @@ const Main = () => {
                 alt="crypto overview"
               />
             </div>
-          </div>
-          <div>
+          </AnimationOnScroll>
+          <AnimationOnScroll animateIn="animate__fadeIn">
             <div
               id="disclaimer"
               tw="sticky top-44 self-start  bg-primary-dark bg-noise p-4"
             >
               <TextHeader>{"Disclaimer"}</TextHeader>
             </div>
-          </div>
-          <div tw="">
+          </AnimationOnScroll>
+          <AnimationOnScroll animateIn="animate__fadeIn">
             <TextDescription>
               &emsp;&emsp;Aeolus Protocol is developed as a Proof-of-Concept and
               is in the beta stage. While the protocol is fully functional and
               has been tested, investors should NOT invest until the official
               version is released.
             </TextDescription>
-          </div>
+          </AnimationOnScroll>
         </div>
         <div tw="grid place-items-center py-12">
           <Link href="/protocol">
