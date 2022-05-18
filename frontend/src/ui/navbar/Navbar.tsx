@@ -1,5 +1,6 @@
 import React from "react";
 import "twin.macro";
+import styled from "styled-components";
 import Link from "next/link";
 import { useMoralis } from "react-moralis";
 import Button from "~/src/ui/button/Button";
@@ -83,7 +84,9 @@ const Navbar = ({ type }: Props) => {
       <div tw="flex h-full items-center justify-start gap-16">
         <Link href="/">
           <a>
-            <p tw="text-xl font-bold">AEOLUS</p>
+            <p tw="transition-duration[600ms] text-xl font-bold hover:text-white">
+              AEOLUS
+            </p>
           </a>
         </Link>
 
@@ -91,7 +94,7 @@ const Navbar = ({ type }: Props) => {
           ? navLists.map((navList) => {
               return (
                 <a href={navList.url} key={navList.name}>
-                  <div>{navList.name}</div>
+                  <StyledAnchor>{navList.name}</StyledAnchor>
                 </a>
               );
             })
@@ -120,5 +123,29 @@ const Navbar = ({ type }: Props) => {
     </nav>
   );
 };
+
+const StyledAnchor = styled.p`
+  display: inline-block;
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: white;
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+  }
+
+  &:hover {
+    &::after {
+      transform: scaleX(1);
+      transform-origin: bottom left;
+    }
+  }
+`;
 
 export default Navbar;
