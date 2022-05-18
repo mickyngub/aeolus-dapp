@@ -21,7 +21,7 @@ const PairCard = ({ pairData }: Props) => {
     fetcher
   );
   return (
-    <div tw="transition-duration[300ms] h-full w-56 border-2 border-white hover:translate-x-0.5 hover:-translate-y-1 hover:opacity-70">
+    <div tw="transition-duration[300ms] h-full w-56 border-2 border-white hover:translate-x-0.5 hover:-translate-y-1 hover:opacity-80">
       <div tw="flex items-center gap-4 border-b-2 border-white bg-accent-500  p-2 text-white ">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         {/* <img

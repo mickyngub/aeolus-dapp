@@ -98,6 +98,7 @@ const StyledButton = styled.button<{
   &:hover {
     transition: 1s ease-in-out;
     background: var(--color-accent);
+    color: white;
   }
 
   &:hover ${StyledSVG} {
@@ -105,9 +106,12 @@ const StyledButton = styled.button<{
 `;
 
 const StyledSpan = styled.span`
-  color: black;
+  color: inherit;
   font-size: 1rem;
   font-weight: 400;
 `;
+// &:hover ${StyledSpan} {
+//   color: white;
+// }
 
 export default Button;

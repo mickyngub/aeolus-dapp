@@ -16,7 +16,7 @@ const pairDataArray: Pair[] = [
     token1: "LUNA",
     token0ID: "solana",
     token1ID: "terra-luna",
-    pairAddress: "https://snowtrace.io/",
+    pairAddress: "",
     ratio: "50/50",
   },
   {
@@ -26,7 +26,7 @@ const pairDataArray: Pair[] = [
     token1: "ADA",
     token0ID: "avalanche-2",
     token1ID: "cardano",
-    pairAddress: "https://snowtrace.io/",
+    pairAddress: "",
     ratio: "50/50",
   },
   {
@@ -36,7 +36,7 @@ const pairDataArray: Pair[] = [
     token1: "ETH",
     token0ID: "binancecoin",
     token1ID: "ethereum",
-    pairAddress: "https://snowtrace.io/",
+    pairAddress: "",
     ratio: "50/50",
   },
   {
@@ -46,7 +46,7 @@ const pairDataArray: Pair[] = [
     token1: "BTC",
     token0ID: "ripple",
     token1ID: "bitcoin",
-    pairAddress: "https://snowtrace.io/",
+    pairAddress: "",
     ratio: "50/50",
   },
   {
@@ -56,7 +56,7 @@ const pairDataArray: Pair[] = [
     token1: "SHIBA",
     token0ID: "dogecoin",
     token1ID: "shiba-inu",
-    pairAddress: "https://snowtrace.io/",
+    pairAddress: "",
     ratio: "50/50",
   },
   {
@@ -66,7 +66,7 @@ const pairDataArray: Pair[] = [
     token1: "AVAX",
     token0ID: "ethereum",
     token1ID: "avalanche-2",
-    pairAddress: "https://snowtrace.io/",
+    pairAddress: "",
     ratio: "50/50",
   },
   {
@@ -76,7 +76,7 @@ const pairDataArray: Pair[] = [
     token1: "BNB",
     token0ID: "solana",
     token1ID: "binancecoin",
-    pairAddress: "https://snowtrace.io/",
+    pairAddress: "",
     ratio: "50/50",
   },
   {
@@ -86,7 +86,7 @@ const pairDataArray: Pair[] = [
     token1: "SHIBA",
     token0ID: "ethereum",
     token1ID: "shiba-inu",
-    pairAddress: "https://snowtrace.io/",
+    pairAddress: "",
     ratio: "50/50",
   },
   {
@@ -96,7 +96,7 @@ const pairDataArray: Pair[] = [
     token1: "GALA",
     token0ID: "guildfi",
     token1ID: "gala",
-    pairAddress: "https://snowtrace.io/",
+    pairAddress: "",
     ratio: "50/50",
   },
   {
@@ -106,7 +106,7 @@ const pairDataArray: Pair[] = [
     token1: "BAND",
     token0ID: "near",
     token1ID: "band-protocol",
-    pairAddress: "https://snowtrace.io/",
+    pairAddress: "",
     ratio: "50/50",
   },
 ];
