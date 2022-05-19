@@ -2,6 +2,7 @@ import React from "react";
 import "twin.macro";
 import listTokens from "~/src/deployments/contract.json";
 import { ethers } from "ethers";
+import Loading from "../ui/loading/Loading";
 interface Props {
   userERC20Balances:
     | {
@@ -18,6 +19,7 @@ interface Props {
     balance: string | undefined;
     formatted: string | null;
   };
+  isFetchingData: boolean;
 }
 
 interface ERC20Balance {
@@ -30,7 +32,11 @@ interface ERC20Balance {
   balance: string;
 }
 
-const Dashboard = ({ userERC20Balances, userNativeBalance }: Props) => {
+const Dashboard = ({
+  userERC20Balances,
+  userNativeBalance,
+  isFetchingData,
+}: Props) => {
   const listStableTokens: { address: string }[] = Object.values(
     listTokens.AVAXStableTokens
   );

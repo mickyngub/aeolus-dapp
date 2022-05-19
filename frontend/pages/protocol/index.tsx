@@ -56,11 +56,18 @@ const Protocol = ({ fallback }: { [key: string]: any }) => {
     enableWeb3,
   }: MoralisContextValue = useMoralis();
 
-  const { fetchERC20Balances, data, isLoading, isFetching, error } =
-    useERC20Balances();
+  const {
+    fetchERC20Balances,
+    data,
+    isFetching: isERC20Fetching,
+    error,
+  } = useERC20Balances();
 
-  const { getBalances: fetchNativeBalances, data: nativeBalance } =
-    useNativeBalance();
+  const {
+    getBalances: fetchNativeBalances,
+    data: nativeBalance,
+    isFetching: isNativeFetching,
+  } = useNativeBalance();
 
   useEffect(() => {
     (async () => {
@@ -99,6 +106,7 @@ const Protocol = ({ fallback }: { [key: string]: any }) => {
               <Dashboard
                 userERC20Balances={data}
                 userNativeBalance={nativeBalance}
+                isFetchingData={isERC20Fetching || isNativeFetching}
               />
             </div>
             <div id="cryptoMarket" tw="my-12">
