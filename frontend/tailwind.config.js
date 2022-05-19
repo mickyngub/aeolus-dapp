@@ -5,6 +5,7 @@ module.exports = {
         primary: "hsl(28deg 32% 90%)",
         "primary-dark": "hsl(28deg 32% 80%)",
         secondary: "hsl(41deg 58% 59%)",
+        "secondary-dark": "hsl(41deg 58% 52%)",
         accent: {
           500: "hsl(18deg 75% 55%)",
           400: "hsl(18deg 75% 47%)",

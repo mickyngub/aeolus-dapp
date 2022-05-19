@@ -31,8 +31,10 @@ const Main = () => {
         <div tw="grid grid-cols-2 gap-16 px-28 pt-12 ">
           {/* Needs this div for sticky to work properly */}
           <div>
-            <div tw="sticky top-44 self-start  bg-primary-dark bg-noise p-4">
-              <TextHeader tw="my-6">What is Aeolus Protocol?</TextHeader>
+            <div tw="sticky top-44 self-start  bg-white bg-noise p-4">
+              <TextHeader tw="my-6 text-secondary-dark">
+                What is Aeolus Protocol?
+              </TextHeader>
               {/* <Image
                 src="/aeolus-protocol.png"
                 height="250px"
@@ -40,50 +42,41 @@ const Main = () => {
                 alt="aeolus overview"
               /> */}
               <div tw="grid grid-cols-3 border-[1px] border-white">
-                <div tw="border-[1px] border-white">
-                  <CanvasWind lightIntensity={0.5} />
+                <div tw="transition-duration[500ms] border-[1px] border-white hover:opacity-70">
+                  <CanvasWind lightIntensity={0.7} />
                 </div>
-                <div tw="border-[1px] border-white">
-                  <CanvasWind
-                    lightIntensity={0.4}
-                    tw="border-[1px] border-white"
-                  />
-                </div>
-
-                <div tw="border-[1px] border-white">
+                <div tw="transition-duration[500ms] border-[1px] border-white hover:opacity-70">
                   <CanvasWind
                     lightIntensity={0.6}
-                    tw="border-[1px] border-white"
-                  />
-                </div>
-                <div tw="border-[1px] border-white">
-                  <CanvasWind lightIntensity={0.5} />
-                </div>
-                <div tw="border-[1px] border-white">
-                  <CanvasWind
-                    lightIntensity={0.4}
-                    tw="border-[1px] border-white"
+                    tw="transition-duration[500ms] border-[1px] border-white hover:opacity-70"
                   />
                 </div>
 
-                <div tw="border-[1px] border-white">
+                <div tw="transition-duration[500ms] border-[1px] border-white hover:opacity-70">
                   <CanvasWind
-                    lightIntensity={0.6}
-                    tw="border-[1px] border-white"
+                    lightIntensity={0.5}
+                    tw="transition-duration[500ms] border-[1px] border-white hover:opacity-70"
                   />
                 </div>
-                <div tw="border-[1px] border-white">
+                <div tw="transition-duration[500ms] border-[1px] border-white hover:opacity-70">
                   <CanvasWind lightIntensity={0.5} />
                 </div>
-                <div tw="border-[1px] border-white">
-                  <CanvasWind
-                    lightIntensity={0.4}
-                    tw="border-[1px] border-white"
-                  />
+                <div tw="transition-duration[500ms] border-[1px] border-white hover:opacity-70">
+                  <CanvasWind lightIntensity={0.4} />
                 </div>
 
-                <div tw="border-2 border-white">
-                  <CanvasWind lightIntensity={0.6} tw="border-2 border-white" />
+                <div tw="transition-duration[500ms] border-[1px] border-white hover:opacity-70">
+                  <CanvasWind lightIntensity={0.3} />
+                </div>
+                <div tw="transition-duration[500ms] border-[1px] border-white hover:opacity-70">
+                  <CanvasWind lightIntensity={0.3} />
+                </div>
+                <div tw="transition-duration[500ms] border-[1px] border-white hover:opacity-70">
+                  <CanvasWind lightIntensity={0.2} />
+                </div>
+
+                <div tw="transition-duration[500ms] border-2 border-white hover:opacity-70">
+                  <CanvasWind lightIntensity={0.15} />
                 </div>
               </div>
             </div>
@@ -152,9 +145,11 @@ const Main = () => {
           <AnimationOnScroll animateIn="animate__fadeIn">
             <div
               id="mechanics"
-              tw="sticky top-44 flex flex-col justify-center gap-4 self-start  bg-primary-dark bg-noise p-4"
+              tw="sticky top-44 flex flex-col justify-center gap-4 self-start  bg-white bg-noise p-4"
             >
-              <TextHeader tw="my-4">How does Aeolus Protocol work?</TextHeader>
+              <TextHeader tw="my-4 text-secondary-dark">
+                How does Aeolus Protocol work?
+              </TextHeader>
               <div tw="grid place-content-center ">
                 <Image
                   src="/aeolus-overview.png"
@@ -175,8 +170,8 @@ const Main = () => {
           </AnimationOnScroll>
           {/* Needs this div for sticky to work properly */}
           <AnimationOnScroll animateIn="animate__fadeIn">
-            <div tw="bg-primary-dark bg-noise p-4" id="code">
-              <TextHeader tw="mb-6">
+            <div tw="bg-white bg-noise p-4" id="code">
+              <TextHeader tw="mb-6 text-secondary-dark">
                 {"Is the source code for Aeolus Protocol verified?"}
               </TextHeader>
               <Image
@@ -236,11 +231,8 @@ const Main = () => {
             </div>
           </AnimationOnScroll>
           <AnimationOnScroll animateIn="animate__fadeIn">
-            <div
-              id="dex"
-              tw="sticky top-44 self-start  bg-primary-dark bg-noise p-4"
-            >
-              <TextHeader tw="mb-8">
+            <div id="dex" tw="sticky top-44 self-start bg-white bg-noise p-4">
+              <TextHeader tw="mb-8 text-secondary-dark">
                 {"What DEX does Aeolus Protocol interact with?"}
               </TextHeader>
               <Image
@@ -254,9 +246,9 @@ const Main = () => {
           <AnimationOnScroll animateIn="animate__fadeIn">
             <div
               id="disclaimer"
-              tw="sticky top-44 self-start  bg-primary-dark bg-noise p-4"
+              tw="sticky top-44 self-start bg-white bg-noise p-4"
             >
-              <TextHeader>{"Disclaimer"}</TextHeader>
+              <TextHeader tw="text-secondary-dark">{"Disclaimer"}</TextHeader>
             </div>
           </AnimationOnScroll>
           <AnimationOnScroll animateIn="animate__fadeIn">

@@ -28,6 +28,7 @@ import aeolusRouterABI from "~/src/abi/periphery/AeolusRouter.sol/AeolusRouter.j
 import aeolusPairABI from "~/src/abi/core/AeolusPair.sol/AeolusPair.json";
 import ERC20ABI from "~/src/abi/ERC20/ERC20.sol/ERC20.json";
 import { ethers } from "ethers";
+import { AnimationOnScroll } from "react-animation-on-scroll";
 
 const coinGeckoAPI = process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO
   ? process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO
@@ -187,9 +188,9 @@ const PairID = () => {
               {pair && crypto0Data && crypto1Data && (
                 <div tw="flex justify-between">
                   <div tw="h-full hover:pointer-events-none">
-                    {<PairCard pairData={pair}></PairCard>}
+                    <PairCard pairData={pair} />
                   </div>
-                  <div tw="flex flex-col items-stretch justify-start gap-4">
+                  <div tw="flex flex-col items-stretch justify-start gap-4 border-2 border-secondary bg-white bg-noise p-4">
                     <div tw="flex justify-between">
                       <p>Current LP of {pair.pairName}:&nbsp;</p>
                       <p>
@@ -199,6 +200,17 @@ const PairID = () => {
                             )
                           : "0"}{" "}
                         LP Token
+                      </p>
+                    </div>
+                    <div tw="flex justify-between">
+                      <p>Amount Invested in USDT.e:&nbsp;</p>
+                      <p>
+                        {runGetLPOfPairSymbolData
+                          ? ethers.utils.formatEther(
+                              runGetLPOfPairSymbolData._hex
+                            )
+                          : "0"}{" "}
+                        USDT.e
                       </p>
                     </div>
                     <div tw="flex justify-between">
@@ -258,7 +270,7 @@ const PairID = () => {
                     ) : (
                       ""
                     )}
-                    <div tw="self-end">
+                    <div tw="mt-4 self-end">
                       {runGetApprovedUSDTDotEData?._hex === "0x00" ? (
                         <Button size="small" onClick={runApproveUSDTDotE}>
                           Approve Token
