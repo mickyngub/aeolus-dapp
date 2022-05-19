@@ -219,7 +219,7 @@ const PairID = () => {
                       <p>
                         <a
                           tw="text-underline-offset[3px] text-accent-300 underline opacity-70 hover:opacity-100"
-                          href={`https://snowtrace.io/${pair.pairAddress}`}
+                          href={`https://snowtrace.io/address/${pair.pairAddress}`}
                           target="_blank"
                           rel="noopener noreferer noreferrer"
                         >
