@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "twin.macro";
 import styled from "styled-components";
 import Link from "next/link";
@@ -48,6 +48,11 @@ const Navbar = ({ type }: Props) => {
     account,
     logout,
   } = useMoralis();
+  useEffect(() => {
+    if (isAuthenticated) {
+      notifyWalletConnected();
+    }
+  }, [isAuthenticated]);
   // Temporary solution for account null when refreshing, cannot detect new wallet after switching
   const dbAddress = user?.get("ethAddress");
   const connectWalletMoralis = async () => {
@@ -55,7 +60,6 @@ const Navbar = ({ type }: Props) => {
       await authenticate({ signingMessage: "Signin to Aeolus Protocol" })
         .then((user) => {
           console.log("logged in user", user);
-          notifyWalletConnected();
         })
         .catch((error) => {
           console.log(error);
