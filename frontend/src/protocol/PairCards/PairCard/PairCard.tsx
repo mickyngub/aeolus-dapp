@@ -24,11 +24,7 @@ const PairCard = ({ pairData }: Props) => {
     <div tw="transition-duration[300ms] h-full w-56 border-2 border-white hover:translate-x-0.5 hover:-translate-y-1 hover:opacity-80">
       <div tw="flex items-center gap-4 border-b-2 border-white bg-accent-500  p-2 text-white ">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        {/* <img
-            src={cryptoData.image}
-            alt={cryptoData.name + " image"}
-            tw="h-12 w-12"
-          /> */}
+
         <div tw="flex flex-col items-center">
           {crypto0Data && crypto1Data && (
             <>
@@ -106,12 +102,6 @@ const PairCard = ({ pairData }: Props) => {
         </div>
       </div>
     </div>
-    // <div tw="h-56 w-56 border-2 border-white">
-    //   BTC / BNB / SOL
-    //   <div>
-    //     <p>Ratio 0.333 : 0.333 : 0.333</p>
-    //   </div>
-    // </div>
   );
 };
 

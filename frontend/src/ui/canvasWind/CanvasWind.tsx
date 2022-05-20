@@ -1,4 +1,4 @@
-import { Cloud, OrbitControls } from "@react-three/drei";
+import { Cloud } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 
 interface Props {

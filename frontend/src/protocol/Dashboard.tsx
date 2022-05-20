@@ -2,7 +2,6 @@ import React from "react";
 import "twin.macro";
 import listTokens from "~/src/deployments/contract.json";
 import { ethers } from "ethers";
-import Loading from "../ui/loading/Loading";
 interface Props {
   userERC20Balances:
     | {

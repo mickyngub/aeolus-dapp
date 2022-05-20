@@ -1,5 +1,4 @@
 import { Suspense, useEffect, useState } from "react";
-import { ethers } from "ethers";
 import {
   MoralisContextValue,
   useERC20Balances,
@@ -10,13 +9,11 @@ import { useMoralis } from "react-moralis";
 import "twin.macro";
 import Dashboard from "~/src/protocol/Dashboard";
 import CryptoCards from "~/src/protocol/CryptoCards/CryptoCards";
-import Button from "~/src/ui/button/Button";
 import Layout from "~/src/ui/layout/Layout";
 import PairCards from "~/src/protocol/PairCards/PairCards";
 import { fetcher } from "../api";
 import { SWRConfig } from "swr";
 import Loading from "~/src/ui/loading/Loading";
-import Link from "next/link";
 import CanvasWind from "~/src/ui/canvasWind/CanvasWind";
 
 const coinGeckoAPI = process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO_TOP_TEN
@@ -24,32 +21,13 @@ const coinGeckoAPI = process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO_TOP_TEN
   : "/";
 
 const Protocol = ({ fallback }: { [key: string]: any }) => {
-  // const [signer, setSigner] = useState<ethers.providers.JsonRpcSigner>();
-
-  // const handleConnectWallet = async () => {
-  //   console.log("clicked connect wallet");
-  //   const provider = new ethers.providers.Web3Provider(window.ethereum);
-  //   await provider.send("eth_requestAccounts", []);
-  //   const signer = provider.getSigner();
-  //   const signerAddress = await signer.getAddress();
-  //   setAddress(signerAddress);
-  //   setSigner(signer);
-  //   notifyWalletConnected();
-  // };
-
-  const {
-    isAuthenticated,
-    account,
-    user,
-    isWeb3Enabled,
-    enableWeb3,
-  }: MoralisContextValue = useMoralis();
+  const { account, isWeb3Enabled, enableWeb3 }: MoralisContextValue =
+    useMoralis();
 
   const {
     fetchERC20Balances,
     data,
     isFetching: isERC20Fetching,
-    error,
   } = useERC20Balances();
 
   const {
@@ -71,7 +49,7 @@ const Protocol = ({ fallback }: { [key: string]: any }) => {
       await fetchERC20Balances();
       await fetchNativeBalances();
     })();
-  }, [account]);
+  }, [account, fetchERC20Balances, fetchNativeBalances]);
   return (
     <SWRConfig value={{ fallback }}>
       <Suspense

@@ -14,9 +14,6 @@ const Footer = () => {
               <p tw="text-xl font-bold text-white">AEOLUS</p>
             </a>
           </Link>
-          {/* {footerLists.map((footerList) => {
-          return <div key={footerList.name}>{footerList.name}</div>;
-        })} */}
         </div>
       </div>
     </footer>

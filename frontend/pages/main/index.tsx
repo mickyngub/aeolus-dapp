@@ -35,12 +35,6 @@ const Main = () => {
               <TextHeader tw="my-6 text-secondary-dark">
                 What is Aeolus Protocol?
               </TextHeader>
-              {/* <Image
-                src="/aeolus-protocol.png"
-                height="250px"
-                width="650px"
-                alt="aeolus overview"
-              /> */}
               <div tw="grid grid-cols-3 border-[1px] border-white">
                 <div tw="transition-duration[500ms] border-[1px] border-white hover:opacity-70">
                   <CanvasWind lightIntensity={0.7} />

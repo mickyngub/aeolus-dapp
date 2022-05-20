@@ -1,7 +1,6 @@
 import type { ReactElement, ReactNode } from "react";
 import type { NextPage } from "next";
 import type { AppProps } from "next/app";
-// import GlobalStyles from "../styles/GlobalStyles";
 import GlobalStyles from "~/styles/GlobalStyles";
 import { MoralisProvider } from "react-moralis";
 import "animate.css/animate.min.css";

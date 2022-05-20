@@ -21,14 +21,11 @@ import {
   useMoralis,
   useWeb3Contract,
 } from "react-moralis";
-import BigNumber from "bignumber.js";
-import { toast } from "react-toastify";
 import deployedContract from "~/src/deployments/contract.json";
 import aeolusRouterABI from "~/src/abi/periphery/AeolusRouter.sol/AeolusRouter.json";
 import aeolusPairABI from "~/src/abi/core/AeolusPair.sol/AeolusPair.json";
 import ERC20ABI from "~/src/abi/ERC20/ERC20.sol/ERC20.json";
 import { ethers } from "ethers";
-import { AnimationOnScroll } from "react-animation-on-scroll";
 
 const coinGeckoAPI = process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO
   ? process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO
@@ -36,11 +33,9 @@ const coinGeckoAPI = process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO
 
 const PairID = () => {
   const {
-    account,
     isAuthenticated,
     enableWeb3,
     user,
-    web3,
     isWeb3Enabled,
   }: MoralisContextValue = useMoralis();
 
@@ -148,7 +143,7 @@ const PairID = () => {
         await enableWeb3();
       }
     })();
-  }, [isWeb3Enabled, runGetLPOfPairSymbol]);
+  }, [isWeb3Enabled, enableWeb3, runGetApprovedUSDTDotE, runGetLPOfPairSymbol]);
 
   console.log("get approved usdt.e data", runGetApprovedUSDTDotEData);
   console.log("LP amount", runGetLPOfPairSymbolData);

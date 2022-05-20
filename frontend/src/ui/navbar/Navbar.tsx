@@ -40,14 +40,7 @@ interface Props {
 }
 
 const Navbar = ({ type }: Props) => {
-  const {
-    authenticate,
-    isAuthenticated,
-    isAuthenticating,
-    user,
-    account,
-    logout,
-  } = useMoralis();
+  const { authenticate, isAuthenticated, user, logout } = useMoralis();
   useEffect(() => {
     if (isAuthenticated) {
       notifyWalletConnected();

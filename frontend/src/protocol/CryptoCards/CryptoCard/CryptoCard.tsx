@@ -11,7 +11,6 @@ import {
   Legend,
 } from "chart.js";
 import "twin.macro";
-import dayjs from "dayjs";
 
 ChartJS.register(
   CategoryScale,
@@ -95,7 +94,6 @@ const CryptoCard = ({ cryptoData }: Props) => {
               <span>&nbsp;${cryptoData.current_price}</span>
             </p>
           </div>
-          {/* <p>{cryptoData.sparkline_in_7d.price}</p> */}
           <div tw="my-1">
             <p tw="flex justify-between text-sm">
               <span>↑ &nbsp;24h High:</span>
@@ -112,14 +110,6 @@ const CryptoCard = ({ cryptoData }: Props) => {
               </span>
             </p>
           </div>
-          {/* <p>
-            {cryptoData.sparkline_in_7d.price.map((priceData) => (
-              <p>{priceData.toFixed(2)}</p>
-            ))}
-          </p> */}
-          {/* <p tw="text-sm">
-            Last Update:<span>&nbsp;{cryptoData.last_updated}</span>
-          </p> */}
         </div>
         <div tw="mx-auto w-52">
           <Line data={graphData} options={options} />

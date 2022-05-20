@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import { ReactElement } from "react";
 import Link from "next/link";
 import { Line } from "react-chartjs-2";

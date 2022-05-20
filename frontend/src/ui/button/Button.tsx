@@ -110,8 +110,5 @@ const StyledSpan = styled.span`
   font-size: 1rem;
   font-weight: 400;
 `;
-// &:hover ${StyledSpan} {
-//   color: white;
-// }
 
 export default Button;

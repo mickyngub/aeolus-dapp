@@ -1,4 +1,3 @@
-import Link from "next/link";
 import CryptoCard from "./CryptoCard/CryptoCard";
 import "twin.macro";
 import useSWR from "swr";
