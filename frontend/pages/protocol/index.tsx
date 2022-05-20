@@ -23,17 +23,6 @@ const coinGeckoAPI = process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO_TOP_TEN
   ? process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO_TOP_TEN
   : "/";
 
-export async function getStaticProps() {
-  const cryptoDatas: CryptoData = await fetcher(coinGeckoAPI);
-  return {
-    props: {
-      fallback: {
-        [coinGeckoAPI]: cryptoDatas,
-      },
-    },
-  };
-}
-
 const Protocol = ({ fallback }: { [key: string]: any }) => {
   // const [signer, setSigner] = useState<ethers.providers.JsonRpcSigner>();
 
@@ -131,5 +120,16 @@ const Protocol = ({ fallback }: { [key: string]: any }) => {
 Protocol.getLayout = function getLayout(page: ReactElement) {
   return <Layout type="protocol">{page}</Layout>;
 };
+
+export async function getStaticProps() {
+  const cryptoDatas: CryptoData = await fetcher(coinGeckoAPI);
+  return {
+    props: {
+      fallback: {
+        [coinGeckoAPI]: cryptoDatas,
+      },
+    },
+  };
+}
 
 export default Protocol;

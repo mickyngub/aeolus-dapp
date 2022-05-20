@@ -31,45 +31,6 @@ ChartJS.register(
 // Create labels for line graph
 const labels = new Array(7).fill("");
 
-export async function getStaticPaths() {
-  const cryptos: CryptoData[] = await fetcher(
-    process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO_TOP_TEN
-      ? process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO_TOP_TEN
-      : "/"
-  );
-  return {
-    paths: cryptos.map((crypto) => ({
-      params: {
-        crypto: crypto.id.toString(),
-      },
-    })),
-    fallback: false,
-  };
-}
-
-export async function getStaticProps({
-  params,
-}: {
-  params: {
-    crypto: string;
-  };
-}) {
-  const cryptoAPI =
-    process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO + params.crypto;
-  const cryptoData: CryptoData = await fetcher(
-    process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO ? cryptoAPI : "/"
-  );
-
-  return {
-    props: {
-      fallback: {
-        [cryptoAPI]: cryptoData,
-      },
-      cryptoAPI,
-    },
-  };
-}
-
 const CryptoDetail = ({ cryptoAPI }: { cryptoAPI: string }) => {
   const { data: cryptoData }: { data?: CryptoData[] } = useSWR(
     cryptoAPI,
@@ -159,5 +120,44 @@ const CryptoPage = ({
 CryptoPage.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
+
+export async function getStaticPaths() {
+  const cryptos: CryptoData[] = await fetcher(
+    process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO_TOP_TEN
+      ? process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO_TOP_TEN
+      : "/"
+  );
+  return {
+    paths: cryptos.map((crypto) => ({
+      params: {
+        crypto: crypto.id.toString(),
+      },
+    })),
+    fallback: false,
+  };
+}
+
+export async function getStaticProps({
+  params,
+}: {
+  params: {
+    crypto: string;
+  };
+}) {
+  const cryptoAPI =
+    process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO + params.crypto;
+  const cryptoData: CryptoData = await fetcher(
+    process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO ? cryptoAPI : "/"
+  );
+
+  return {
+    props: {
+      fallback: {
+        [cryptoAPI]: cryptoData,
+      },
+      cryptoAPI,
+    },
+  };
+}
 
 export default CryptoPage;
