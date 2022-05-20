@@ -103,13 +103,9 @@ const CryptoPage = ({
   return (
     <SWRConfig value={{ fallback }}>
       <div tw="min-h-full bg-primary bg-noise">
-        <div tw="">
-          <Link href="/protocol">
-            <a>
-              <Button size="small">Back</Button>
-            </a>
-          </Link>
-          <CryptoDetail cryptoAPI={cryptoAPI} />
+        <div tw="grid h-[calc(100vh - 220px)] place-content-center">
+          <p tw="text-2xl">This Page is Currently Under Maintenance</p>
+          {/* <CryptoDetail cryptoAPI={cryptoAPI} /> */}
         </div>
       </div>
     </SWRConfig>
