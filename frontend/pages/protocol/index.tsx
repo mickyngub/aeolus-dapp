@@ -70,7 +70,7 @@ const Protocol = ({ fallback }: { [key: string]: any }) => {
             </div>
           </div>
           <div tw="px-28">
-            <div id="dashboard" tw="mt-4 mb-12 ">
+            <div id="dashboard" tw="mt-12 mb-12 ">
               <Dashboard
                 userERC20Balances={data}
                 userNativeBalance={nativeBalance}

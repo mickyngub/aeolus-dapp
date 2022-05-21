@@ -77,7 +77,7 @@ const Main = () => {
             </div>
           </div>
           <div tw="" id="about">
-            <TextDescription tw="mb-8">
+            <TextDescription tw="mb-2">
               &emsp;&emsp; Aeolus Protocol is a passive cryptocurrency fund
               operating on Avalanche Blockchain that earns additional yield on
               top of capital gains by providing the underlying assets in the
