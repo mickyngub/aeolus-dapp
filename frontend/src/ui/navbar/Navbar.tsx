@@ -53,13 +53,9 @@ const Navbar = ({ type }: Props) => {
       await authenticate({
         signingMessage: "Signin to Aeolus Protocol",
         onSuccess: () => notifyWalletConnected(),
-      })
-        .then((user) => {
-          console.log("logged in user", user);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      }).catch((error) => {
+        console.log(error);
+      });
     }
   };
   const moralisLogout = async () => {

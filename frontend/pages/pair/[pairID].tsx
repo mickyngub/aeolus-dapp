@@ -146,9 +146,6 @@ const PairID = () => {
     })();
   }, [isWeb3Enabled, enableWeb3, runGetApprovedUSDTDotE, runGetLPOfPairSymbol]);
 
-  console.log("get approved usdt.e data", runGetApprovedUSDTDotEData);
-  console.log("LP amount", runGetLPOfPairSymbolData);
-  console.log("aeoluspair address", aeolusPairAddress);
   return (
     <Suspense
       fallback={
