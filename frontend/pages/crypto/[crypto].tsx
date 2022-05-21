@@ -1,5 +1,4 @@
 import { ReactElement } from "react";
-import Link from "next/link";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -12,10 +11,10 @@ import {
   Legend,
 } from "chart.js";
 import "twin.macro";
-import Layout from "~/src/ui/layout/Layout";
-import Button from "~/src/ui/button/Button";
-import { fetcher } from "../api";
 import useSWR, { SWRConfig } from "swr";
+
+import Layout from "~/src/ui/layout/Layout";
+import { fetcher } from "../api";
 
 ChartJS.register(
   CategoryScale,

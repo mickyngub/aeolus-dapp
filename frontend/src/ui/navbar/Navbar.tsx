@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import "twin.macro";
 import styled from "styled-components";
 import Link from "next/link";
 import { useMoralis } from "react-moralis";
-import Button from "~/src/ui/button/Button";
 import { ToastContainer, toast } from "react-toastify";
+
+import Button from "~/src/ui/button/Button";
 
 const navListsMain = [
   {

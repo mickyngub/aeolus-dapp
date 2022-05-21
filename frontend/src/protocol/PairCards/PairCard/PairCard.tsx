@@ -1,6 +1,6 @@
-import React from "react";
 import "twin.macro";
 import useSWR from "swr";
+
 import { fetcher } from "~/pages/api";
 
 interface Props {

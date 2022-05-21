@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect } from "react";
 import {
   MoralisContextValue,
   useERC20Balances,
@@ -7,14 +7,15 @@ import {
 import type { ReactElement } from "react";
 import { useMoralis } from "react-moralis";
 import "twin.macro";
+import { SWRConfig } from "swr";
+
 import Dashboard from "~/src/protocol/Dashboard";
 import CryptoCards from "~/src/protocol/CryptoCards/CryptoCards";
 import Layout from "~/src/ui/layout/Layout";
 import PairCards from "~/src/protocol/PairCards/PairCards";
-import { fetcher } from "../api";
-import { SWRConfig } from "swr";
 import Loading from "~/src/ui/loading/Loading";
 import CanvasWind from "~/src/ui/canvasWind/CanvasWind";
+import { fetcher } from "../api";
 
 const coinGeckoAPI = process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO_TOP_TEN
   ? process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO_TOP_TEN

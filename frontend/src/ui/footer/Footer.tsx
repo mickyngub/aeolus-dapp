@@ -1,6 +1,6 @@
-import React from "react";
 import "twin.macro";
 import Link from "next/link";
+
 import CanvasWind from "../canvasWind/CanvasWind";
 
 const Footer = () => {

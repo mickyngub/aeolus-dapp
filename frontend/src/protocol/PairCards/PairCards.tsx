@@ -1,8 +1,8 @@
-import React from "react";
 import Link from "next/link";
+import "twin.macro";
+
 import PairCard from "./PairCard/PairCard";
 import { pairDataArray } from "./PairCard/PairData";
-import "twin.macro";
 
 const PairCards = () => {
   return (

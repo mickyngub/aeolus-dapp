@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import {
   ChangeEvent,
   ReactElement,
@@ -6,26 +5,28 @@ import {
   useState,
   useEffect,
 } from "react";
-import Loading from "~/src/ui/loading/Loading";
-import Layout from "~/src/ui/layout/Layout";
-import CanvasWind from "~/src/ui/canvasWind/CanvasWind";
-import "twin.macro";
+import { useRouter } from "next/router";
 import Link from "next/link";
-import Button from "~/src/ui/button/Button";
+import "twin.macro";
 import useSWR from "swr";
-import { fetcher } from "~/pages/api";
-import PairCard from "~/src/protocol/PairCards/PairCard/PairCard";
-import { findPairInPairDataArray } from "~/src/pair/utils";
 import {
   MoralisContextValue,
   useMoralis,
   useWeb3Contract,
 } from "react-moralis";
+import { ethers } from "ethers";
+
+import CanvasWind from "~/src/ui/canvasWind/CanvasWind";
+import Loading from "~/src/ui/loading/Loading";
+import Layout from "~/src/ui/layout/Layout";
+import Button from "~/src/ui/button/Button";
+import { fetcher } from "~/pages/api";
+import PairCard from "~/src/protocol/PairCards/PairCard/PairCard";
+import { findPairInPairDataArray } from "~/src/pair/utils";
 import deployedContract from "~/src/deployments/contract.json";
 import aeolusRouterABI from "~/src/abi/periphery/AeolusRouter.sol/AeolusRouter.json";
 import aeolusPairABI from "~/src/abi/core/AeolusPair.sol/AeolusPair.json";
 import ERC20ABI from "~/src/abi/ERC20/ERC20.sol/ERC20.json";
-import { ethers } from "ethers";
 
 const coinGeckoAPI = process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO
   ? process.env.NEXT_PUBLIC_API_COINGECKO_CRYPTO

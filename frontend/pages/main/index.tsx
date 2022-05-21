@@ -2,13 +2,14 @@ import "twin.macro";
 import tw from "twin.macro";
 import type { ReactElement } from "react";
 import { Suspense } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { AnimationOnScroll } from "react-animation-on-scroll";
+
 import Button from "~/src/ui/button/Button";
 import Layout from "~/src/ui/layout/Layout";
-import Link from "next/link";
-import { AnimationOnScroll } from "react-animation-on-scroll";
 import CanvasWind from "~/src/ui/canvasWind/CanvasWind";
 import Loading from "~/src/ui/loading/Loading";
-import Image from "next/image";
 
 const Main = () => {
   return (

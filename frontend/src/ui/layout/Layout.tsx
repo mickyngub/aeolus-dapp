@@ -1,7 +1,7 @@
-import React from "react";
+import "twin.macro";
+
 import Footer from "../footer/Footer";
 import Navbar from "../navbar/Navbar";
-import "twin.macro";
 
 interface Props {
   children?: any;

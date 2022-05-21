@@ -1,12 +1,12 @@
-import React from "react";
+import { Suspense } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import "twin.macro";
 import styled from "styled-components";
+
 import CanvasWind from "~/src/ui/canvasWind/CanvasWind";
 import Button from "~/src/ui/button/Button";
-import Link from "next/link";
-import { Suspense } from "react";
 import Loading from "~/src/ui/loading/Loading";
 
 const Home: NextPage = () => {

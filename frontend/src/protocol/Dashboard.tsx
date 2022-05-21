@@ -1,7 +1,8 @@
-import React from "react";
 import "twin.macro";
-import listTokens from "~/src/deployments/contract.json";
 import { ethers } from "ethers";
+
+import listTokens from "~/src/deployments/contract.json";
+
 interface Props {
   userERC20Balances:
     | {
@@ -31,17 +32,18 @@ interface ERC20Balance {
   balance: string;
 }
 
+const listStableTokens: { address: string }[] = Object.values(
+  listTokens.AVAXStableTokens
+);
+const listAeolusLPTokens: { address: string }[] = Object.values(
+  listTokens.AeolusLPTokens
+);
+
 const Dashboard = ({
   userERC20Balances,
   userNativeBalance,
   isFetchingData,
 }: Props) => {
-  const listStableTokens: { address: string }[] = Object.values(
-    listTokens.AVAXStableTokens
-  );
-  const listAeolusLPTokens: { address: string }[] = Object.values(
-    listTokens.AeolusLPTokens
-  );
   const stableTokenBalances: ERC20Balance[] = [];
   const aeolusLPTokenBalances: ERC20Balance[] = [];
   if (userERC20Balances) {
