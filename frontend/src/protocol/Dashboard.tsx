@@ -31,7 +31,6 @@ interface ERC20Balance {
   decimals: string;
   balance: string;
 }
-
 const listStableTokens: { address: string }[] = Object.values(
   listTokens.AVAXStableTokens
 );
@@ -46,6 +45,7 @@ const Dashboard = ({
 }: Props) => {
   const stableTokenBalances: ERC20Balance[] = [];
   const aeolusLPTokenBalances: ERC20Balance[] = [];
+
   if (userERC20Balances) {
     for (let i = 0; i < userERC20Balances.length; i++) {
       for (
@@ -80,29 +80,34 @@ const Dashboard = ({
       </p>
       <div tw="transition-duration[400ms] border-2 border-white bg-accent-500 p-4 text-center transition-all hover:scale-105 hover:opacity-90">
         <p tw="text-lg text-white">♖ Avalanche (AVAX)</p>
-        {userNativeBalance.formatted}
+        {userNativeBalance.formatted ? userNativeBalance.formatted : "-"}
       </div>
       <div tw="transition-duration[400ms] border-2 border-white bg-secondary bg-noise p-4 text-center transition-all hover:scale-105 hover:opacity-90">
-        {stableTokenBalances.map((stableTokenBalance) => {
-          return (
-            <div key={stableTokenBalance.symbol}>
-              <p tw="text-lg text-white">♗ STABLE COINS</p>
-              {ethers.utils.formatUnits(stableTokenBalance.balance, 6)}{" "}
-              {stableTokenBalance.symbol}
-            </div>
-          );
-        })}
+        <p tw="text-lg text-white">♗ STABLE COINS</p>
+        {stableTokenBalances.length !== 0
+          ? stableTokenBalances.map((stableTokenBalance) => {
+              return (
+                <div key={stableTokenBalance.symbol}>
+                  {ethers.utils.formatUnits(stableTokenBalance.balance, 6)}{" "}
+                  {stableTokenBalance.symbol}
+                </div>
+              );
+            })
+          : "-"}
       </div>
       <div tw="transition-duration[400ms] border-2 border-white bg-accent-500 p-4 text-center transition-all hover:scale-105 hover:opacity-90">
-        {aeolusLPTokenBalances.map((aeolusLPTokenBalance) => {
-          return (
-            <div key={aeolusLPTokenBalance.symbol}>
-              <p tw="text-lg text-white">♘ Aeolus LP TOKEN</p>
-              {ethers.utils.formatEther(aeolusLPTokenBalance.balance)}{" "}
-              {aeolusLPTokenBalance.symbol} LP
-            </div>
-          );
-        })}
+        <p tw="text-lg text-white">♘ Aeolus LP TOKEN</p>
+
+        {aeolusLPTokenBalances.length !== 0
+          ? aeolusLPTokenBalances.map((aeolusLPTokenBalance) => {
+              return (
+                <div key={aeolusLPTokenBalance.symbol}>
+                  {ethers.utils.formatEther(aeolusLPTokenBalance.balance)}{" "}
+                  {aeolusLPTokenBalance.symbol} LP
+                </div>
+              );
+            })
+          : "-"}
       </div>
     </div>
   );
